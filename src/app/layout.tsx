@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import AnnouncementBanner from "@/components/layout/AnnouncementBanner";
 import AnalyticsTracker from "@/components/analytics/AnalyticsTracker";
 
 const inter = Inter({
@@ -59,7 +58,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen bg-background text-foreground antialiased selection:bg-brand-600 selection:text-white flex flex-col">
-        <AnnouncementBanner />
         <AnalyticsTracker />
         {children}
       </body>

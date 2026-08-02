@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Gamepad2,
-  KeyRound,
   Users,
   Megaphone,
   GitCommit,
@@ -26,7 +25,6 @@ export default function AdminSidebar() {
       items: [
         { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
         { label: "Hub Control", href: "/admin/hub", icon: Gamepad2, badge: "Roblox" },
-        { label: "Subscriptions & Keys", href: "/admin/api-keys", icon: KeyRound },
         { label: "Users & Injections", href: "/admin/users", icon: Users },
       ],
     },

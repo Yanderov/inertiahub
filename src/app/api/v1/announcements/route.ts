@@ -30,7 +30,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ data: items });
   } catch (error: any) {
     console.error("Announcements GET error:", error);
-    return NextResponse.json({ error: "Failed to fetch announcements", details: error.message }, { status: 500 });
+    // The banner is optional; keep the public shell usable while the database is unavailable.
+    return NextResponse.json(
+      { data: [], degraded: true },
+      { status: 200, headers: { "Cache-Control": "no-store" } }
+    );
   }
 }
 

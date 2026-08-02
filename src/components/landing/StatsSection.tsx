@@ -8,7 +8,7 @@ interface TelemetryStats {
   uniqueUsers: number;
   totalInjections: number;
   byGame: Record<string, number>;
-  activeLast24h: number;
+  activeNow: number;
 }
 
 export default function StatsSection() {
@@ -16,7 +16,7 @@ export default function StatsSection() {
     uniqueUsers: 0,
     totalInjections: 0,
     byGame: {},
-    activeLast24h: 0,
+    activeNow: 0,
   });
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function StatsSection() {
           uniqueUsers: data.uniqueUsers || 0,
           totalInjections: data.totalInjections || 0,
           byGame: data.byGame || {},
-          activeLast24h: data.activeLast24h || 0,
+          activeNow: data.activeNow || 0,
         });
       })
       .catch(() => {});
@@ -55,10 +55,10 @@ export default function StatsSection() {
       desc: "MM2 • Pressure • Demonology",
     },
     {
-      label: "Active (24h)",
-      value: stats.activeLast24h.toLocaleString(),
+      label: "Active Now",
+      value: stats.activeNow.toLocaleString(),
       icon: Shield,
-      desc: "Users in last 24 hours",
+      desc: "Heartbeat in last 45 seconds",
     },
   ];
 

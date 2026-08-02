@@ -201,7 +201,7 @@ export default function AdminUsersPage() {
                   <th className="px-4 py-3">Last Game</th>
                   <th className="px-4 py-3">Injects</th>
                   <th className="px-4 py-3">Last Seen</th>
-                  <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Access</th>
                   <th className="px-4 py-3 text-right">Actions</th>
                 </tr>
               </thead>
@@ -250,7 +250,7 @@ export default function AdminUsersPage() {
                               hub.banned ? "bg-rose-400" : "bg-emerald-400"
                             }`}
                           />
-                          {hub.banned ? "Banned" : "Active"}
+                          {hub.banned ? "Banned" : "Allowed"}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-right">

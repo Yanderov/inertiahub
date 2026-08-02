@@ -16,6 +16,20 @@ function sanitizeSender(value: unknown): string {
   return value.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").trim().slice(0, MAX_SENDER);
 }
 
+async function createMessage(channel: string, sender: string, content: string) {
+  const recent = await prisma.chatMessage.findFirst({
+    where: {
+      channel,
+      sender,
+      content,
+      createdAt: { gte: new Date(Date.now() - 1000) },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  return recent ?? prisma.chatMessage.create({ data: { channel, sender, content } });
+}
+
 export async function GET(req: NextRequest) {
   try {
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1";
@@ -30,7 +44,7 @@ export async function GET(req: NextRequest) {
       if (!rate.success) {
         return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
       }
-      const message = await prisma.chatMessage.create({ data: { channel, sender, content } });
+      const message = await createMessage(channel, sender, content);
       return NextResponse.json({
         success: true,
         data: { id: message.id, sender, content, kind: message.kind, duration: message.duration, t: message.createdAt.getTime() },
@@ -71,7 +85,7 @@ export async function POST(req: NextRequest) {
     if (!content || !sender) {
       return NextResponse.json({ error: "Message too short" }, { status: 400 });
     }
-    const message = await prisma.chatMessage.create({ data: { channel, sender, content } });
+    const message = await createMessage(channel, sender, content);
     return NextResponse.json({
       success: true,
       data: { id: message.id, sender, content, kind: message.kind, duration: message.duration, t: message.createdAt.getTime() },

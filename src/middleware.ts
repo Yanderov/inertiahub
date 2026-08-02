@@ -60,7 +60,7 @@ export async function middleware(req: NextRequest) {
 
   const isAdminPage = path === "/admin" || path.startsWith("/admin/") || path === "/admin/login";
   const adminApiPrefixes = [
-    "/api/v1/analytics", "/api/v1/announcements", "/api/v1/api-keys",
+    "/api/v1/analytics", "/api/v1/announcements",
     "/api/v1/audit-logs", "/api/v1/blog", "/api/v1/changelog", "/api/v1/media",
     "/api/v1/news", "/api/v1/pages", "/api/v1/promos", "/api/v1/settings",
     "/api/v1/statistics", "/api/v1/system", "/api/v1/users", "/api/v1/telemetry/users",

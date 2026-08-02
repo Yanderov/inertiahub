@@ -123,10 +123,3 @@ export const SiteSettingSchema = z.object({
   value: z.any(),
   category: z.enum(["GENERAL", "BRANDING", "SEO", "SECURITY", "NOTIFICATIONS"]).default("GENERAL"),
 });
-
-// API Key schema
-export const ApiKeySchema = z.object({
-  name: z.string().min(2, "Key name is required"),
-  permissions: z.array(z.string()).min(1, "At least one permission is required"),
-  expiresInDays: z.number().int().positive().optional().nullable(),
-});

@@ -105,9 +105,12 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   try {
-    const [uniqueUsers, activeLast24h, totalInjections, byGame, byExecutor] =
+    const [uniqueUsers, activeNow, activeLast24h, totalInjections, byGame, byExecutor] =
       await Promise.all([
         prisma.hubUser.count(),
+        prisma.hubUser.count({
+          where: { lastSeen: { gte: new Date(Date.now() - 45 * 1000) } },
+        }),
         prisma.hubUser.count({
           where: { lastSeen: { gte: new Date(Date.now() - 24 * 60 * 60 * 1000) } },
         }),
@@ -128,6 +131,7 @@ export async function GET() {
 
     return NextResponse.json({
       uniqueUsers,
+      activeNow,
       totalInjections: totalInjections._sum.injections || 0,
       activeLast24h,
       updatesCount: await prisma.changelog.count(),
@@ -138,8 +142,18 @@ export async function GET() {
   } catch (error: any) {
     console.error("Telemetry read error:", error);
     return NextResponse.json(
-      { error: "Failed to read telemetry", details: error.message },
-      { status: 500 }
+      {
+        uniqueUsers: 0,
+        activeNow: 0,
+        totalInjections: 0,
+        activeLast24h: 0,
+        updatesCount: 0,
+        byGame: {},
+        byExecutor: {},
+        lastUpdated: new Date().toISOString(),
+        degraded: true,
+      },
+      { status: 200, headers: { "Cache-Control": "no-store" } }
     );
   }
 }

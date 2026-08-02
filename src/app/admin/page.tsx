@@ -11,7 +11,6 @@ import {
   RefreshCw,
   Eye,
   UserCheck,
-  KeyRound,
   ShieldAlert,
   Activity,
 } from "lucide-react";
@@ -105,12 +104,6 @@ export default function AdminDashboardPage() {
       desc: "Loader versions, bans, features & live chat",
       icon: Gamepad2,
       badge: "Core",
-    },
-    {
-      href: "/admin/api-keys",
-      label: "Subscriptions & Keys",
-      desc: "Access keys & API token permissions",
-      icon: KeyRound,
     },
     {
       href: "/admin/users",
@@ -221,13 +214,13 @@ export default function AdminDashboardPage() {
 
           <div className="p-4 rounded-lg bg-zinc-900/60 border border-zinc-800">
             <div className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 font-mono">
-              Active in Last 24 Hours
+              Currently Online
             </div>
             <div className="text-xl font-bold text-emerald-400 mt-1 tabular-nums flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              {overview?.hub?.activeLast24h ?? "—"}
+              {overview?.hub?.activeNow ?? "—"}
             </div>
-            <div className="text-[11px] text-zinc-500 mt-0.5">Active players today</div>
+            <div className="text-[11px] text-zinc-500 mt-0.5">Heartbeat received in the last 45 seconds</div>
           </div>
         </div>
 
