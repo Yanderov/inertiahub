@@ -1,0 +1,351 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum RoleType {
+  ADMIN
+  EDITOR
+  USER
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+  SCHEDULED
+  ARCHIVED
+}
+
+enum AnnouncementType {
+  INFO
+  WARNING
+  ALERT
+  SUCCESS
+}
+
+enum ContactStatus {
+  UNREAD
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+enum SettingCategory {
+  GENERAL
+  BRANDING
+  SEO
+  SECURITY
+  NOTIFICATIONS
+}
+
+// 1. Users
+model User {
+  id                   String            @id @default(cuid())
+  email                String            @unique
+  passwordHash         String
+  name                 String
+  avatar               String?
+  role                 RoleType          @default(USER)
+  isTwoFactorEnabled   Boolean           @default(false)
+  twoFactorSecret      String?
+  isEmailVerified      Boolean           @default(false)
+  verificationToken    String?
+  resetPasswordToken   String?
+  resetPasswordExpires DateTime?
+  sessions             Session[]
+  news                 News[]
+  blogPosts            BlogPost[]
+  pages                Page[]
+  auditLogs            AuditLog[]
+  createdApiKeys       ApiKey[]
+  uploadedMedia        MediaItem[]
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+
+  @@index([email])
+  @@index([role])
+}
+
+// 2. Sessions
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}
+
+// 3. Roles & Permissions
+model Role {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  description String?
+  permissions RolePermission[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+}
+
+model Permission {
+  id          String           @id @default(cuid())
+  name        String           @unique
+  slug        String           @unique
+  description String?
+  roles       RolePermission[]
+  createdAt   DateTime         @default(now())
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+// 4. Dynamic Pages (CMS)
+model Page {
+  id             String        @id @default(cuid())
+  slug           String        @unique
+  title          String
+  description    String?
+  content        Json          // Structured block components JSON
+  status         ContentStatus @default(DRAFT)
+  publishedAt    DateTime?
+  seoTitle       String?
+  seoDescription String?
+  seoKeywords    String?
+  ogImage        String?
+  views          Int           @default(0)
+  authorId       String?
+  author         User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([status])
+}
+
+// 5. News
+model News {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  summary     String
+  content     String
+  category    String        @default("Announcements")
+  coverImage  String?
+  status      ContentStatus @default(PUBLISHED)
+  isPinned    Boolean       @default(false)
+  views       Int           @default(0)
+  publishedAt DateTime      @default(now())
+  authorId    String?
+  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([category])
+  @@index([status])
+}
+
+// 6. Blog Posts
+model BlogPost {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  excerpt     String
+  content     String
+  tags        String[]      @default([])
+  coverImage  String?
+  readingTime Int           @default(3) // In minutes
+  status      ContentStatus @default(PUBLISHED)
+  views       Int           @default(0)
+  publishedAt DateTime      @default(now())
+  authorId    String?
+  author      User?         @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([slug])
+  @@index([status])
+}
+
+// 7. Changelog
+model Changelog {
+  id          String        @id @default(cuid())
+  version     String        @unique
+  title       String
+  description String
+  changes     Json          // Array of { type: 'added'|'fixed'|'changed'|'removed', text: string }
+  releaseDate DateTime      @default(now())
+  status      ContentStatus @default(PUBLISHED)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([version])
+}
+
+// 8. Announcements (Top Banner / Popups)
+model Announcement {
+  id        String           @id @default(cuid())
+  title     String
+  content   String
+  type      AnnouncementType @default(INFO)
+  link      String?
+  linkText  String?
+  isActive  Boolean          @default(true)
+  priority  Int              @default(0)
+  startDate DateTime?
+  endDate   DateTime?
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@index([isActive])
+}
+
+// 9. Statistics (Dynamic Metrics on Homepage & Dashboard)
+model Statistic {
+  id           String   @id @default(cuid())
+  key          String   @unique
+  label        String
+  value        String   // Display value e.g. "99.99%", "2.4M+", "140ms"
+  numericValue Float    @default(0)
+  icon         String?  // Lucide icon name
+  suffix       String?  // "%", "+", "ms"
+  description  String?
+  isPublic     Boolean  @default(true)
+  order        Int      @default(0)
+  updatedAt    DateTime @updatedAt
+
+  @@index([key])
+  @@index([order])
+}
+
+// 10. Page Analytics
+model PageAnalytic {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  userAgent String?
+  ipHash    String?
+  country   String?  @default("Unknown")
+  device    String?  @default("Desktop")
+  browser   String?
+  os        String?
+  timestamp DateTime @default(now())
+
+  @@index([path])
+  @@index([timestamp])
+}
+
+// 11. Contact Messages
+model ContactMessage {
+  id         String        @id @default(cuid())
+  name       String
+  email      String
+  subject    String
+  message    String
+  status     ContactStatus @default(UNREAD)
+  ipAddress  String?
+  replyNotes String?
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+}
+
+// 12. Newsletter Subscribers
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  isActive       Boolean   @default(true)
+  source         String?   @default("homepage")
+  createdAt      DateTime  @default(now())
+  unsubscribedAt DateTime?
+
+  @@index([email])
+  @@index([isActive])
+}
+
+// 13. Audit Logs
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action    String   // e.g., "CREATE_POST", "UPDATE_SETTING", "USER_ROLE_CHANGE"
+  entity    String   // e.g., "News", "SiteSetting", "User"
+  entityId  String?
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+}
+
+// 14. Site Configuration & Settings
+model SiteSetting {
+  id        String          @id @default(cuid())
+  key       String          @unique
+  value     Json
+  category  SettingCategory @default(GENERAL)
+  updatedAt DateTime        @updatedAt
+
+  @@index([key])
+  @@index([category])
+}
+
+// 15. API Keys
+model ApiKey {
+  id          String    @id @default(cuid())
+  name        String
+  keyHash     String    @unique
+  prefix      String
+  permissions Json      // Array of string permissions e.g. ["news:read", "stats:read"]
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  isActive    Boolean   @default(true)
+  createdById String?
+  createdBy   User?     @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+
+  @@index([prefix])
+  @@index([isActive])
+}
+
+// 16. Media Library Items
+model MediaItem {
+  id           String   @id @default(cuid())
+  name         String
+  fileName     String
+  originalName String
+  mimeType     String
+  size         Int      // In bytes
+  width        Int?
+  height       Int?
+  url          String
+  thumbnailUrl String?
+  folder       String   @default("general")
+  uploaderId   String?
+  uploader     User?    @relation(fields: [uploaderId], references: [id], onDelete: SetNull)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([folder])
+  @@index([mimeType])
+  @@index([createdAt])
+}
