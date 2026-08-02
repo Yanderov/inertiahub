@@ -156,3 +156,8 @@ class SoundFXEngine {
 }
 
 export const soundFX = new SoundFXEngine();
+
+export const playClickSound = () => soundFX.playClick();
+export const playHoverSound = () => soundFX.playHover();
+export const playSuccessSound = () => soundFX.playSuccess();
+export const playErrorSound = () => soundFX.playError();
