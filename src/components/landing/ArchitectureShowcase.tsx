@@ -86,7 +86,7 @@ console.log("Database Latency:", telemetry.services.database.latencyMs, "ms");`,
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Descriptions */}
           <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-accent-500/10 text-accent-400 border border-accent-500/20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
               <Cpu className="w-3.5 h-3.5" />
               Developer Experience
             </div>
@@ -122,7 +122,7 @@ console.log("Database Latency:", telemetry.services.database.latencyMs, "ms");`,
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="w-5 h-5 rounded-md bg-accent-500/20 text-accent-400 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-5 h-5 rounded-md bg-brand-500/20 text-brand-400 flex items-center justify-center shrink-0 mt-0.5">
                   ✓
                 </div>
                 <div>

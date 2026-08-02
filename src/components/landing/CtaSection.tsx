@@ -28,7 +28,7 @@ export default function CtaSection() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link
                 href="/auth/register"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-semibold text-white bg-gradient-to-r from-brand-600 via-brand-500 to-accent-600 hover:opacity-95 shadow-xl shadow-brand-500/25 hover:scale-[1.02] transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-semibold text-white bg-brand-600 hover:bg-brand-500 shadow-xl shadow-brand-500/25 hover:scale-[1.02] transition-all"
               >
                 Create Free Account
                 <ArrowRight className="w-4 h-4" />

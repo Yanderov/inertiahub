@@ -95,7 +95,7 @@ export default function AdminPagesManager() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this dynamic page?")) return;
+    if (!confirm("Are you sure you want to delete this page?")) return;
     try {
       const res = await fetch(`/api/v1/pages/${id}`, { method: "DELETE" });
       if (res.ok) fetchPages();
@@ -107,16 +107,16 @@ export default function AdminPagesManager() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Dynamic Pages CMS
+            Pages
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Create and edit custom static and marketing pages served directly at root URLs.
+            Create and manage pages.
           </p>
         </div>
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-95 shadow-md transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-95 shadow-md transition-all"
         >
           <Plus className="w-4 h-4" />
           Create New Page
@@ -192,7 +192,7 @@ export default function AdminPagesManager() {
           <div className="max-w-2xl w-full rounded-3xl bg-surface-elevated border border-border p-6 sm:p-8 shadow-2xl space-y-6 my-8">
             <div className="flex items-center justify-between pb-4 border-b border-border/60">
               <h2 className="text-lg font-bold text-foreground">
-                {editingItem ? "Edit Dynamic Page" : "Create Dynamic Page"}
+                {editingItem ? "Edit Page" : "Create Page"}
               </h2>
               <button onClick={() => setShowModal(false)} className="text-foreground-muted hover:text-foreground text-xs">
                 ✕
@@ -229,7 +229,7 @@ export default function AdminPagesManager() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">URL Path Slug</label>
+                  <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Slug</label>
                   <input
                     type="text"
                     required
@@ -266,7 +266,7 @@ export default function AdminPagesManager() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-90 disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-90 disabled:opacity-50"
                 >
                   {saving ? "Saving..." : "Save Page"}
                 </button>

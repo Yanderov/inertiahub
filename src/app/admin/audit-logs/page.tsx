@@ -41,10 +41,10 @@ export default function AdminAuditLogsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Immutable Audit Trail & Governance
+            Audit Logs
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Tamper-evident logs of administrative actions, user role modifications, and system mutations.
+            History of admin actions and system changes.
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export default function AdminAuditLogsPage() {
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold bg-surface-elevated border border-border text-foreground hover:bg-surface-elevated/80 transition-all"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin text-brand-400" : ""}`} />
-          Refresh Stream
+          Refresh
         </button>
       </div>
 
@@ -93,7 +93,7 @@ export default function AdminAuditLogsPage() {
           </div>
         ) : filteredLogs.length === 0 ? (
           <div className="p-12 text-center text-xs text-foreground-muted">
-            No audit log entries recorded.
+            No log entries yet.
           </div>
         ) : (
           <div className="overflow-x-auto">
@@ -117,7 +117,7 @@ export default function AdminAuditLogsPage() {
                     </td>
                     <td className="px-6 py-4 font-semibold text-foreground">{log.entity}</td>
                     <td className="px-6 py-4 text-foreground-subtle">
-                      {log.user?.name || log.user?.email || "Anonymous / Automated"}
+                      {log.user?.name || log.user?.email || "System"}
                     </td>
                     <td className="px-6 py-4 font-mono text-[11px] text-foreground-muted">
                       {log.ipAddress || "Internal"}

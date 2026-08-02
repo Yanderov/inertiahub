@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Zap, RefreshCw } from "lucide-react";
-import { soundFX } from "@/lib/audio";
 
 export default function ScriptStats() {
   const [statsData, setStatsData] = useState({
@@ -72,8 +71,7 @@ export default function ScriptStats() {
                 transition={{ duration: 0.4, delay: idx * 0.1 }}
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.97 }}
-                onClick={() => soundFX.playClick()}
-                className="p-5 rounded-2xl bg-[#0e0e0e]/90 border border-zinc-800 hover:border-zinc-600 transition-colors shadow-lg cursor-pointer group select-none"
+                className="p-5 rounded-2xl bg-[#0e0e0e]/90 border border-zinc-800 hover:border-zinc-600 transition-colors shadow-lg group select-none"
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-medium text-zinc-400 group-hover:text-zinc-300 transition-colors">

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import TelegramIcon from "@/components/icons/TelegramIcon";
-import { soundFX } from "@/lib/audio";
 
 export default function Footer() {
   return (
@@ -31,35 +30,30 @@ export default function Footer() {
           <div className="flex items-center gap-5">
             <a
               href="#script"
-              onClick={() => soundFX.playClick()}
               className="text-zinc-400 hover:text-white transition-colors"
             >
               Script
             </a>
             <a
               href="#games"
-              onClick={() => soundFX.playClick()}
               className="text-zinc-400 hover:text-white transition-colors"
             >
               Games
             </a>
             <a
               href="#features"
-              onClick={() => soundFX.playClick()}
               className="text-zinc-400 hover:text-white transition-colors"
             >
               Modules
             </a>
             <a
               href="#executors"
-              onClick={() => soundFX.playClick()}
               className="text-zinc-400 hover:text-white transition-colors"
             >
               Executors
             </a>
             <Link
               href="/changelog"
-              onClick={() => soundFX.playClick()}
               className="text-zinc-400 hover:text-white transition-colors"
             >
               Changelog
@@ -68,7 +62,6 @@ export default function Footer() {
               href="https://t.me/+QXgW7cwKsPc3MjA1"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => soundFX.playClick()}
               className="text-white hover:text-zinc-200 transition-colors flex items-center gap-1.5 font-medium px-2.5 py-1 rounded-md bg-zinc-900 border border-zinc-800"
             >
               <TelegramIcon className="w-3.5 h-3.5" />

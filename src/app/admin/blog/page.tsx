@@ -28,7 +28,7 @@ export default function AdminBlogPage() {
     slug: "",
     excerpt: "",
     content: "",
-    tags: "ARCHITECTURE,PERFORMANCE",
+    tags: "TUTORIAL,UPDATE",
     coverImage: "",
     status: "PUBLISHED",
   });
@@ -57,7 +57,7 @@ export default function AdminBlogPage() {
       slug: "",
       excerpt: "",
       content: "",
-      tags: "ARCHITECTURE,PERFORMANCE",
+      tags: "TUTORIAL,UPDATE",
       coverImage: "",
       status: "PUBLISHED",
     });
@@ -145,19 +145,19 @@ export default function AdminBlogPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Engineering Blog Management
+            Blog
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Publish in-depth technical blogs and platform architecture deep dives.
+            Create and manage blog posts.
           </p>
         </div>
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-95 shadow-md transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-95 shadow-md transition-all"
         >
           <Plus className="w-4 h-4" />
-          Write Technical Post
+          New Post
         </button>
       </div>
 
@@ -272,7 +272,7 @@ export default function AdminBlogPage() {
           <div className="max-w-2xl w-full rounded-3xl bg-surface-elevated border border-border p-6 sm:p-8 shadow-2xl space-y-6 my-8">
             <div className="flex items-center justify-between pb-4 border-b border-border/60">
               <h2 className="text-lg font-bold text-foreground">
-                {editingItem ? "Edit Technical Post" : "Write Technical Post"}
+                {editingItem ? "Edit Post" : "New Post"}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
@@ -299,7 +299,7 @@ export default function AdminBlogPage() {
                   required
                   value={form.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  placeholder="Architecting Zero-Trust Edge Networks"
+                  placeholder="e.g. Setting up analytics"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
@@ -314,7 +314,7 @@ export default function AdminBlogPage() {
                     required
                     value={form.slug}
                     onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                    placeholder="architecting-zero-trust-edge"
+                    placeholder="setting-up-analytics"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs font-mono focus:outline-none focus:border-brand-500"
                   />
                 </div>
@@ -328,7 +328,7 @@ export default function AdminBlogPage() {
                     required
                     value={form.tags}
                     onChange={(e) => setForm({ ...form, tags: e.target.value })}
-                    placeholder="SECURITY, PERFORMANCE, EDGE"
+                    placeholder="TUTORIAL, UPDATE, RELEASE"
                     className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                   />
                 </div>
@@ -342,7 +342,7 @@ export default function AdminBlogPage() {
                   type="text"
                   value={form.excerpt}
                   onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
-                  placeholder="Brief summary of the engineering post..."
+                  placeholder="Short summary shown on the blog list"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
@@ -387,7 +387,7 @@ export default function AdminBlogPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-90 disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-90 disabled:opacity-50"
                 >
                   {saving ? "Saving Post..." : editingItem ? "Update Post" : "Publish Post"}
                 </button>

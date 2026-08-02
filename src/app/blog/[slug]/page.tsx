@@ -60,7 +60,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
             {post.tags.map((t) => (
               <span
                 key={t}
-                className="px-3 py-1 rounded-full text-xs font-bold bg-accent-500/15 text-accent-300 border border-accent-500/30"
+                className="px-3 py-1 rounded-full text-xs font-bold bg-brand-500/15 text-brand-300 border border-brand-500/30"
               >
                 #{t}
               </span>

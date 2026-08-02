@@ -27,7 +27,7 @@ export default function HeroSection() {
   return (
     <section className="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden">
       {/* Background Gradients & Aura */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[1000px] h-[450px] bg-gradient-to-tr from-brand-600/15 via-accent-500/10 to-transparent rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[1000px] h-[450px] bg-gradient-to-tr from-brand-600/15 via-brand-500/10 to-transparent rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-10 left-1/4 w-72 h-72 bg-brand-400/10 rounded-full blur-[100px] pointer-events-none animate-pulse" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -47,7 +47,7 @@ export default function HeroSection() {
           {/* Main Title */}
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-[1.1]">
             The Ultra-Performance{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-accent-400 to-brand-300">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-brand-400 to-brand-300">
               Infrastructure
             </span>{" "}
             for Modern Platforms
@@ -62,7 +62,7 @@ export default function HeroSection() {
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pt-2">
             <Link
               href="/auth/register"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-semibold text-white bg-gradient-to-r from-brand-600 via-brand-500 to-accent-600 hover:opacity-95 shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 transition-all hover:scale-[1.02]"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl font-semibold text-white bg-brand-600 hover:bg-brand-500 shadow-xl shadow-brand-500/25 hover:shadow-brand-500/40 transition-all hover:scale-[1.02]"
             >
               Start Free Deployment
               <ArrowRight className="w-4 h-4" />
@@ -96,7 +96,7 @@ export default function HeroSection() {
         {/* Floating Mockup / Live Platform Telemetry Visual */}
         <div className="mt-16 sm:mt-24 relative max-w-5xl mx-auto">
           {/* Glowing Aura underneath the frame */}
-          <div className="absolute inset-0 bg-gradient-to-b from-brand-500/20 via-accent-500/10 to-transparent rounded-3xl blur-2xl transform -translate-y-4 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-brand-500/20 via-brand-500/10 to-transparent rounded-3xl blur-2xl transform -translate-y-4 pointer-events-none" />
 
           {/* Window Glass Container */}
           <div className="relative rounded-3xl bg-surface-elevated/80 border border-border/90 shadow-2xl backdrop-blur-2xl overflow-hidden">
@@ -143,14 +143,14 @@ export default function HeroSection() {
                   <span className="text-xs font-semibold text-foreground-muted uppercase tracking-wider">
                     Edge Cache Hit
                   </span>
-                  <Activity className="w-4 h-4 text-accent-400" />
+                  <Activity className="w-4 h-4 text-brand-400" />
                 </div>
                 <div className="text-3xl font-bold text-foreground">
                   99.98% <span className="text-xs font-normal text-brand-400">P99 &lt; 2ms</span>
                 </div>
                 <p className="text-xs text-foreground-muted">Dynamic content and compressed media served directly from memory cache</p>
                 <div className="w-full bg-surface-elevated h-1.5 rounded-full overflow-hidden">
-                  <div className="bg-accent-500 h-full w-[98%] rounded-full" />
+                  <div className="bg-brand-500 h-full w-[98%] rounded-full" />
                 </div>
               </div>
 

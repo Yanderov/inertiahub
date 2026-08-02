@@ -8,6 +8,10 @@ import { logAuditEvent } from "@/lib/audit";
 
 export async function POST(req: NextRequest) {
   try {
+    if (process.env.ALLOW_PUBLIC_REGISTRATION !== "true") {
+      return NextResponse.json({ error: "Registration is currently closed" }, { status: 403 });
+    }
+
     const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || req.headers.get("x-real-ip") || "127.0.0.1";
     const userAgent = req.headers.get("user-agent") || "";
 

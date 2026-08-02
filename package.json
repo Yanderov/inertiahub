@@ -10,7 +10,9 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.js",
-    "db:migrate": "prisma migrate dev"
+    "db:migrate": "prisma migrate dev",
+    "db:rls": "prisma db execute --file prisma/rls_security.sql",
+    "scripts:pack": "node tools/obfuscate.mjs"
   },
   "dependencies": {
     "@prisma/client": "^5.19.1",
@@ -20,6 +22,7 @@
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.441.0",
     "next": "^14.2.18",
+    "nodemailer": "^9.0.3",
     "otplib": "^12.0.1",
     "qrcode": "^1.5.4",
     "react": "^18.3.1",
@@ -33,6 +36,7 @@
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^20.16.5",
+    "@types/nodemailer": "^8.0.1",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",

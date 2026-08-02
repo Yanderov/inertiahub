@@ -4,16 +4,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Copy, Check } from "lucide-react";
 import TelegramIcon from "@/components/icons/TelegramIcon";
-import { soundFX } from "@/lib/audio";
 
 export default function ScriptHero() {
   const [copied, setCopied] = useState(false);
-  const scriptCode = `loadstring(game:HttpGet("https://raw.githubusercontent.com/Yanderov/lib/refs/heads/main/loader.lua"))()`;
+  const scriptCode = `loadstring(game:HttpGet("https://inertiahub.xyz/api/v1/script/loader"))()`;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(scriptCode);
     setCopied(true);
-    soundFX.playClick();
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -159,7 +157,6 @@ export default function ScriptHero() {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            onClick={() => soundFX.playClick()}
             className="inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-zinc-900 border border-zinc-700 text-white font-medium text-xs hover:border-zinc-500 hover:bg-zinc-800 transition-all shadow-lg"
           >
             <TelegramIcon className="w-4 h-4" />

@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { soundFX } from "@/lib/audio";
 
 export default function ScriptChangelogFeed() {
   const updates = [
@@ -40,7 +39,6 @@ export default function ScriptChangelogFeed() {
 
           <Link
             href="/changelog"
-            onClick={() => soundFX.playClick()}
             className="inline-flex items-center gap-1 text-xs font-semibold text-zinc-300 hover:text-white transition-colors"
           >
             All versions

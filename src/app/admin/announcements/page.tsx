@@ -121,16 +121,16 @@ export default function AdminAnnouncementsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Header Announcement Banners
+            Announcements
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Publish broadcast banners that appear at the top of all public platform pages.
+            Banners shown at the top of the site.
           </p>
         </div>
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-95 shadow-md transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-95 shadow-md transition-all"
         >
           <Plus className="w-4 h-4" />
           Create Announcement
@@ -185,7 +185,7 @@ export default function AdminAnnouncementsPage() {
                             : "bg-surface-base text-foreground-muted border border-border"
                         }`}
                       >
-                        {item.isActive ? "Active (Broadcasting)" : "Inactive"}
+                        {item.isActive ? "Active" : "Inactive"}
                       </button>
                     </td>
 
@@ -240,7 +240,7 @@ export default function AdminAnnouncementsPage() {
                   required
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  placeholder="InertiaHub 3.0 Engine Release"
+                  placeholder="e.g. Site update"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
@@ -252,13 +252,13 @@ export default function AdminAnnouncementsPage() {
                   rows={3}
                   value={form.content}
                   onChange={(e) => setForm({ ...form, content: e.target.value })}
-                  placeholder="Explore the new sub-millisecond edge architecture..."
+                  placeholder="Write the announcement text..."
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Target Link (Optional)</label>
+                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Link (optional)</label>
                 <input
                   type="text"
                   value={form.link}
@@ -292,7 +292,7 @@ export default function AdminAnnouncementsPage() {
                     className="rounded bg-surface-base border-border text-brand-500"
                   />
                   <label htmlFor="isActiveBanner" className="text-xs font-semibold text-foreground cursor-pointer">
-                    Broadcast Banner
+                    Active
                   </label>
                 </div>
               </div>
@@ -308,7 +308,7 @@ export default function AdminAnnouncementsPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-90 disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-90 disabled:opacity-50"
                 >
                   {saving ? "Saving..." : "Save Banner"}
                 </button>

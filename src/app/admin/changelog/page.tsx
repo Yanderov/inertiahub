@@ -18,12 +18,12 @@ export default function AdminChangelogPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [form, setForm] = useState({
-    version: "v3.0.0",
+    version: "v1.0.0",
     title: "",
     description: "",
     changesJson: `[
-  { "type": "FEATURE", "description": "Launched zero-trust TOTP authentication engine" },
-  { "type": "OPTIMIZATION", "description": "Automated Sharp WebP image compression pipeline" }
+  { "type": "FEATURE", "description": "Added a new feature" },
+  { "type": "FIX", "description": "Fixed a bug" }
 ]`,
     status: "PUBLISHED",
   });
@@ -48,11 +48,11 @@ export default function AdminChangelogPage() {
   const openCreateModal = () => {
     setEditingItem(null);
     setForm({
-      version: "v3.1.0",
+      version: "v1.0.0",
       title: "",
       description: "",
       changesJson: `[
-  { "type": "FEATURE", "description": "New feature description" }
+  { "type": "FEATURE", "description": "Added a new feature" }
 ]`,
       status: "PUBLISHED",
     });
@@ -126,19 +126,19 @@ export default function AdminChangelogPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Changelog Releases
+            Changelog
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Maintain version history, release notes, and deployment changelog entries.
+            Track released versions and their changes.
           </p>
         </div>
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-95 shadow-md transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-95 shadow-md transition-all"
         >
           <Plus className="w-4 h-4" />
-          Add Version Release
+          Add Release
         </button>
       </div>
 
@@ -207,7 +207,7 @@ export default function AdminChangelogPage() {
           <div className="max-w-xl w-full rounded-3xl bg-surface-elevated border border-border p-6 sm:p-8 shadow-2xl space-y-6 my-8">
             <div className="flex items-center justify-between pb-4 border-b border-border/60">
               <h2 className="text-lg font-bold text-foreground">
-                {editingItem ? "Edit Version Release" : "Publish New Release"}
+                {editingItem ? "Edit Release" : "New Release"}
               </h2>
               <button onClick={() => setShowModal(false)} className="text-foreground-muted hover:text-foreground text-xs">
                 ✕
@@ -224,7 +224,7 @@ export default function AdminChangelogPage() {
             <form onSubmit={handleSave} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Version Tag</label>
+                  <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Version</label>
                   <input
                     type="text"
                     required
@@ -254,13 +254,13 @@ export default function AdminChangelogPage() {
                   required
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  placeholder="Performance Engine Upgrade & Edge Caching"
+                  placeholder="e.g. Bug fixes and small improvements"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Overview Description</label>
+                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Summary</label>
                 <textarea
                   rows={3}
                   value={form.description}
@@ -272,7 +272,7 @@ export default function AdminChangelogPage() {
 
               <div>
                 <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">
-                  Structured Changes Array (JSON)
+                  Changes (JSON)
                 </label>
                 <textarea
                   rows={6}
@@ -293,7 +293,7 @@ export default function AdminChangelogPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-90 disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-90 disabled:opacity-50"
                 >
                   {saving ? "Saving..." : "Save Release"}
                 </button>

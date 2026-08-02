@@ -19,7 +19,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import DynamicGridBackground from "@/components/ui/DynamicGridBackground";
-import { playClickSound, playSuccessSound, playErrorSound } from "@/lib/audio";
+import { playSuccessSound, playErrorSound } from "@/lib/audio";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -32,7 +32,6 @@ export default function RegisterPage() {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    playClickSound();
     setLoading(true);
     setError("");
 
@@ -92,7 +91,6 @@ export default function RegisterPage() {
         <div className="text-center space-y-3">
           <Link
             href="/"
-            onClick={() => playClickSound()}
             className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800/80 hover:border-zinc-700 transition-colors shadow-inner"
           >
             <div className="w-6 h-6 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center shadow-sm">
@@ -206,7 +204,6 @@ export default function RegisterPage() {
                   type="button"
                   onClick={() => {
                     setShowPassword(!showPassword);
-                    playClickSound();
                   }}
                   className="absolute right-3 top-3 text-zinc-500 hover:text-zinc-300 transition-colors p-0.5"
                 >
@@ -253,7 +250,6 @@ export default function RegisterPage() {
             <span>Already registered?</span>
             <Link
               href="/auth/login"
-              onClick={() => playClickSound()}
               className="text-zinc-300 hover:text-white font-semibold transition-colors flex items-center gap-1"
             >
               Sign In <ArrowRight className="w-3 h-3" />

@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, ShieldCheck, Zap, Cpu, ExternalLink } from "lucide-react";
-import { soundFX } from "@/lib/audio";
+import { Check, ShieldCheck, Zap, Cpu, ExternalLink, Terminal } from "lucide-react";
 
 export default function ScriptExecutors() {
   const executors = [
@@ -33,11 +32,20 @@ export default function ScriptExecutors() {
       description: "Zero-latency function hijacking with full UNC standard compatibility.",
       url: "https://infinitycheats.gg/",
     },
+    {
+      name: "Delta",
+      type: "Android & Windows Executor",
+      status: "Fully Supported",
+      arch: "Mobile & PC (UNC+)",
+      icon: Terminal,
+      description: "Leading multi-platform executor with seamless script execution and maximum UNC standard support.",
+      url: "https://deltaexploits.gg",
+    },
   ];
 
   return (
     <section id="executors" className="py-16 bg-transparent relative z-10">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="mb-10">
           <div className="flex items-center gap-2 mb-2">
             <span className="w-2 h-2 rounded-full bg-white" />
@@ -53,7 +61,7 @@ export default function ScriptExecutors() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {executors.map((exec, idx) => {
             const Icon = exec.icon;
             return (
@@ -99,7 +107,6 @@ export default function ScriptExecutors() {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.97 }}
-                    onClick={() => soundFX.playClick()}
                     className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-white text-zinc-200 hover:text-black border border-zinc-700 hover:border-white font-semibold text-xs transition-all shadow-md group/btn"
                   >
                     <span>Get {exec.name}</span>

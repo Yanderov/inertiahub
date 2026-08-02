@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Eye, Crosshair, Compass, Ghost, Cpu, ShieldCheck } from "lucide-react";
-import { soundFX } from "@/lib/audio";
 
 export default function ScriptFeatures() {
   const features = [
@@ -64,8 +63,7 @@ export default function ScriptFeatures() {
                 key={idx}
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => soundFX.playClick()}
-                className="p-5 rounded-2xl bg-[#0c0c0c]/85 border border-zinc-800 hover:border-zinc-600 transition-all shadow-lg backdrop-blur-sm cursor-pointer group"
+                className="p-5 rounded-2xl bg-[#0c0c0c]/85 border border-zinc-800 hover:border-zinc-600 transition-all shadow-lg backdrop-blur-sm group"
               >
                 <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-700/80 flex items-center justify-center mb-3.5 group-hover:border-zinc-500 transition-colors">
                   <Icon className="w-4 h-4 text-white" />

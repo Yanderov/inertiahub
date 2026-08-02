@@ -41,8 +41,8 @@ export default function FeaturesGrid() {
       title: "Sharp Media Pipeline",
       description:
         "Automatic WebP/AVIF compression and high-res thumbnail generation on ingest with CDN caching to ensure sub-second media delivery.",
-      color: "from-accent-500/20 to-accent-600/5",
-      iconColor: "text-accent-400",
+      color: "from-brand-500/20 to-brand-600/5",
+      iconColor: "text-brand-400",
     },
     {
       icon: KeyRound,

@@ -99,19 +99,19 @@ export default function AdminStatisticsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Landing Platform Metrics
+            Statistics
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Configure dynamic numbers displayed in the live telemetry bar on the homepage.
+            Numbers shown in the stats bar on the homepage.
           </p>
         </div>
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-95 shadow-md transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-95 shadow-md transition-all"
         >
           <Plus className="w-4 h-4" />
-          Add Metric Counter
+          Add Stat
         </button>
       </div>
 
@@ -129,10 +129,10 @@ export default function AdminStatisticsPage() {
             <table className="w-full text-left text-xs">
               <thead className="bg-surface-base/80 border-b border-border/60 text-foreground-muted uppercase font-bold text-[10px] tracking-wider">
                 <tr>
-                  <th className="px-6 py-4">Metric Label</th>
+                  <th className="px-6 py-4">Label</th>
                   <th className="px-6 py-4">Key</th>
-                  <th className="px-6 py-4">Display Value</th>
-                  <th className="px-6 py-4">Trend Change</th>
+                  <th className="px-6 py-4">Value</th>
+                  <th className="px-6 py-4">Change</th>
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
@@ -181,7 +181,7 @@ export default function AdminStatisticsPage() {
           <div className="max-w-md w-full rounded-3xl bg-surface-elevated border border-border p-6 sm:p-8 shadow-2xl space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-border/60">
               <h2 className="text-lg font-bold text-foreground">
-                {editingItem ? "Edit Platform Metric" : "Add Platform Metric"}
+                {editingItem ? "Edit Stat" : "New Stat"}
               </h2>
               <button onClick={() => setShowModal(false)} className="text-foreground-muted hover:text-foreground text-xs">
                 ✕
@@ -197,7 +197,7 @@ export default function AdminStatisticsPage() {
 
             <form onSubmit={handleSave} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Unique Key</label>
+                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Key</label>
                 <input
                   type="text"
                   required
@@ -215,19 +215,19 @@ export default function AdminStatisticsPage() {
                   required
                   value={form.label}
                   onChange={(e) => setForm({ ...form, label: e.target.value })}
-                  placeholder="Active Platform Developers"
+                  placeholder="Active users"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Display Value</label>
+                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Value</label>
                 <input
                   type="text"
                   required
                   value={form.value}
                   onChange={(e) => setForm({ ...form, value: e.target.value })}
-                  placeholder="140,000+"
+                  placeholder="1,000+"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
@@ -238,18 +238,18 @@ export default function AdminStatisticsPage() {
                   type="text"
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  placeholder="Building production workloads daily"
+                  placeholder="Users online right now"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Change Trend Badge</label>
+                <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1">Change</label>
                 <input
                   type="text"
                   value={form.change}
                   onChange={(e) => setForm({ ...form, change: e.target.value })}
-                  placeholder="+28% YoY"
+                  placeholder="+12%"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
@@ -265,7 +265,7 @@ export default function AdminStatisticsPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-90 disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-90 disabled:opacity-50"
                 >
                   {saving ? "Saving..." : "Save Metric"}
                 </button>

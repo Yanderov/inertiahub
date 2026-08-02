@@ -148,7 +148,7 @@ export default function StatusPage() {
             </div>
             <div className="space-y-1">
               <p className="text-xs text-foreground-muted flex items-center gap-1.5">
-                <HardDrive className="w-3.5 h-3.5 text-accent-400" /> Memory RSS
+                <HardDrive className="w-3.5 h-3.5 text-brand-400" /> Memory RSS
               </p>
               <p className="text-sm font-bold font-mono text-foreground">{data.system.memory.rssMb} MB</p>
             </div>

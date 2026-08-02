@@ -137,16 +137,16 @@ export default function AdminNewsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            News & Platform Dispatches
+            News
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Author and publish releases, system notices, and company dispatches.
+            Create and manage news posts.
           </p>
         </div>
 
         <button
           onClick={openCreateModal}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-95 shadow-md transition-all"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-95 shadow-md transition-all"
         >
           <Plus className="w-4 h-4" />
           Create News Article
@@ -287,7 +287,7 @@ export default function AdminNewsPage() {
                   required
                   value={form.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  placeholder="InertiaHub 3.0 Engine Release"
+                  placeholder="e.g. New update available"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
@@ -330,7 +330,7 @@ export default function AdminNewsPage() {
                   type="text"
                   value={form.summary}
                   onChange={(e) => setForm({ ...form, summary: e.target.value })}
-                  placeholder="Brief 1-2 sentence overview for cards and meta descriptions..."
+                  placeholder="Short summary shown on the news list"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-surface-base border border-border text-foreground text-xs focus:outline-none focus:border-brand-500"
                 />
               </div>
@@ -390,9 +390,9 @@ export default function AdminNewsPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-90 disabled:opacity-50"
+                  className="px-5 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-90 disabled:opacity-50"
                 >
-                  {saving ? "Saving Dispatch..." : editingItem ? "Update Dispatch" : "Publish Dispatch"}
+                  {saving ? "Saving..." : editingItem ? "Update Article" : "Publish Article"}
                 </button>
               </div>
             </form>

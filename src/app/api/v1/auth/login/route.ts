@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 import { verifyPassword } from "@/lib/password";
 import { createSession, SESSION_COOKIE_OPTIONS } from "@/lib/auth";
 import { verifyTwoFactorToken } from "@/lib/totp";
+import { issueLoginOtp } from "@/lib/otp";
 import { LoginSchema } from "@/lib/validations";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { logAuditEvent } from "@/lib/audit";
@@ -38,6 +39,30 @@ export async function POST(req: NextRequest) {
 
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+    }
+
+    // Admin/Editor accounts authenticate with a one-time email code (password is the code).
+    if (user.role === "ADMIN" || user.role === "EDITOR") {
+      const { sent } = await issueLoginOtp(user.email);
+      await logAuditEvent({
+        userId: user.id,
+        action: "LOGIN_CODE_SENT",
+        entity: "User",
+        entityId: user.id,
+        details: { sent },
+        ipAddress: ip,
+        userAgent,
+      });
+      if (!sent) {
+        return NextResponse.json(
+          { error: "Could not send login code. Try again in a moment." },
+          { status: 500 }
+        );
+      }
+      return NextResponse.json(
+        { requireEmailOtp: true, message: "Login code sent to your email" },
+        { status: 200 }
+      );
     }
 
     const isPasswordValid = await verifyPassword(password, user.passwordHash);

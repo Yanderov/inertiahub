@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Maximize2, X, Crosshair, Compass, Ghost, ShieldAlert } from "lucide-react";
-import { soundFX } from "@/lib/audio";
 
 interface GalleryItem {
   id: string;
@@ -128,7 +127,6 @@ export default function ScriptGallery() {
                 whileTap={{ scale: 0.97 }}
                 onClick={() => {
                   setFilter(tab.id);
-                  soundFX.playClick();
                 }}
                 className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
                   isActive
@@ -157,7 +155,6 @@ export default function ScriptGallery() {
                 whileHover={{ y: -3 }}
                 onClick={() => {
                   setSelectedImage(item);
-                  soundFX.playClick();
                 }}
                 className="group relative rounded-2xl bg-[#0e0e0e]/95 border border-zinc-800 hover:border-zinc-500 overflow-hidden shadow-xl cursor-pointer transition-all flex flex-col justify-between"
               >
@@ -229,7 +226,6 @@ export default function ScriptGallery() {
                 <button
                   onClick={() => {
                     setSelectedImage(null);
-                    soundFX.playClick();
                   }}
                   className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/80 border border-zinc-700 text-white flex items-center justify-center hover:bg-zinc-800 transition-colors"
                 >
@@ -270,7 +266,6 @@ export default function ScriptGallery() {
                     onClick={(e) => {
                       e.preventDefault();
                       setSelectedImage(null);
-                      soundFX.playClick();
                       document.getElementById("script")?.scrollIntoView({ behavior: "smooth" });
                     }}
                     className="shrink-0 px-4 py-2 rounded-xl bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-colors shadow-md"

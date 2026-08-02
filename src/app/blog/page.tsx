@@ -31,7 +31,7 @@ export default async function BlogIndexPage() {
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 w-full">
         {/* Header */}
         <div className="max-w-3xl mb-12 sm:mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-accent-500/10 text-accent-400 border border-accent-500/20">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
             <BookOpen className="w-3.5 h-3.5" />
             Engineering & Infrastructure Deep Dives
           </div>

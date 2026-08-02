@@ -175,7 +175,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3.5 px-6 rounded-xl font-semibold text-sm text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-95 transition-all shadow-lg shadow-brand-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full py-3.5 px-6 rounded-xl font-semibold text-sm text-white bg-brand-600 hover:bg-brand-500 transition-all shadow-lg shadow-brand-500/20 disabled:opacity-50 flex items-center justify-center gap-2"
                   >
                     {loading ? "Submitting Inquiry..." : "Submit Message"}
                     <Send className="w-4 h-4" />

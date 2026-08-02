@@ -83,7 +83,7 @@ export default function PricingSection() {
               }`}
             >
               {tier.popular && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-brand-600 to-accent-600 text-white shadow-md">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-brand-600 hover:bg-brand-500 text-white shadow-md">
                   <Sparkles className="w-3.5 h-3.5" />
                   Most Popular
                 </div>
@@ -123,7 +123,7 @@ export default function PricingSection() {
                   href={tier.href}
                   className={`w-full inline-flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl font-semibold text-sm transition-all ${
                     tier.popular
-                      ? "bg-gradient-to-r from-brand-600 to-accent-600 text-white hover:opacity-90 shadow-lg shadow-brand-500/20"
+                      ? "bg-brand-600 hover:bg-brand-500 text-white hover:opacity-90 shadow-lg shadow-brand-500/20"
                       : "bg-surface-base hover:bg-surface-elevated text-foreground border border-border"
                   }`}
                 >

@@ -34,7 +34,7 @@ export default function TestimonialsSection() {
     <section className="py-20 sm:py-28 relative bg-surface-subtle/30 border-t border-border/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <span className="text-xs font-semibold text-accent-400 uppercase tracking-widest">
+          <span className="text-xs font-semibold text-brand-400 uppercase tracking-widest">
             Trusted Globally
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight">

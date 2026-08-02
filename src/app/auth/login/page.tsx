@@ -16,27 +16,39 @@ import {
   Fingerprint,
   Cpu,
   CheckCircle2,
-  Sparkles,
   Terminal,
+  RefreshCw,
 } from "lucide-react";
 import DynamicGridBackground from "@/components/ui/DynamicGridBackground";
-import { playClickSound, playSuccessSound, playErrorSound } from "@/lib/audio";
+import { playSuccessSound, playErrorSound } from "@/lib/audio";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [otpCode, setOtpCode] = useState("");
   const [totpToken, setTotpToken] = useState("");
+  const [requiresOtp, setRequiresOtp] = useState(false);
   const [requiresTotp, setRequiresTotp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [info, setInfo] = useState("");
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    playClickSound();
+  const redirectAfterLogin = (role?: string) => {
+    if (role === "ADMIN" || role === "EDITOR") {
+      router.push("/admin");
+    } else {
+      router.push("/");
+    }
+    router.refresh();
+  };
+
+  const handleLogin = async (e?: React.FormEvent) => {
+    e?.preventDefault();
     setLoading(true);
     setError("");
+    setInfo("");
 
     try {
       const payload: any = { email: email.trim().toLowerCase(), password };
@@ -57,30 +69,81 @@ export default function LoginPage() {
         throw new Error(data.error || "Authentication failed");
       }
 
-      if (data.require2FA) {
+      if (data.requireEmailOtp) {
+        setRequiresOtp(true);
+        setRequiresTotp(false);
+        setOtpCode("");
+        setInfo(data.message || "Login code sent to your email");
+        setLoading(false);
+        return;
+      }
+
+      if (data.requireTwoFactor) {
         setRequiresTotp(true);
         setLoading(false);
-        playClickSound();
         return;
       }
 
       playSuccessSound();
-      if (data.user?.role === "ADMIN" || data.user?.role === "EDITOR") {
-        router.push("/admin");
-      } else {
-        router.push("/");
-      }
-      router.refresh();
+      redirectAfterLogin(data.user?.role);
     } catch (err: any) {
+      playErrorSound();
       setError(err.message);
       setLoading(false);
     }
   };
 
-  const fillAdminCredentials = () => {
-    playClickSound();
-    setEmail("admin@inertiahub.com");
-    setPassword("InertiaAdmin2026!");
+  const handleOtpVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setInfo("");
+
+    try {
+      const res = await fetch("/api/v1/auth/otp/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), code: otpCode.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        playErrorSound();
+        throw new Error(data.error || "Invalid code");
+      }
+
+      playSuccessSound();
+      redirectAfterLogin(data.user?.role);
+    } catch (err: any) {
+      playErrorSound();
+      setError(err.message);
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setLoading(true);
+    setError("");
+    setInfo("");
+    try {
+      const res = await fetch("/api/v1/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        playErrorSound();
+        throw new Error(data.error || "Could not resend code");
+      }
+      setInfo(data.message || "New login code sent to your email");
+    } catch (err: any) {
+      playErrorSound();
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -101,7 +164,6 @@ export default function LoginPage() {
         <div className="text-center space-y-3">
           <Link
             href="/"
-            onClick={() => playClickSound()}
             className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800/80 hover:border-zinc-700 transition-colors shadow-inner"
           >
             <div className="w-6 h-6 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center shadow-sm">
@@ -114,12 +176,18 @@ export default function LoginPage() {
 
           <div>
             <h1 className="text-2xl font-black text-white tracking-tight">
-              {requiresTotp ? "Security Verification" : "Secure Console Login"}
+              {requiresOtp
+                ? "Email Verification"
+                : requiresTotp
+                  ? "Security Verification"
+                  : "Secure Console Login"}
             </h1>
             <p className="text-xs text-zinc-400 mt-1 font-mono">
-              {requiresTotp
-                ? "Enter 6-digit TOTP key from authenticator"
-                : "Zero-Trust Encrypted Session & Admin Portal"}
+              {requiresOtp
+                ? "Enter the 6-digit code sent to your inbox"
+                : requiresTotp
+                  ? "Enter 6-digit TOTP key from authenticator"
+                  : "Zero-Trust Encrypted Session & Admin Portal"}
             </p>
           </div>
         </div>
@@ -160,76 +228,38 @@ export default function LoginPage() {
             )}
           </AnimatePresence>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            {!requiresTotp ? (
-              <>
-                {/* Email Field */}
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider font-mono">
-                      Account Email
-                    </label>
-                  </div>
-                  <div className="relative">
-                    <Mail className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5 pointer-events-none" />
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="admin@inertiahub.com"
-                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-100 text-sm font-mono placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
-                    />
-                  </div>
-                </div>
+          {/* Info Alert */}
+          <AnimatePresence>
+            {info && !error && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mb-5 p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-900/60 text-emerald-300 text-xs flex items-center gap-2.5 font-mono"
+              >
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>{info}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-                {/* Password Field */}
-                <div>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider font-mono">
-                      Master Password
-                    </label>
-                    <button
-                      type="button"
-                      onClick={fillAdminCredentials}
-                      className="text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors font-mono underline decoration-zinc-700 underline-offset-2"
-                    >
-                      Fill Default Admin
-                    </button>
-                  </div>
-                  <div className="relative">
-                    <Lock className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5 pointer-events-none" />
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••••••"
-                      className="w-full pl-10 pr-11 py-2.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-100 text-sm font-mono placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setShowPassword(!showPassword);
-                        playClickSound();
-                      }}
-                      className="absolute right-3 top-3 text-zinc-500 hover:text-zinc-300 transition-colors p-0.5"
-                    >
-                      {showPassword ? (
-                        <EyeOff className="w-4 h-4" />
-                      ) : (
-                        <Eye className="w-4 h-4" />
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </>
-            ) : (
-              /* TOTP 2FA Verification View */
+          {requiresOtp ? (
+            <form onSubmit={handleOtpVerify} className="space-y-4">
               <div>
-                <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-wider font-mono mb-1.5">
-                  6-Digit Authenticator Code
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider font-mono">
+                    6-Digit Email Code
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleResend}
+                    disabled={loading}
+                    className="text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors font-mono flex items-center gap-1 disabled:opacity-50"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    Resend Code
+                  </button>
+                </div>
                 <div className="relative">
                   <KeyRound className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5 pointer-events-none" />
                   <input
@@ -237,42 +267,129 @@ export default function LoginPage() {
                     required
                     maxLength={6}
                     autoFocus
-                    value={totpToken}
-                    onChange={(e) => setTotpToken(e.target.value.replace(/\D/g, ""))}
+                    value={otpCode}
+                    onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ""))}
                     placeholder="123456"
                     className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-100 text-lg tracking-[0.3em] font-mono text-center placeholder:text-zinc-700 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
                   />
                 </div>
               </div>
-            )}
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 px-4 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-white/5 cursor-pointer mt-6"
-            >
-              {loading ? (
-                <div className="w-5 h-5 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
-              ) : (
+              <button
+                type="submit"
+                disabled={loading || otpCode.length !== 6}
+                className="w-full py-3 px-4 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-white/5 cursor-pointer mt-6"
+              >
+                {loading ? (
+                  <div className="w-5 h-5 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <span>Verify Code & Enter</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleLogin} className="space-y-4">
+              {!requiresTotp ? (
                 <>
-                  <span>{requiresTotp ? "Verify Key & Enter" : "Authorize Session"}</span>
-                  <ArrowRight className="w-4 h-4" />
+                  {/* Email Field */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider font-mono">
+                        Account Email
+                      </label>
+                    </div>
+                    <div className="relative">
+                      <Mail className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5 pointer-events-none" />
+                      <input
+                        type="email"
+                        required
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="name@example.com"
+                        className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-100 text-sm font-mono placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Password Field */}
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider font-mono">
+                        Master Password
+                      </label>
+                    </div>
+                    <div className="relative">
+                      <Lock className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5 pointer-events-none" />
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        required
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••••••"
+                        className="w-full pl-10 pr-11 py-2.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-100 text-sm font-mono placeholder:text-zinc-600 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowPassword(!showPassword);
+                        }}
+                        className="absolute right-3 top-3 text-zinc-500 hover:text-zinc-300 transition-colors p-0.5"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="w-4 h-4" />
+                        ) : (
+                          <Eye className="w-4 h-4" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
                 </>
+              ) : (
+                /* TOTP 2FA Verification View */
+                <div>
+                  <label className="block text-[11px] font-bold text-zinc-400 uppercase tracking-wider font-mono mb-1.5">
+                    6-Digit Authenticator Code
+                  </label>
+                  <div className="relative">
+                    <KeyRound className="w-4 h-4 text-zinc-500 absolute left-3.5 top-3.5 pointer-events-none" />
+                    <input
+                      type="text"
+                      required
+                      maxLength={6}
+                      autoFocus
+                      value={totpToken}
+                      onChange={(e) => setTotpToken(e.target.value.replace(/\D/g, ""))}
+                      placeholder="123456"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-950/80 border border-zinc-800 text-zinc-100 text-lg tracking-[0.3em] font-mono text-center placeholder:text-zinc-700 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 transition-all"
+                    />
+                  </div>
+                </div>
               )}
-            </button>
-          </form>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 px-4 rounded-xl bg-zinc-100 hover:bg-white text-zinc-950 font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-white/5 cursor-pointer mt-6"
+              >
+                {loading ? (
+                  <div className="w-5 h-5 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <span>{requiresTotp ? "Verify Key & Enter" : "Authorize Session"}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
 
           {/* Card Footer Links */}
-          <div className="mt-6 pt-5 border-t border-zinc-800/80 flex items-center justify-between text-xs text-zinc-500 font-mono">
-            <span>No account?</span>
-            <Link
-              href="/auth/register"
-              onClick={() => playClickSound()}
-              className="text-zinc-300 hover:text-white font-semibold transition-colors flex items-center gap-1"
-            >
-              Register Portal <ArrowRight className="w-3 h-3" />
-            </Link>
+          <div className="mt-6 pt-5 border-t border-zinc-800/80 text-xs text-zinc-600 font-mono text-center">
+            Registration is currently closed.
           </div>
         </div>
 

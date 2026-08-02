@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { BarChart3, Eye, Users, Globe2, Monitor, RefreshCw, Activity, Layers } from "lucide-react";
+import { BarChart3, Eye, Users, Globe2, Monitor, RefreshCw, Layers } from "lucide-react";
 
 export default function AdminAnalyticsPage() {
   const [data, setData] = useState<any>(null);
@@ -28,10 +28,10 @@ export default function AdminAnalyticsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Live Platform Telemetry & Analytics
+            Analytics
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Privacy-preserving edge traffic tracking with hashed visitor signatures.
+            Site traffic and visitor analytics.
           </p>
         </div>
 
@@ -48,38 +48,40 @@ export default function AdminAnalyticsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="p-6 rounded-3xl bg-surface-elevated/60 border border-border/80 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-foreground-muted">Total Page Ingests</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-foreground-muted">Page Views</span>
             <Eye className="w-4 h-4 text-brand-400" />
           </div>
           <div className="text-3xl font-extrabold text-foreground">{data?.totalViews?.toLocaleString() || "0"}</div>
-          <p className="text-xs text-foreground-muted">Real-time edge ingestion</p>
+          <p className="text-xs text-foreground-muted">All time</p>
         </div>
 
         <div className="p-6 rounded-3xl bg-surface-elevated/60 border border-border/80 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-foreground-muted">Unique Visitors</span>
-            <Users className="w-4 h-4 text-accent-400" />
+            <Users className="w-4 h-4 text-brand-400" />
           </div>
           <div className="text-3xl font-extrabold text-foreground">{data?.uniqueVisitors?.toLocaleString() || "0"}</div>
-          <p className="text-xs text-foreground-muted">Hashed IP identifiers</p>
+          <p className="text-xs text-foreground-muted">All time</p>
         </div>
 
         <div className="p-6 rounded-3xl bg-surface-elevated/60 border border-border/80 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-foreground-muted">Top Visited Route</span>
+            <span className="text-xs font-bold uppercase tracking-wider text-foreground-muted">Top Page</span>
             <Layers className="w-4 h-4 text-emerald-400" />
           </div>
           <div className="text-xl font-bold font-mono text-foreground truncate">{data?.topPages?.[0]?.path || "/"}</div>
-          <p className="text-xs text-foreground-muted">{data?.topPages?.[0]?._count?.id || 0} hits recorded</p>
+          <p className="text-xs text-foreground-muted">{data?.topPages?.[0]?._count?.id || 0} views</p>
         </div>
 
         <div className="p-6 rounded-3xl bg-surface-elevated/60 border border-border/80 space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold uppercase tracking-wider text-foreground-muted">Telemetry Status</span>
-            <Activity className="w-4 h-4 text-sky-400" />
+            <span className="text-xs font-bold uppercase tracking-wider text-foreground-muted">Sessions</span>
+            <Globe2 className="w-4 h-4 text-sky-400" />
           </div>
-          <div className="text-2xl font-extrabold text-emerald-400">P99 &lt; 1ms</div>
-          <p className="text-xs text-foreground-muted">Non-blocking background ingest</p>
+          <div className="text-3xl font-extrabold text-foreground">
+            {data?.devices?.reduce((sum: number, d: any) => sum + (d._count?.id || 0), 0)?.toLocaleString() || "0"}
+          </div>
+          <p className="text-xs text-foreground-muted">Across all devices</p>
         </div>
       </div>
 
@@ -88,18 +90,18 @@ export default function AdminAnalyticsPage() {
         {/* Top Pages */}
         <div className="rounded-3xl bg-surface-elevated/50 border border-border/80 p-6 space-y-4">
           <h3 className="text-sm font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
-            <Layers className="w-4 h-4 text-brand-400" /> Top Requested Routes
+            <Layers className="w-4 h-4 text-brand-400" /> Top Pages
           </h3>
 
           <div className="divide-y divide-border/40 text-xs">
             {data?.topPages?.length === 0 ? (
-              <p className="text-foreground-muted py-4">No route telemetry collected yet.</p>
+              <p className="text-foreground-muted py-4">No data yet.</p>
             ) : (
               data?.topPages?.map((p: any, idx: number) => (
                 <div key={idx} className="py-3 flex items-center justify-between">
                   <span className="font-mono text-foreground-subtle">{p.path}</span>
                   <span className="font-bold text-foreground bg-surface-base px-2.5 py-1 rounded-md border border-border">
-                    {p._count?.id} hits
+                    {p._count?.id} views
                   </span>
                 </div>
               ))
@@ -107,19 +109,19 @@ export default function AdminAnalyticsPage() {
           </div>
         </div>
 
-        {/* Device & Platform Breakdown */}
+        {/* Device Breakdown */}
         <div className="rounded-3xl bg-surface-elevated/50 border border-border/80 p-6 space-y-4">
           <h3 className="text-sm font-bold uppercase tracking-wider text-foreground flex items-center gap-2">
-            <Monitor className="w-4 h-4 text-accent-400" /> Device Telemetry
+            <Monitor className="w-4 h-4 text-brand-400" /> Devices
           </h3>
 
           <div className="divide-y divide-border/40 text-xs">
             {data?.devices?.length === 0 ? (
-              <p className="text-foreground-muted py-4">No device telemetry collected yet.</p>
+              <p className="text-foreground-muted py-4">No data yet.</p>
             ) : (
               data?.devices?.map((d: any, idx: number) => (
                 <div key={idx} className="py-3 flex items-center justify-between">
-                  <span className="capitalize font-semibold text-foreground-subtle">{d.device || "Desktop Client"}</span>
+                  <span className="capitalize font-semibold text-foreground-subtle">{d.device || "Desktop"}</span>
                   <span className="font-bold text-foreground bg-surface-base px-2.5 py-1 rounded-md border border-border">
                     {d._count?.id} sessions
                   </span>

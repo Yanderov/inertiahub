@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Copy, Check, Menu, X } from "lucide-react";
 import TelegramIcon from "@/components/icons/TelegramIcon";
-import { soundFX } from "@/lib/audio";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -22,9 +23,8 @@ export default function Navbar() {
   }, []);
 
   const handleCopyScript = () => {
-    navigator.clipboard.writeText('loadstring(game:HttpGet("https://raw.githubusercontent.com/Yanderov/lib/refs/heads/main/loader.lua"))()');
+    navigator.clipboard.writeText('loadstring(game:HttpGet("https://inertiahub.xyz/api/v1/script/loader"))()');
     setCopied(true);
-    soundFX.playClick();
     setTimeout(() => setCopied(false), 2000);
   };
 
@@ -40,7 +40,10 @@ export default function Navbar() {
   const handleNavClick = (e: React.MouseEvent, targetId: string) => {
     e.preventDefault();
     setActiveTab(targetId);
-    soundFX.playClick();
+    if (pathname !== "/") {
+      window.location.href = `/#${targetId}`;
+      return;
+    }
     const elem = document.getElementById(targetId);
     if (elem) {
       elem.scrollIntoView({ behavior: "smooth" });
@@ -61,9 +64,10 @@ export default function Navbar() {
           <Link
             href="/"
             onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-              soundFX.playClick();
+              if (pathname === "/") {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
             }}
             className="flex items-center gap-3 group"
           >
@@ -145,7 +149,6 @@ export default function Navbar() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => soundFX.playClick()}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-black text-xs font-bold hover:bg-zinc-200 transition-all shadow-sm"
             >
               <TelegramIcon className="w-3.5 h-3.5 text-black" />

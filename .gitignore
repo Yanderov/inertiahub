@@ -26,9 +26,16 @@ yarn-error.log*
 .env
 .env*.local
 
+# script sources (keep out of the public repo; bundle in /src/generated is committed)
+/scripts-src/
+/data/scripts/
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
+.env*

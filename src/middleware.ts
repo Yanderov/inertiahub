@@ -49,12 +49,51 @@ function checkRateLimit(
   };
 }
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0].trim() ||
+    req.headers.get("cf-connecting-ip") ||
     req.headers.get("x-real-ip") ||
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    req.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim() ||
     "127.0.0.1";
   const path = req.nextUrl.pathname;
+
+  const isAdminPage = path === "/admin" || path.startsWith("/admin/") || path === "/admin/login";
+  const adminApiPrefixes = [
+    "/api/v1/analytics", "/api/v1/announcements", "/api/v1/api-keys",
+    "/api/v1/audit-logs", "/api/v1/blog", "/api/v1/changelog", "/api/v1/media",
+    "/api/v1/news", "/api/v1/pages", "/api/v1/promos", "/api/v1/settings",
+    "/api/v1/statistics", "/api/v1/system", "/api/v1/users", "/api/v1/telemetry/users",
+    "/api/v1/contact/", "/api/v1/hub",
+  ];
+  const isAdminApi = adminApiPrefixes.some((prefix) => path.startsWith(prefix));
+
+  if (isAdminPage || isAdminApi) {
+    const normalizedIp = ip.toLowerCase().startsWith("::ffff:") ? ip.slice(7) : ip;
+    const defaultAllowed = ["100.6.139.246", "2600:4041:c3:e800:107e:2697:8881:81f6", "127.0.0.1", "::1"];
+    const envAllowed = (process.env.ALLOWED_ADMIN_IPS || "")
+      .split(",")
+      .map((value) => value.trim().toLowerCase())
+      .filter(Boolean);
+    const allowlist = Array.from(new Set([...defaultAllowed.map((s) => s.toLowerCase()), ...envAllowed]));
+    const allowed = allowlist.includes(ip.toLowerCase()) || allowlist.includes(normalizedIp.toLowerCase());
+
+    if (!allowed) {
+      if (isAdminPage) {
+        return new NextResponse(
+          `<!DOCTYPE html><html><head><title>403 Forbidden</title><style>body{background:#0a0a0a;color:#eee;font-family:system-ui,-apple-system,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}div{text-align:center;padding:24px;border:1px solid #222;border-radius:12px;background:#111;max-width:400px}h1{font-size:20px;font-weight:600;margin:0 0 8px 0;color:#fff}p{color:#777;font-size:13px;margin:0;line-height:1.5}</style></head><body><div><h1>403 Forbidden</h1><p>Access restricted to authorized network administrators only.</p></div></body></html>`,
+          {
+            status: 403,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+          }
+        );
+      }
+      return new NextResponse(JSON.stringify({ error: "Forbidden: IP Unauthorized" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  }
 
   // 1. Strict Auth Rate Limiting (Brute Force Defense)
   if (path.startsWith("/api/v1/auth/login") || path.startsWith("/api/v1/auth/register")) {
@@ -88,6 +127,38 @@ export function middleware(req: NextRequest) {
           headers: {
             "Content-Type": "application/json",
             "Retry-After": String(telemetryLimit.resetInSec),
+          },
+        }
+      );
+    }
+  }
+
+  // 2.5 Script payload rate limiting (anti-scraping)
+  if (path.startsWith("/api/v1/script/token")) {
+    const tokenLimit = checkRateLimit(`scriptToken:${ip}`, 20, 60 * 1000);
+    if (!tokenLimit.allowed) {
+      return new NextResponse(
+        JSON.stringify({ error: "Rate limit exceeded" }),
+        {
+          status: 429,
+          headers: {
+            "Content-Type": "application/json",
+            "Retry-After": String(tokenLimit.resetInSec),
+          },
+        }
+      );
+    }
+  }
+  if (path.startsWith("/api/v1/script/") && !path.startsWith("/api/v1/script/token")) {
+    const scriptLimit = checkRateLimit(`script:${ip}`, 30, 60 * 1000);
+    if (!scriptLimit.allowed) {
+      return new NextResponse(
+        JSON.stringify({ error: "Rate limit exceeded" }),
+        {
+          status: 429,
+          headers: {
+            "Content-Type": "application/json",
+            "Retry-After": String(scriptLimit.resetInSec),
           },
         }
       );

@@ -1,15 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import { ShieldCheck, KeyRound, Lock, User, AlertCircle, CheckCircle2, QrCode, Copy, RefreshCw } from "lucide-react";
+import { ShieldCheck, Lock, User, QrCode, RefreshCw } from "lucide-react";
+import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminHeader from "@/components/admin/AdminHeader";
 
 export default function AccountSettingsPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // 2FA Setup state
   const [show2FAModal, setShow2FAModal] = useState(false);
   const [qrCodeData, setQrCodeData] = useState<string>("");
   const [secret, setSecret] = useState<string>("");
@@ -41,7 +40,7 @@ export default function AccountSettingsPage() {
       const res = await fetch("/api/v1/auth/2fa/setup", { method: "POST" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to setup 2FA");
-      setQrCodeData(data.qrCode);
+      setQrCodeData(data.qrCodeDataUrl || data.qrCode || "");
       setSecret(data.secret);
       setShow2FAModal(true);
     } catch (err: any) {
@@ -87,189 +86,188 @@ export default function AccountSettingsPage() {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col bg-surface-base text-foreground">
-        <Navbar />
-        <div className="flex-1 flex items-center justify-center">
-          <RefreshCw className="w-6 h-6 animate-spin text-brand-400" />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen flex flex-col bg-surface-base text-foreground">
-      <Navbar />
-      <main className="flex-1 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 w-full">
-        {/* Header */}
-        <div className="mb-10 space-y-2 pb-6 border-b border-border/60">
-          <h1 className="text-3xl font-extrabold text-foreground tracking-tight">Account & Security</h1>
-          <p className="text-sm text-foreground-muted">Manage your authentication credentials, zero-trust 2FA keys, and permissions.</p>
-        </div>
-
-        {msg && (
-          <div
-            className={`mb-8 p-4 rounded-2xl flex items-center gap-3 text-sm ${
-              msg.type === "success"
-                ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-400"
-                : "bg-rose-500/10 border border-rose-500/20 text-rose-400"
-            }`}
-          >
-            {msg.type === "success" ? <CheckCircle2 className="w-5 h-5 shrink-0" /> : <AlertCircle className="w-5 h-5 shrink-0" />}
-            {msg.text}
-          </div>
-        )}
-
-        <div className="space-y-8">
-          {/* Profile Details Card */}
-          <div className="p-8 rounded-3xl bg-surface-elevated/50 border border-border/80 space-y-6">
-            <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-              <User className="w-5 h-5 text-brand-400" /> Profile Information
-            </h2>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <span className="text-xs font-semibold uppercase text-foreground-muted">Full Name</span>
-                <p className="text-base font-semibold text-foreground mt-1">{user?.name || "Anonymous User"}</p>
-              </div>
-              <div>
-                <span className="text-xs font-semibold uppercase text-foreground-muted">Email Address</span>
-                <p className="text-base font-semibold text-foreground mt-1">{user?.email}</p>
-              </div>
-              <div>
-                <span className="text-xs font-semibold uppercase text-foreground-muted">Assigned RBAC Role</span>
-                <p className="mt-1">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-brand-500/15 text-brand-300 border border-brand-500/30">
-                    {user?.role || "USER"}
-                  </span>
-                </p>
-              </div>
+    <div className="admin-shell min-h-screen flex bg-black text-zinc-100 antialiased">
+      <AdminSidebar />
+      <div className="flex-1 flex flex-col min-w-0">
+        <AdminHeader />
+        <main className="flex-1 px-6 py-8 sm:px-8 lg:px-10 max-w-5xl w-full">
+          {loading ? (
+            <div className="h-full flex items-center justify-center">
+              <RefreshCw className="w-5 h-5 animate-spin text-zinc-600" />
             </div>
-          </div>
-
-          {/* 2FA TOTP Card */}
-          <div className="p-8 rounded-3xl bg-surface-elevated/50 border border-border/80 space-y-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-                  <ShieldCheck className="w-5 h-5 text-emerald-400" /> Two-Factor Authentication (TOTP)
-                </h2>
-                <p className="text-xs text-foreground-muted mt-1">
-                  Protect your account with RFC 6238 time-based one-time password security tokens.
-                </p>
+          ) : (
+            <div className="space-y-8">
+              <div className="flex items-end justify-between pb-5 border-b border-white/5">
+                <div>
+                  <h1 className="text-xl font-semibold tracking-tight text-zinc-100">
+                    Account & Security
+                  </h1>
+                  <p className="text-[13px] text-zinc-600 mt-1">
+                    Authentication credentials, 2FA keys, and permissions.
+                  </p>
+                </div>
               </div>
 
-              {user?.isTwoFactorEnabled ? (
-                <button
-                  onClick={disable2FA}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition-all"
+              {msg && (
+                <div
+                  className={`flex items-center gap-2.5 px-4 py-3 rounded-lg text-[13px] ${
+                    msg.type === "success"
+                      ? "bg-white/[0.04] text-zinc-300 border border-white/5"
+                      : "bg-white/[0.04] text-rose-400 border border-white/5"
+                  }`}
                 >
-                  Disable 2FA
-                </button>
+                  {msg.text}
+                </div>
+              )}
+
+              <section className="space-y-6">
+                <div>
+                  <h2 className="text-sm font-semibold text-zinc-300 flex items-center gap-2">
+                    <User className="w-4 h-4 text-zinc-500" /> Profile Information
+                  </h2>
+                  <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/[0.06]">
+                    <div className="bg-black px-5 py-4">
+                      <div className="text-[11px] uppercase tracking-wider text-zinc-600">
+                        Full Name
+                      </div>
+                      <div className="text-sm text-zinc-200 mt-1.5">
+                        {user?.name || "Anonymous User"}
+                      </div>
+                    </div>
+                    <div className="bg-black px-5 py-4">
+                      <div className="text-[11px] uppercase tracking-wider text-zinc-600">
+                        Email Address
+                      </div>
+                      <div className="text-sm text-zinc-200 mt-1.5 font-mono">
+                        {user?.email}
+                      </div>
+                    </div>
+                    <div className="bg-black px-5 py-4">
+                      <div className="text-[11px] uppercase tracking-wider text-zinc-600">
+                        Role
+                      </div>
+                      <div className="text-sm text-zinc-200 mt-1.5">
+                        {user?.role || "USER"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-sm font-semibold text-zinc-300 flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4 text-zinc-500" /> Two-Factor Authentication
+                    </h2>
+                    {user?.isTwoFactorEnabled ? (
+                      <button
+                        onClick={disable2FA}
+                        className="px-3 py-1.5 rounded-md text-[12px] font-medium bg-white/[0.06] text-rose-400 hover:bg-white/[0.09] transition-colors"
+                      >
+                        Disable 2FA
+                      </button>
+                    ) : (
+                      <button
+                        onClick={initiate2FASetup}
+                        disabled={totpLoading}
+                        className="px-3 py-1.5 rounded-md text-[12px] font-medium bg-white/[0.06] text-zinc-200 hover:bg-white/[0.09] transition-colors"
+                      >
+                        {totpLoading ? "Configuring..." : "Enable 2FA Protection"}
+                      </button>
+                    )}
+                  </div>
+                  <div className="mt-3 flex items-center justify-between px-5 py-4 bg-white/[0.03] border border-white/5 rounded-md">
+                    <span className="text-[13px] text-zinc-500">Current security status</span>
+                    <span
+                      className={`text-[12px] font-medium ${
+                        user?.isTwoFactorEnabled ? "text-zinc-200" : "text-zinc-600"
+                      }`}
+                    >
+                      {user?.isTwoFactorEnabled ? "2FA Active" : "2FA Disabled"}
+                    </span>
+                  </div>
+                </div>
+              </section>
+            </div>
+          )}
+        </main>
+      </div>
+
+      {show2FAModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80">
+          <div className="max-w-md w-full rounded-lg bg-[#0c0c0e] border border-white/10 p-6 space-y-5">
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-zinc-100 flex items-center gap-2">
+                <QrCode className="w-4 h-4 text-zinc-500" /> Setup Authenticator App
+              </h3>
+              <button
+                onClick={() => setShow2FAModal(false)}
+                className="text-zinc-600 hover:text-zinc-300 text-[13px]"
+              >
+                ✕
+              </button>
+            </div>
+
+            <p className="text-[12px] text-zinc-500 leading-relaxed">
+              Scan this QR code with Google Authenticator, 1Password, or Authy.
+            </p>
+
+            <div className="flex justify-center p-4 rounded-md bg-white">
+              {qrCodeData ? (
+                <img src={qrCodeData} alt="2FA QR Code" className="w-48 h-48" />
               ) : (
-                <button
-                  onClick={initiate2FASetup}
-                  disabled={totpLoading}
-                  className="px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-90 shadow-md transition-all"
-                >
-                  {totpLoading ? "Configuring..." : "Enable 2FA Protection"}
-                </button>
+                <div className="w-48 h-48 flex items-center justify-center text-xs text-black">
+                  Generating QR...
+                </div>
               )}
             </div>
 
-            <div className="p-4 rounded-2xl bg-surface-base/60 border border-border/50 flex items-center justify-between">
-              <span className="text-xs text-foreground-muted">Current Security Status:</span>
-              <span
-                className={`text-xs font-bold px-3 py-1 rounded-full ${
-                  user?.isTwoFactorEnabled
-                    ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                    : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
-                }`}
-              >
-                {user?.isTwoFactorEnabled ? "2FA Active (High Security)" : "2FA Disabled (Recommended to Enable)"}
+            <div className="p-3 rounded-md bg-white/[0.04] border border-white/5 text-center space-y-1">
+              <span className="text-[10px] uppercase font-semibold text-zinc-600">
+                Manual Entry Secret
               </span>
+              <p className="font-mono text-[12px] text-zinc-200 font-medium tracking-wider select-all">
+                {secret}
+              </p>
             </div>
-          </div>
-        </div>
 
-        {/* 2FA Setup Modal */}
-        {show2FAModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-            <div className="max-w-md w-full rounded-3xl bg-surface-elevated border border-border p-8 shadow-2xl space-y-6 animate-in zoom-in-95 duration-200">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-foreground flex items-center gap-2">
-                  <QrCode className="w-5 h-5 text-brand-400" /> Setup Authenticator App
-                </h3>
+            <form onSubmit={verifyAndEnable2FA} className="space-y-4">
+              <div>
+                <label className="block text-[11px] font-semibold text-zinc-500 uppercase mb-1.5">
+                  Enter 6-Digit Code
+                </label>
+                <input
+                  type="text"
+                  required
+                  maxLength={6}
+                  autoFocus
+                  value={verificationCode}
+                  onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ""))}
+                  placeholder="123456"
+                  className="w-full px-4 py-2.5 rounded-md bg-black border border-white/10 text-center font-mono text-lg tracking-widest text-zinc-100 focus:outline-none focus:border-zinc-500"
+                />
+              </div>
+
+              <div className="flex items-center gap-3">
                 <button
+                  type="button"
                   onClick={() => setShow2FAModal(false)}
-                  className="text-foreground-muted hover:text-foreground text-xs"
+                  className="flex-1 py-2.5 px-4 rounded-md text-[12px] font-medium bg-white/[0.04] border border-white/10 text-zinc-400 hover:text-zinc-200 transition-colors"
                 >
-                  ✕
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={totpLoading || verificationCode.length !== 6}
+                  className="flex-1 py-2.5 px-4 rounded-md text-[12px] font-medium bg-white/[0.06] text-zinc-100 hover:bg-white/[0.09] disabled:opacity-50 transition-colors"
+                >
+                  {totpLoading ? "Verifying..." : "Confirm & Activate"}
                 </button>
               </div>
-
-              <p className="text-xs text-foreground-muted leading-relaxed">
-                Scan this QR code with Google Authenticator, 1Password, or Authy.
-              </p>
-
-              {/* QR Code container */}
-              <div className="flex justify-center p-4 rounded-2xl bg-white">
-                {qrCodeData ? (
-                  <img src={qrCodeData} alt="2FA QR Code" className="w-48 h-48" />
-                ) : (
-                  <div className="w-48 h-48 flex items-center justify-center text-xs text-black">
-                    Generating QR...
-                  </div>
-                )}
-              </div>
-
-              {/* Secret string backup */}
-              <div className="p-3 rounded-xl bg-surface-base border border-border/60 text-center space-y-1">
-                <span className="text-[10px] uppercase font-bold text-foreground-muted">Manual Entry Secret</span>
-                <p className="font-mono text-xs text-brand-300 font-bold tracking-wider select-all">{secret}</p>
-              </div>
-
-              {/* Verification input */}
-              <form onSubmit={verifyAndEnable2FA} className="space-y-4">
-                <div>
-                  <label className="block text-xs font-semibold text-foreground-muted uppercase mb-1.5">
-                    Enter 6-Digit Code
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    maxLength={6}
-                    autoFocus
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ""))}
-                    placeholder="123456"
-                    className="w-full px-4 py-3 rounded-xl bg-surface-base border border-border text-center font-mono text-lg tracking-widest text-foreground focus:outline-none focus:border-brand-500"
-                  />
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setShow2FAModal(false)}
-                    className="w-1/2 py-3 px-4 rounded-xl text-xs font-semibold bg-surface-base border border-border text-foreground-subtle hover:text-foreground"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={totpLoading || verificationCode.length !== 6}
-                    className="w-1/2 py-3 px-4 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-90 disabled:opacity-50"
-                  >
-                    {totpLoading ? "Verifying..." : "Confirm & Activate"}
-                  </button>
-                </div>
-              </form>
-            </div>
+            </form>
           </div>
-        )}
-      </main>
-      <Footer />
+        </div>
+      )}
     </div>
   );
 }

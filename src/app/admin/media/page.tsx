@@ -99,17 +99,17 @@ export default function AdminMediaPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-            Sharp Media & Asset Storage
+            Media
           </h1>
           <p className="text-xs sm:text-sm text-foreground-muted mt-1">
-            Uploaded images are automatically compressed into optimized WebP and high-res thumbnail representations.
+            Images uploaded here can be used across the site.
           </p>
         </div>
 
         {/* Upload Button */}
-        <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-brand-600 to-accent-600 hover:opacity-95 shadow-md transition-all cursor-pointer">
+        <label className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 hover:opacity-95 shadow-md transition-all cursor-pointer">
           <Upload className="w-4 h-4" />
-          {uploading ? "Compressing & Uploading..." : "Upload Asset"}
+          {uploading ? "Uploading..." : "Upload Asset"}
           <input
             type="file"
             accept="image/*"
@@ -149,7 +149,7 @@ export default function AdminMediaPage() {
       ) : filteredMedia.length === 0 ? (
         <div className="p-12 rounded-3xl bg-surface-elevated/40 border border-border text-center text-xs text-foreground-muted space-y-2">
           <ImageIcon className="w-8 h-8 text-foreground-muted mx-auto" />
-          <p>No media assets uploaded yet. Click "Upload Asset" to begin.</p>
+          <p>No files uploaded yet. Click "Upload Asset" to begin.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -170,10 +170,10 @@ export default function AdminMediaPage() {
                   <FileCheck className="w-12 h-12 text-foreground-muted" />
                 )}
 
-                {/* Sharp WebP Optimization Badge */}
+                {/* Optimization Badge */}
                 <div className="absolute top-3 right-3 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 backdrop-blur-md flex items-center gap-1">
                   <Zap className="w-2.5 h-2.5" />
-                  Sharp WebP
+                  Optimized
                 </div>
               </div>
 

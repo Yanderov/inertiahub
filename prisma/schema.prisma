@@ -86,7 +86,21 @@ model Session {
   @@index([userId])
 }
 
-// 3. Roles & Permissions
+// 3. Login one-time passcodes (email OTP for admin access)
+model LoginOtp {
+  id        String   @id @default(cuid())
+  email     String
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+  attempts  Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+  @@index([createdAt])
+}
+
+// 4. Roles & Permissions
 model Role {
   id          String           @id @default(cuid())
   name        String           @unique
@@ -348,5 +362,115 @@ model MediaItem {
 
   @@index([folder])
   @@index([mimeType])
+  @@index([createdAt])
+}
+
+// 17. Script Versions (active loader version / release)
+model ScriptVersion {
+  id        String   @id @default(cuid())
+  version   String   @unique
+  title     String?
+  notes     String?
+  isCurrent Boolean  @default(false) // the version currently served to clients
+  enabled   Boolean  @default(true)  // master switch: serve scripts at all
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isCurrent])
+}
+
+// 18. Script Features (per-game toggles exposed to the loader / scripts)
+model ScriptFeature {
+  id         String   @id @default(cuid())
+  game       String // slug: mm2 | pressure | demonology | universal
+  key        String // feature key, e.g. "esp", "aimbot", "ui"
+  label      String
+  enabled    Boolean  @default(true)
+  minVersion String?
+  updatedAt  DateTime @updatedAt
+
+  @@unique([game, key])
+  @@index([game])
+}
+
+// 19. HWID Bans (blocks the loader on the client before anything runs)
+model HwidBan {
+  id        String   @id @default(cuid())
+  hwid      String // hardware identifier (or robloxId fallback)
+  robloxId  String?
+  reason    String?
+  bannedBy  String?
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([hwid])
+  @@index([robloxId])
+}
+
+// 20. Script Load Logs (who loaded what and when)
+model ScriptLog {
+  id        String   @id @default(cuid())
+  robloxId  String
+  username  String?
+  game      String
+  hwid      String?
+  executor  String?
+  version   String?
+  placeId   String?
+  ipAddress String?
+  banned    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([robloxId])
+  @@index([hwid])
+  @@index([game])
+  @@index([createdAt])
+}
+
+// 21. Hub Users (deduplicated per Roblox account that injected the loader)
+model HubUser {
+  id         String   @id @default(cuid())
+  robloxId   String   @unique
+  username   String?
+  hwid       String?
+  executor   String?
+  game       String?
+  placeId    String?
+  injections Int      @default(1)
+  firstSeen  DateTime @default(now())
+  lastSeen   DateTime @default(now())
+  banned     Boolean  @default(false)
+  updatedAt  DateTime @updatedAt
+
+  @@index([robloxId])
+  @@index([hwid])
+  @@index([lastSeen])
+}
+
+// 22. Private Hub Chat Messages (seen only by hub-script users)
+model ChatMessage {
+  id        String   @id @default(cuid())
+  channel   String   @default("mm2")
+  sender    String
+  content   String
+  kind      String   @default("message")
+  duration  Int      @default(6)
+  createdAt DateTime @default(now())
+
+  @@index([channel, createdAt])
+}
+
+// 23. Admin-generated promotional codes
+model PromoCode {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  description String?
+  maxUses     Int?
+  usedCount   Int      @default(0)
+  enabled     Boolean  @default(true)
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([enabled, expiresAt])
   @@index([createdAt])
 }

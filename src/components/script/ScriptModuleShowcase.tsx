@@ -15,7 +15,6 @@ import {
   Ghost,
   Radio
 } from "lucide-react";
-import { soundFX } from "@/lib/audio";
 
 interface FeatureToggle {
   name: string;
@@ -180,7 +179,6 @@ export default function ScriptModuleShowcase() {
   const handleToggle = (name: string, defaultVal: boolean) => {
     const curr = toggledStates[name] !== undefined ? toggledStates[name] : defaultVal;
     setToggledStates({ ...toggledStates, [name]: !curr });
-    soundFX.playClick();
   };
 
   return (
@@ -215,7 +213,6 @@ export default function ScriptModuleShowcase() {
                 onClick={() => {
                   setSelectedGame(g.id);
                   setActiveTab(gameModules[g.id].tabs[0].id);
-                  soundFX.playClick();
                 }}
                 className={`relative flex items-center justify-center gap-2 py-3 px-3 rounded-xl font-medium text-xs sm:text-sm transition-colors ${
                   isSelected ? "text-white font-semibold" : "text-zinc-400 hover:text-zinc-200"
@@ -247,7 +244,6 @@ export default function ScriptModuleShowcase() {
                 whileTap={{ scale: 0.97 }}
                 onClick={() => {
                   setActiveTab(tab.id);
-                  soundFX.playClick();
                 }}
                 className={`relative flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                   isActive
