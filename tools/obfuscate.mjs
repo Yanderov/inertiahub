@@ -142,7 +142,7 @@ function main() {
     : "";
 
   // Game bundles that get the hub-tag injected (loader already ships its own).
-  const TAG_INJECT_SLUGS = new Set(["mm2", "pressure", "demonology"]);
+  const TAG_INJECT_SLUGS = new Set(["mm2", "pressure", "demonology", "universal"]);
 
   // Modules injected only into specific games.
   const CHAT_INJECT_SLUGS = new Set(["mm2"]);

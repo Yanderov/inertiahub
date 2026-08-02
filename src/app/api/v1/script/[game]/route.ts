@@ -5,7 +5,17 @@ import path from "path";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { packedScripts } from "@/generated/scripts";
 
-const VALID_GAMES = ["loader", "mm2", "pressure", "demonology", "mm2_mobile", "pressure_mobile", "demonology_mobile"];
+const VALID_GAMES = [
+  "loader",
+  "mm2",
+  "pressure",
+  "demonology",
+  "universal",
+  "mm2_mobile",
+  "pressure_mobile",
+  "demonology_mobile",
+  "universal_mobile",
+];
 
 function verifyToken(game: string, token: string | null, exp: string | null): boolean {
   if (!token || !exp) return false;

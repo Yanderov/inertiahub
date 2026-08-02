@@ -2,7 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { checkRateLimit } from "@/lib/rate-limit";
 
-const VALID_GAMES = ["loader", "mm2", "pressure", "demonology", "mm2_mobile", "pressure_mobile", "demonology_mobile"];
+const VALID_GAMES = [
+  "loader",
+  "mm2",
+  "pressure",
+  "demonology",
+  "universal",
+  "mm2_mobile",
+  "pressure_mobile",
+  "demonology_mobile",
+  "universal_mobile",
+];
 const TOKEN_TTL_MS = 5 * 60 * 1000;
 
 function signToken(game: string, exp: number): string {

@@ -61,6 +61,7 @@ export async function GET(req: NextRequest) {
 
     const requestedGame = params.get("game");
     const whereGame = requestedGame ? gameName(requestedGame) : undefined;
+    const requestedPlaceId = clean(params.get("placeId"), 32);
     const requestedWindow = Number(params.get("window"));
     const windowSeconds = Number.isFinite(requestedWindow)
       ? Math.min(Math.max(requestedWindow, 10), 180)
@@ -71,6 +72,7 @@ export async function GET(req: NextRequest) {
       where: {
         lastSeen: { gte: since },
         game: whereGame,
+        placeId: requestedPlaceId || undefined,
       },
       orderBy: { lastSeen: "desc" },
       take: 100,
