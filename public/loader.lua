@@ -17,7 +17,7 @@ local PlaceId = game.PlaceId
 local GameId = game.GameId
 
 -- Configurable Base URL (Website Host)
-local BASE_URL = "http://localhost:3000"
+local BASE_URL = "https://inertiahub.xyz"
 
 -- Executor Identification
 local executorName = "Potassium"

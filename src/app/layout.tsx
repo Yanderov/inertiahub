@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title: "InertiaHub | High-Performance Cloud & Edge Runtime",
     description:
       "Sub-millisecond global execution, zero-trust security architecture, and distributed cloud computing.",
-    url: "https://inertiahub.gg",
+    url: "https://inertiahub.xyz",
     siteName: "InertiaHub",
     locale: "en_US",
     type: "website",
