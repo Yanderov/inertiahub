@@ -127,11 +127,21 @@ export async function GET() {
       (u) => new Date(u.lastSeen).getTime() > oneDayAgo
     ).length;
 
+    // Count changelog entries if directory exists
+    let updatesCount = 0;
+    try {
+      const changelogDir = path.join(process.cwd(), "data", "changelog.json");
+      if (fs.existsSync(changelogDir)) {
+        const cl = JSON.parse(fs.readFileSync(changelogDir, "utf-8"));
+        updatesCount = Array.isArray(cl) ? cl.length : 0;
+      }
+    } catch {}
+
     return NextResponse.json({
       uniqueUsers: uniqueCount,
       totalInjections: data.totalInjections,
       activeLast24h,
-      updatesCount: 14,
+      updatesCount,
       byGame: data.byGame,
       byExecutor: data.byExecutor,
       lastUpdated: data.lastUpdated,

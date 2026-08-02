@@ -7,9 +7,9 @@ import { soundFX } from "@/lib/audio";
 
 export default function ScriptStats() {
   const [statsData, setStatsData] = useState({
-    uniqueUsers: 148,
-    totalInjections: 1842,
-    updatesCount: 14,
+    uniqueUsers: 0,
+    totalInjections: 0,
+    updatesCount: 0,
   });
 
   useEffect(() => {
@@ -19,13 +19,13 @@ export default function ScriptStats() {
         if (res.ok) {
           const data = await res.json();
           setStatsData({
-            uniqueUsers: Math.max(148, data.uniqueUsers || 0),
-            totalInjections: Math.max(1842, data.totalInjections || 0),
-            updatesCount: data.updatesCount || 14,
+            uniqueUsers: data.uniqueUsers || 0,
+            totalInjections: data.totalInjections || 0,
+            updatesCount: data.updatesCount || 0,
           });
         }
       } catch {
-        // Keep baseline if offline
+        // Offline fallback — keep at 0
       }
     }
 
@@ -99,4 +99,3 @@ export default function ScriptStats() {
     </section>
   );
 }
-

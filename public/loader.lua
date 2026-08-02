@@ -305,8 +305,138 @@ if fetchSuccess and scriptPayload and #scriptPayload > 50 then
             warn("[InertiaHub Execution Error]: " .. tostring(executeErr))
         end
     end)
+
+    -- ═══════════════════════════════════════════════════════
+    --  OVERHEAD HUB USER TAG SYSTEM
+    --  Every InertiaHub user sees a subtle tag above other hub users
+    -- ═══════════════════════════════════════════════════════
+    task.spawn(function()
+        local RunService = game:GetService("RunService")
+        local CollectionService = game:GetService("CollectionService")
+
+        local HUB_TAG = "InertiaHubUser"
+        local TAG_GUI_NAME = "InertiaOverheadTag"
+
+        -- Mark self as hub user via CollectionService tag
+        pcall(function()
+            CollectionService:AddTag(LocalPlayer, HUB_TAG)
+        end)
+
+        -- Also set an attribute on the character's head for cross-client visibility
+        local function markLocalCharacter()
+            local char = LocalPlayer.Character
+            if char then
+                local head = char:FindFirstChild("Head")
+                if head then
+                    pcall(function()
+                        head:SetAttribute(HUB_TAG, true)
+                    end)
+                end
+            end
+        end
+
+        markLocalCharacter()
+        LocalPlayer.CharacterAdded:Connect(function(char)
+            task.wait(0.5)
+            markLocalCharacter()
+        end)
+
+        -- Create overhead tag for a given player
+        local function createOverheadTag(player)
+            if player == LocalPlayer then return end
+
+            local char = player.Character
+            if not char then return end
+            local head = char:FindFirstChild("Head")
+            if not head then return end
+
+            -- Don't duplicate
+            if head:FindFirstChild(TAG_GUI_NAME) then return end
+
+            -- Check if they have the hub attribute
+            local isHubUser = false
+            pcall(function()
+                isHubUser = head:GetAttribute(HUB_TAG) == true
+            end)
+            if not isHubUser then return end
+
+            local bb = Instance.new("BillboardGui")
+            bb.Name = TAG_GUI_NAME
+            bb.Adornee = head
+            bb.Size = UDim2.new(0, 120, 0, 24)
+            bb.StudsOffset = Vector3.new(0, 2.5, 0)
+            bb.AlwaysOnTop = true
+            bb.MaxDistance = 60
+
+            local tag = Instance.new("TextLabel")
+            tag.Size = UDim2.new(1, 0, 1, 0)
+            tag.BackgroundColor3 = Color3.fromRGB(18, 18, 20)
+            tag.BackgroundTransparency = 0.25
+            tag.Text = "INERTIA HUB"
+            tag.TextColor3 = Color3.fromRGB(210, 210, 215)
+            tag.TextSize = 10
+            tag.Font = Enum.Font.GothamBold
+            tag.TextTransparency = 0
+            tag.Parent = bb
+
+            local corner = Instance.new("UICorner")
+            corner.CornerRadius = UDim.new(0, 6)
+            corner.Parent = tag
+
+            local stroke = Instance.new("UIStroke")
+            stroke.Color = Color3.fromRGB(50, 50, 55)
+            stroke.Thickness = 1
+            stroke.Parent = tag
+
+            local padding = Instance.new("UIPadding")
+            padding.PaddingLeft = UDim.new(0, 6)
+            padding.PaddingRight = UDim.new(0, 6)
+            padding.Parent = tag
+
+            bb.Parent = head
+        end
+
+        -- Scan all current and future players
+        local function scanPlayers()
+            for _, player in ipairs(Players:GetPlayers()) do
+                if player ~= LocalPlayer and player.Character then
+                    pcall(function()
+                        createOverheadTag(player)
+                    end)
+                end
+            end
+        end
+
+        Players.PlayerAdded:Connect(function(player)
+            player.CharacterAdded:Connect(function()
+                task.wait(1)
+                createOverheadTag(player)
+            end)
+        end)
+
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer then
+                player.CharacterAdded:Connect(function()
+                    task.wait(1)
+                    createOverheadTag(player)
+                end)
+            end
+        end
+
+        -- Poll every 3 seconds to pick up new hub users
+        task.spawn(function()
+            while task.wait(3) do
+                pcall(scanPlayers)
+            end
+        end)
+
+        -- Initial scan after a short delay
+        task.wait(2)
+        scanPlayers()
+    end)
 else
     loader.setProgress(1.0, "Failed to load script payload.")
     task.wait(1.5)
     loader.dismiss()
 end
+

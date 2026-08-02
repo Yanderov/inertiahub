@@ -1,98 +1,100 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Zap, Users, Globe2, ShieldCheck, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
+import { Users, Zap, Gamepad2, Shield } from "lucide-react";
 
-interface StatItem {
-  id: string;
-  key: string;
-  label: string;
-  value: string;
-  description?: string | null;
-  change?: string | null;
+interface TelemetryStats {
+  uniqueUsers: number;
+  totalInjections: number;
+  byGame: Record<string, number>;
+  activeLast24h: number;
 }
 
-const defaultStats: StatItem[] = [
-  {
-    id: "1",
-    key: "active_developers",
-    label: "Active Platform Developers",
-    value: "140,000+",
-    description: "Building production workloads daily",
-    change: "+28% YoY",
-  },
-  {
-    id: "2",
-    key: "api_requests_daily",
-    label: "Edge Requests Daily",
-    value: "850M+",
-    description: "Handled across 42 global edge points",
-    change: "+44% MoM",
-  },
-  {
-    id: "3",
-    key: "uptime_sla",
-    label: "Historical Platform SLA",
-    value: "99.99%",
-    description: "High availability enterprise guarantee",
-    change: "Operational",
-  },
-  {
-    id: "4",
-    key: "avg_latency",
-    label: "Global Average Latency",
-    value: "< 1.2ms",
-    description: "Sub-millisecond dynamic routing",
-    change: "-15% Faster",
-  },
-];
-
 export default function StatsSection() {
-  const [stats, setStats] = useState<StatItem[]>(defaultStats);
+  const [stats, setStats] = useState<TelemetryStats>({
+    uniqueUsers: 0,
+    totalInjections: 0,
+    byGame: {},
+    activeLast24h: 0,
+  });
 
   useEffect(() => {
-    fetch("/api/v1/statistics")
+    fetch("/api/v1/telemetry/ping")
       .then((res) => res.json())
       .then((data) => {
-        if (data?.data && data.data.length > 0) {
-          setStats(data.data);
-        }
+        setStats({
+          uniqueUsers: data.uniqueUsers || 0,
+          totalInjections: data.totalInjections || 0,
+          byGame: data.byGame || {},
+          activeLast24h: data.activeLast24h || 0,
+        });
       })
       .catch(() => {});
   }, []);
 
+  const gamesSupported = Object.keys(stats.byGame).filter((g) => g !== "Universal" && g !== "Loader").length || 3;
+
+  const items = [
+    {
+      label: "Unique Hub Users",
+      value: stats.uniqueUsers.toLocaleString(),
+      icon: Users,
+      desc: "Roblox accounts verified",
+    },
+    {
+      label: "Total Injections",
+      value: stats.totalInjections.toLocaleString(),
+      icon: Zap,
+      desc: "Script executions logged",
+    },
+    {
+      label: "Games Supported",
+      value: gamesSupported.toString(),
+      icon: Gamepad2,
+      desc: "MM2 • Pressure • Demonology",
+    },
+    {
+      label: "Active (24h)",
+      value: stats.activeLast24h.toLocaleString(),
+      icon: Shield,
+      desc: "Users in last 24 hours",
+    },
+  ];
+
   return (
-    <section className="py-12 border-y border-border/50 bg-surface-subtle/40 backdrop-blur-md relative overflow-hidden">
+    <section className="py-12 border-y border-zinc-800/50 bg-black/40 backdrop-blur-md relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-          {stats.map((stat, idx) => (
-            <div
-              key={stat.id || idx}
-              className="relative p-5 sm:p-6 rounded-2xl bg-surface-elevated/40 border border-border/50 hover:border-brand-500/40 hover:bg-surface-elevated/70 transition-all duration-300 group"
-            >
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold uppercase tracking-wider text-foreground-muted group-hover:text-brand-400 transition-colors">
-                  {stat.label}
-                </span>
-                {stat.change && (
-                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <TrendingUp className="w-3 h-3" />
-                    {stat.change}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          {items.map((stat, idx) => {
+            const Icon = stat.icon;
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: idx * 0.08 }}
+                className="relative p-5 sm:p-6 rounded-2xl bg-zinc-900/50 border border-zinc-800/60 hover:border-zinc-700 transition-all duration-300 group"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 group-hover:text-zinc-300 transition-colors font-mono">
+                    {stat.label}
                   </span>
-                )}
-              </div>
+                  <div className="w-7 h-7 rounded-lg bg-zinc-800/80 border border-zinc-700/50 flex items-center justify-center">
+                    <Icon className="w-3.5 h-3.5 text-zinc-400" />
+                  </div>
+                </div>
 
-              <div className="text-3xl sm:text-4xl font-extrabold text-foreground tracking-tight mb-1">
-                {stat.value}
-              </div>
+                <div className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-1 font-mono">
+                  {stat.value}
+                </div>
 
-              {stat.description && (
-                <p className="text-xs text-foreground-muted line-clamp-1">
-                  {stat.description}
+                <p className="text-xs text-zinc-500 line-clamp-1">
+                  {stat.desc}
                 </p>
-              )}
-            </div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
