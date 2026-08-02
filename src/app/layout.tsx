@@ -5,6 +5,7 @@ import AnnouncementBanner from "@/components/layout/AnnouncementBanner";
 import AnalyticsTracker from "@/components/analytics/AnalyticsTracker";
 import CustomCursor from "@/components/ui/CustomCursor";
 import SoundController from "@/components/audio/SoundController";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -66,6 +67,7 @@ export default function RootLayout({
         <AnnouncementBanner />
         <AnalyticsTracker />
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
