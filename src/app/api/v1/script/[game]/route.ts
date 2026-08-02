@@ -89,7 +89,9 @@ export async function GET(
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
-      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Cache-Control": "no-cache, no-store, must-revalidate, max-age=0",
+      "CDN-Cache-Control": "no-cache",
+      "Cloudflare-CDN-Cache-Control": "no-cache",
       "Access-Control-Allow-Origin": "*",
       "X-Content-Type-Options": "nosniff",
     },
