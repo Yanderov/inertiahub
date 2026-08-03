@@ -487,44 +487,44 @@ for key, value in pairs(S) do
 end
 local Translations = {
     RU = {
-        Visuals = "Ãâ€™ÃÂ¸ÃÂ·Ã‘Æ’ÃÂ°ÃÂ»Ã‘â€¹", Combat = "Ãâ€˜ÃÂ¾ÃÂ¹", Motion = "Ãâ€ÃÂ²ÃÂ¸ÃÂ¶ÃÂµÃÂ½ÃÂ¸ÃÂµ", Misc = "ÃÂ ÃÂ°ÃÂ·ÃÂ½ÃÂ¾ÃÂµ",
-        Player = "ÃËœÃÂ³Ã‘â‚¬ÃÂ¾ÃÂº", Teleport = "ÃÂ¢ÃÂµÃÂ»ÃÂµÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š", Shaders = "ÃÂ¨ÃÂµÃÂ¹ÃÂ´ÃÂµÃ‘â‚¬Ã‘â€¹", ESP = "ESP",
-        Environment = "ÃÅ¾ÃÂºÃ‘â‚¬Ã‘Æ’ÃÂ¶ÃÂµÃÂ½ÃÂ¸ÃÂµ", Overlay = "ÃÅ¾ÃÂ²ÃÂµÃ‘â‚¬ÃÂ»ÃÂµÃÂ¹", Emotes = "ÃÂ­ÃÂ¼ÃÂ¾Ã‘â€ ÃÂ¸ÃÂ¸", Animations = "ÃÂÃÂ½ÃÂ¸ÃÂ¼ÃÂ°Ã‘â€ ÃÂ¸ÃÂ¸",
-        Servers = "ÃÂ¡ÃÂµÃ‘â‚¬ÃÂ²ÃÂµÃ‘â‚¬ÃÂ°", Config = "ÃÅ¡ÃÂ¾ÃÂ½Ã‘â€žÃÂ¸ÃÂ³", Settings = "ÃÂÃÂ°Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂ¾ÃÂ¹ÃÂºÃÂ¸",
-        ["Text Size"] = "ÃÂ ÃÂ°ÃÂ·ÃÂ¼ÃÂµÃ‘â‚¬ Ã‘â€šÃÂµÃÂºÃ‘ÂÃ‘â€šÃÂ°", Language = "ÃÂ¯ÃÂ·Ã‘â€¹ÃÂº", Theme = "ÃÂ¢ÃÂµÃÂ¼ÃÂ°", Close = "Ãâ€”ÃÂ°ÃÂºÃ‘â‚¬Ã‘â€¹Ã‘â€šÃ‘Å’",
-        ["Notification Position"] = "ÃÂ£ÃÂ²ÃÂµÃÂ´ÃÂ¾ÃÂ¼ÃÂ»ÃÂµÃÂ½ÃÂ¸Ã‘Â", ["Top Left"] = "ÃÂ¡ÃÂ²ÃÂµÃ‘â‚¬Ã‘â€¦Ã‘Æ’ Ã‘ÂÃÂ»ÃÂµÃÂ²ÃÂ°",
-        ["Top Center"] = "ÃÂ¡ÃÂ²ÃÂµÃ‘â‚¬Ã‘â€¦Ã‘Æ’ ÃÂ¿ÃÂ¾ Ã‘â€ ÃÂµÃÂ½Ã‘â€šÃ‘â‚¬Ã‘Æ’", ["Top Right"] = "ÃÂ¡ÃÂ²ÃÂµÃ‘â‚¬Ã‘â€¦Ã‘Æ’ Ã‘ÂÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ°",
-        ["Bottom Left"] = "ÃÂ¡ÃÂ½ÃÂ¸ÃÂ·Ã‘Æ’ Ã‘ÂÃÂ»ÃÂµÃÂ²ÃÂ°", ["Bottom Center"] = "ÃÂ¡ÃÂ½ÃÂ¸ÃÂ·Ã‘Æ’ ÃÂ¿ÃÂ¾ Ã‘â€ ÃÂµÃÂ½Ã‘â€šÃ‘â‚¬Ã‘Æ’",
-        ["Bottom Right"] = "ÃÂ¡ÃÂ½ÃÂ¸ÃÂ·Ã‘Æ’ Ã‘ÂÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ°",
-        Executor = "ÃÂ­ÃÂºÃÂ·ÃÂµÃÂºÃ‘Æ’Ã‘â€šÃÂ¾Ã‘â‚¬", Small = "ÃÅ“ÃÂ°ÃÂ»ÃÂµÃÂ½Ã‘Å’ÃÂºÃÂ¸ÃÂ¹", Medium = "ÃÂ¡Ã‘â‚¬ÃÂµÃÂ´ÃÂ½ÃÂ¸ÃÂ¹", Large = "ÃÅ¡Ã‘â‚¬Ã‘Æ’ÃÂ¿ÃÂ½Ã‘â€¹ÃÂ¹",
-        ["Theme Style"] = "ÃÂ¦ÃÂ²ÃÂµÃ‘â€šÃÂ¾ÃÂ²ÃÂ°Ã‘Â Ã‘â€šÃÂµÃÂ¼ÃÂ°", ["Round Roles"] = "ÃÂ ÃÂ¾ÃÂ»ÃÂ¸ Ã‘â‚¬ÃÂ°Ã‘Æ’ÃÂ½ÃÂ´ÃÂ°",
-        Murderer = "ÃÂ£ÃÂ±ÃÂ¸ÃÂ¹Ã‘â€ ÃÂ°", Sheriff = "ÃÂ¨ÃÂµÃ‘â‚¬ÃÂ¸Ã‘â€ž",
+        Visuals = "ÃƒÂÃ¢â‚¬â„¢ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â·Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â°ÃƒÂÃ‚Â»Ãƒâ€˜Ã¢â‚¬Â¹", Combat = "ÃƒÂÃ¢â‚¬ËœÃƒÂÃ‚Â¾ÃƒÂÃ‚Â¹", Motion = "ÃƒÂÃ¢â‚¬ÂÃƒÂÃ‚Â²ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¶ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Âµ", Misc = "ÃƒÂÃ‚Â ÃƒÂÃ‚Â°ÃƒÂÃ‚Â·ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¾ÃƒÂÃ‚Âµ",
+        Player = "ÃƒÂÃ‹Å“ÃƒÂÃ‚Â³Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¾ÃƒÂÃ‚Âº", Teleport = "ÃƒÂÃ‚Â¢ÃƒÂÃ‚ÂµÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Å¡", Shaders = "ÃƒÂÃ‚Â¨ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¹ÃƒÂÃ‚Â´ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¹", ESP = "ESP",
+        Environment = "ÃƒÂÃ…Â¾ÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â¶ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Âµ", Overlay = "ÃƒÂÃ…Â¾ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¹", Emotes = "ÃƒÂÃ‚Â­ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¸", Animations = "ÃƒÂÃ‚ÂÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â°Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¸",
+        Servers = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°", Config = "ÃƒÂÃ…Â¡ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Å¾ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â³", Settings = "ÃƒÂÃ‚ÂÃƒÂÃ‚Â°Ãƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â¹ÃƒÂÃ‚ÂºÃƒÂÃ‚Â¸",
+        ["Text Size"] = "ÃƒÂÃ‚Â ÃƒÂÃ‚Â°ÃƒÂÃ‚Â·ÃƒÂÃ‚Â¼ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚ÂµÃƒÂÃ‚ÂºÃƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â°", Language = "ÃƒÂÃ‚Â¯ÃƒÂÃ‚Â·Ãƒâ€˜Ã¢â‚¬Â¹ÃƒÂÃ‚Âº", Theme = "ÃƒÂÃ‚Â¢ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼ÃƒÂÃ‚Â°", Close = "ÃƒÂÃ¢â‚¬â€ÃƒÂÃ‚Â°ÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¹Ãƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã…â€™",
+        ["Notification Position"] = "ÃƒÂÃ‚Â£ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒÂÃ‚Â´ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸Ãƒâ€˜Ã‚Â", ["Top Left"] = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¦Ãƒâ€˜Ã†â€™ Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒÂÃ‚Â²ÃƒÂÃ‚Â°",
+        ["Top Center"] = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¦Ãƒâ€˜Ã†â€™ ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™", ["Top Right"] = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¦Ãƒâ€˜Ã†â€™ Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â¿Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²ÃƒÂÃ‚Â°",
+        ["Bottom Left"] = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â·Ãƒâ€˜Ã†â€™ Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒÂÃ‚Â²ÃƒÂÃ‚Â°", ["Bottom Center"] = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â·Ãƒâ€˜Ã†â€™ ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™",
+        ["Bottom Right"] = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â·Ãƒâ€˜Ã†â€™ Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â¿Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²ÃƒÂÃ‚Â°",
+        Executor = "ÃƒÂÃ‚Â­ÃƒÂÃ‚ÂºÃƒÂÃ‚Â·ÃƒÂÃ‚ÂµÃƒÂÃ‚ÂºÃƒâ€˜Ã†â€™Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â€šÂ¬", Small = "ÃƒÂÃ…â€œÃƒÂÃ‚Â°ÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½Ãƒâ€˜Ã…â€™ÃƒÂÃ‚ÂºÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¹", Medium = "ÃƒÂÃ‚Â¡Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚ÂµÃƒÂÃ‚Â´ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¹", Large = "ÃƒÂÃ…Â¡Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Â¹ÃƒÂÃ‚Â¹",
+        ["Theme Style"] = "ÃƒÂÃ‚Â¦ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â²ÃƒÂÃ‚Â°Ãƒâ€˜Ã‚Â Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼ÃƒÂÃ‚Â°", ["Round Roles"] = "ÃƒÂÃ‚Â ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â»ÃƒÂÃ‚Â¸ Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â½ÃƒÂÃ‚Â´ÃƒÂÃ‚Â°",
+        Murderer = "ÃƒÂÃ‚Â£ÃƒÂÃ‚Â±ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¹Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚Â°", Sheriff = "ÃƒÂÃ‚Â¨ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¸Ãƒâ€˜Ã¢â‚¬Å¾",
     },
     UK = {
-        Visuals = "Ãâ€™Ã‘â€“ÃÂ·Ã‘Æ’ÃÂ°ÃÂ»ÃÂ¸", Combat = "Ãâ€˜Ã‘â€“ÃÂ¹", Motion = "ÃÂ Ã‘Æ’Ã‘â€¦", Misc = "ÃÂ Ã‘â€“ÃÂ·ÃÂ½ÃÂµ",
-        Player = "Ãâ€œÃ‘â‚¬ÃÂ°ÃÂ²ÃÂµÃ‘â€ Ã‘Å’", Teleport = "ÃÂ¢ÃÂµÃÂ»ÃÂµÃÂ¿ÃÂ¾Ã‘â‚¬Ã‘â€š", Shaders = "ÃÂ¨ÃÂµÃÂ¹ÃÂ´ÃÂµÃ‘â‚¬ÃÂ¸", ESP = "ESP",
-        Environment = "ÃÅ¾Ã‘â€šÃÂ¾Ã‘â€¡ÃÂµÃÂ½ÃÂ½Ã‘Â", Overlay = "ÃÅ¾ÃÂ²ÃÂµÃ‘â‚¬ÃÂ»ÃÂµÃÂ¹", Emotes = "Ãâ€¢ÃÂ¼ÃÂ¾Ã‘â€ Ã‘â€“Ã‘â€”", Animations = "ÃÂÃÂ½Ã‘â€“ÃÂ¼ÃÂ°Ã‘â€ Ã‘â€“Ã‘â€”",
-        Servers = "ÃÂ¡ÃÂµÃ‘â‚¬ÃÂ²ÃÂµÃ‘â‚¬ÃÂ¸", Config = "ÃÅ¡ÃÂ¾ÃÂ½Ã‘â€žÃ‘â€“ÃÂ³", Settings = "ÃÂÃÂ°ÃÂ»ÃÂ°Ã‘Ë†Ã‘â€šÃ‘Æ’ÃÂ²ÃÂ°ÃÂ½ÃÂ½Ã‘Â",
-        ["Text Size"] = "ÃÂ ÃÂ¾ÃÂ·ÃÂ¼Ã‘â€“Ã‘â‚¬ Ã‘â€šÃÂµÃÂºÃ‘ÂÃ‘â€šÃ‘Æ’", Language = "ÃÅ“ÃÂ¾ÃÂ²ÃÂ°", Theme = "ÃÂ¢ÃÂµÃÂ¼ÃÂ°", Close = "Ãâ€”ÃÂ°ÃÂºÃ‘â‚¬ÃÂ¸Ã‘â€šÃÂ¸",
-        ["Notification Position"] = "ÃÂ¡ÃÂ¿ÃÂ¾ÃÂ²Ã‘â€“Ã‘â€°ÃÂµÃÂ½ÃÂ½Ã‘Â", ["Top Left"] = "Ãâ€”ÃÂ²ÃÂµÃ‘â‚¬Ã‘â€¦Ã‘Æ’ ÃÂ»Ã‘â€“ÃÂ²ÃÂ¾Ã‘â‚¬Ã‘Æ’Ã‘â€¡",
-        ["Top Center"] = "Ãâ€”ÃÂ²ÃÂµÃ‘â‚¬Ã‘â€¦Ã‘Æ’ ÃÂ¿ÃÂ¾ Ã‘â€ ÃÂµÃÂ½Ã‘â€šÃ‘â‚¬Ã‘Æ’", ["Top Right"] = "Ãâ€”ÃÂ²ÃÂµÃ‘â‚¬Ã‘â€¦Ã‘Æ’ ÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¾Ã‘â‚¬Ã‘Æ’Ã‘â€¡",
-        ["Bottom Left"] = "Ãâ€”ÃÂ½ÃÂ¸ÃÂ·Ã‘Æ’ ÃÂ»Ã‘â€“ÃÂ²ÃÂ¾Ã‘â‚¬Ã‘Æ’Ã‘â€¡", ["Bottom Center"] = "Ãâ€”ÃÂ½ÃÂ¸ÃÂ·Ã‘Æ’ ÃÂ¿ÃÂ¾ Ã‘â€ ÃÂµÃÂ½Ã‘â€šÃ‘â‚¬Ã‘Æ’",
-        ["Bottom Right"] = "Ãâ€”ÃÂ½ÃÂ¸ÃÂ·Ã‘Æ’ ÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ¾Ã‘â‚¬Ã‘Æ’Ã‘â€¡",
-        Executor = "Ãâ€™ÃÂ¸ÃÂºÃÂ¾ÃÂ½ÃÂ°ÃÂ²ÃÂµÃ‘â€ Ã‘Å’", Small = "ÃÅ“ÃÂ°ÃÂ»ÃÂ¸ÃÂ¹", Medium = "ÃÂ¡ÃÂµÃ‘â‚¬ÃÂµÃÂ´ÃÂ½Ã‘â€“ÃÂ¹", Large = "Ãâ€™ÃÂµÃÂ»ÃÂ¸ÃÂºÃÂ¸ÃÂ¹",
-        ["Theme Style"] = "ÃÅ¡ÃÂ¾ÃÂ»Ã‘â€“Ã‘â‚¬ÃÂ½ÃÂ° Ã‘â€šÃÂµÃÂ¼ÃÂ°", ["Round Roles"] = "ÃÂ ÃÂ¾ÃÂ»Ã‘â€“ Ã‘â‚¬ÃÂ°Ã‘Æ’ÃÂ½ÃÂ´Ã‘Æ’",
-        Murderer = "Ãâ€™ÃÂ±ÃÂ¸ÃÂ²Ã‘â€ Ã‘Â", Sheriff = "ÃÂ¨ÃÂµÃ‘â‚¬ÃÂ¸Ã‘â€ž",
+        Visuals = "ÃƒÂÃ¢â‚¬â„¢Ãƒâ€˜Ã¢â‚¬â€œÃƒÂÃ‚Â·Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â°ÃƒÂÃ‚Â»ÃƒÂÃ‚Â¸", Combat = "ÃƒÂÃ¢â‚¬ËœÃƒâ€˜Ã¢â‚¬â€œÃƒÂÃ‚Â¹", Motion = "ÃƒÂÃ‚Â Ãƒâ€˜Ã†â€™Ãƒâ€˜Ã¢â‚¬Â¦", Misc = "ÃƒÂÃ‚Â Ãƒâ€˜Ã¢â‚¬â€œÃƒÂÃ‚Â·ÃƒÂÃ‚Â½ÃƒÂÃ‚Âµ",
+        Player = "ÃƒÂÃ¢â‚¬Å“Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Â Ãƒâ€˜Ã…â€™", Teleport = "ÃƒÂÃ‚Â¢ÃƒÂÃ‚ÂµÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Å¡", Shaders = "ÃƒÂÃ‚Â¨ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¹ÃƒÂÃ‚Â´ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¸", ESP = "ESP",
+        Environment = "ÃƒÂÃ…Â¾Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â‚¬Â¡ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½ÃƒÂÃ‚Â½Ãƒâ€˜Ã‚Â", Overlay = "ÃƒÂÃ…Â¾ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¹", Emotes = "ÃƒÂÃ¢â‚¬Â¢ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â‚¬Â Ãƒâ€˜Ã¢â‚¬â€œÃƒâ€˜Ã¢â‚¬â€", Animations = "ÃƒÂÃ‚ÂÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬â€œÃƒÂÃ‚Â¼ÃƒÂÃ‚Â°Ãƒâ€˜Ã¢â‚¬Â Ãƒâ€˜Ã¢â‚¬â€œÃƒâ€˜Ã¢â‚¬â€",
+        Servers = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¸", Config = "ÃƒÂÃ…Â¡ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Å¾Ãƒâ€˜Ã¢â‚¬â€œÃƒÂÃ‚Â³", Settings = "ÃƒÂÃ‚ÂÃƒÂÃ‚Â°ÃƒÂÃ‚Â»ÃƒÂÃ‚Â°Ãƒâ€˜Ã‹â€ Ãƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â²ÃƒÂÃ‚Â°ÃƒÂÃ‚Â½ÃƒÂÃ‚Â½Ãƒâ€˜Ã‚Â",
+        ["Text Size"] = "ÃƒÂÃ‚Â ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â·ÃƒÂÃ‚Â¼Ãƒâ€˜Ã¢â‚¬â€œÃƒâ€˜Ã¢â€šÂ¬ Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚ÂµÃƒÂÃ‚ÂºÃƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã†â€™", Language = "ÃƒÂÃ…â€œÃƒÂÃ‚Â¾ÃƒÂÃ‚Â²ÃƒÂÃ‚Â°", Theme = "ÃƒÂÃ‚Â¢ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼ÃƒÂÃ‚Â°", Close = "ÃƒÂÃ¢â‚¬â€ÃƒÂÃ‚Â°ÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¸Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¸",
+        ["Notification Position"] = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â²Ãƒâ€˜Ã¢â‚¬â€œÃƒâ€˜Ã¢â‚¬Â°ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½ÃƒÂÃ‚Â½Ãƒâ€˜Ã‚Â", ["Top Left"] = "ÃƒÂÃ¢â‚¬â€ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¦Ãƒâ€˜Ã†â€™ ÃƒÂÃ‚Â»Ãƒâ€˜Ã¢â‚¬â€œÃƒÂÃ‚Â²ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™Ãƒâ€˜Ã¢â‚¬Â¡",
+        ["Top Center"] = "ÃƒÂÃ¢â‚¬â€ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¦Ãƒâ€˜Ã†â€™ ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™", ["Top Right"] = "ÃƒÂÃ¢â‚¬â€ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã¢â‚¬Â¦Ãƒâ€˜Ã†â€™ ÃƒÂÃ‚Â¿Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™Ãƒâ€˜Ã¢â‚¬Â¡",
+        ["Bottom Left"] = "ÃƒÂÃ¢â‚¬â€ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â·Ãƒâ€˜Ã†â€™ ÃƒÂÃ‚Â»Ãƒâ€˜Ã¢â‚¬â€œÃƒÂÃ‚Â²ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™Ãƒâ€˜Ã¢â‚¬Â¡", ["Bottom Center"] = "ÃƒÂÃ¢â‚¬â€ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â·Ãƒâ€˜Ã†â€™ ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™",
+        ["Bottom Right"] = "ÃƒÂÃ¢â‚¬â€ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â·Ãƒâ€˜Ã†â€™ ÃƒÂÃ‚Â¿Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â€šÂ¬Ãƒâ€˜Ã†â€™Ãƒâ€˜Ã¢â‚¬Â¡",
+        Executor = "ÃƒÂÃ¢â‚¬â„¢ÃƒÂÃ‚Â¸ÃƒÂÃ‚ÂºÃƒÂÃ‚Â¾ÃƒÂÃ‚Â½ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Â Ãƒâ€˜Ã…â€™", Small = "ÃƒÂÃ…â€œÃƒÂÃ‚Â°ÃƒÂÃ‚Â»ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¹", Medium = "ÃƒÂÃ‚Â¡ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚ÂµÃƒÂÃ‚Â´ÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬â€œÃƒÂÃ‚Â¹", Large = "ÃƒÂÃ¢â‚¬â„¢ÃƒÂÃ‚ÂµÃƒÂÃ‚Â»ÃƒÂÃ‚Â¸ÃƒÂÃ‚ÂºÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¹",
+        ["Theme Style"] = "ÃƒÂÃ…Â¡ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â»Ãƒâ€˜Ã¢â‚¬â€œÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â½ÃƒÂÃ‚Â° Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼ÃƒÂÃ‚Â°", ["Round Roles"] = "ÃƒÂÃ‚Â ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â»Ãƒâ€˜Ã¢â‚¬â€œ Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â½ÃƒÂÃ‚Â´Ãƒâ€˜Ã†â€™",
+        Murderer = "ÃƒÂÃ¢â‚¬â„¢ÃƒÂÃ‚Â±ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â²Ãƒâ€˜Ã¢â‚¬Â Ãƒâ€˜Ã‚Â", Sheriff = "ÃƒÂÃ‚Â¨ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¸Ãƒâ€˜Ã¢â‚¬Å¾",
     },
     SPANISH = {
         Visuals = "Visuales", Combat = "Combate", Motion = "Movimiento", Misc = "Varios",
         Player = "Jugador", Teleport = "Teletransporte", Shaders = "Shaders", ESP = "ESP",
-        Environment = "Entorno", Overlay = "SuperposiciÃƒÂ³n", Emotes = "Emotes", Animations = "Animaciones",
+        Environment = "Entorno", Overlay = "SuperposiciÃƒÆ’Ã‚Â³n", Emotes = "Emotes", Animations = "Animaciones",
         Servers = "Servidores", Config = "Config", Settings = "Ajustes",
-        ["Text Size"] = "TamaÃƒÂ±o de texto", Language = "Idioma", Theme = "Tema", Close = "Cerrar",
+        ["Text Size"] = "TamaÃƒÆ’Ã‚Â±o de texto", Language = "Idioma", Theme = "Tema", Close = "Cerrar",
         ["Notification Position"] = "Avisos", ["Top Left"] = "Arriba izquierda",
         ["Top Center"] = "Arriba centro", ["Top Right"] = "Arriba derecha",
         ["Bottom Left"] = "Abajo izquierda", ["Bottom Center"] = "Abajo centro",
         ["Bottom Right"] = "Abajo derecha",
-        Executor = "Ejecutor", Small = "PequeÃƒÂ±o", Medium = "Mediano", Large = "Grande",
+        Executor = "Ejecutor", Small = "PequeÃƒÆ’Ã‚Â±o", Medium = "Mediano", Large = "Grande",
         ["Theme Style"] = "Tema de color", ["Round Roles"] = "Roles de ronda",
         Murderer = "Asesino", Sheriff = "Sheriff",
     },
@@ -1290,7 +1290,7 @@ local function Notify(title, msg, dur, style)
     closeGlyph.Position = UDim2.new(1, -13, 0, 7)
     closeGlyph.Size = UDim2.fromOffset(18, 18)
     closeGlyph.Font = FM
-    closeGlyph.Text = "Ãƒâ€”"
+    closeGlyph.Text = "ÃƒÆ’Ã¢â‚¬â€"
     closeGlyph.TextColor3 = T.White; pcall(function() closeGlyph:SetAttribute("ThemeColorRole_TextColor3", "White") end)
     closeGlyph.TextTransparency = 0.18
     closeGlyph.TextSize = MOBILE and 12 or 14
@@ -1658,7 +1658,7 @@ local function mkWinBtn(txt, xOff)
     return b
 end
 
-local CloseBtn = mkWinBtn("Ãƒâ€”", MOBILE and -16 or -10)
+local CloseBtn = mkWinBtn("ÃƒÆ’Ã¢â‚¬â€", MOBILE and -16 or -10)
 
 local UIRegistry = {}
 
@@ -1785,7 +1785,7 @@ local function applySearch()
             local h = pg:FindFirstChild("SearchHdr")
             if h then
                 h.Visible = hit
-                if hit then h.Text = string.upper(pg.Name) .. "  Ã‚Â·  " .. hits end
+                if hit then h.Text = string.upper(pg.Name) .. "  Ãƒâ€šÃ‚Â·  " .. hits end
             end
             local bar = pg:FindFirstChild("SubTabBar") or pg:FindFirstChild("VisualsSubTabBar")
             if bar then bar.Visible = false end
@@ -1843,7 +1843,7 @@ do
     clearBtn.AutoButtonColor = false
     clearBtn.Font = FB
     clearBtn.TextSize = 14
-    clearBtn.Text = "Ãƒâ€”"
+    clearBtn.Text = "ÃƒÆ’Ã¢â‚¬â€"
     clearBtn.TextColor3 = T.Tx3; pcall(function() clearBtn:SetAttribute("ThemeColorRole_TextColor3", "Tx3") end)
     clearBtn.Visible = false
     clearBtn.ZIndex = SearchBox.ZIndex + 1
@@ -1972,7 +1972,7 @@ pcall(function()
         if name ~= "" then
             S.ExecutorName = name
             S.ExecutorShort = name
-            if version ~= "" and version ~= name then S.ExecutorName = name .. "  Ã‚Â·  " .. version end
+            if version ~= "" and version ~= name then S.ExecutorName = name .. "  Ãƒâ€šÃ‚Â·  " .. version end
         end
     elseif type(syn) == "table" then
         S.ExecutorName = "Synapse"
@@ -9092,9 +9092,9 @@ do
             end
             local mode = getLiveChatMode()
             local style = tostring(S.AIChatPersonality or "Casual")
-            local suffix = watchedMessages > 0 and (" Ã‚Â· " .. tostring(watchedMessages) .. " watched") or " Ã‚Â· waiting"
-            if lastWatchedSpeaker ~= "" then suffix = suffix .. " Ã‚Â· " .. lastWatchedSpeaker end
-            S._SetAIChatLiveStatus("AI chat: " .. mode .. " Ã‚Â· " .. style .. suffix)
+            local suffix = watchedMessages > 0 and (" Ãƒâ€šÃ‚Â· " .. tostring(watchedMessages) .. " watched") or " Ãƒâ€šÃ‚Â· waiting"
+            if lastWatchedSpeaker ~= "" then suffix = suffix .. " Ãƒâ€šÃ‚Â· " .. lastWatchedSpeaker end
+            S._SetAIChatLiveStatus("AI chat: " .. mode .. " Ãƒâ€šÃ‚Â· " .. style .. suffix)
         end
 
         S._UpdateAIChatLiveStatus = updateLiveChatStatus
@@ -9167,7 +9167,7 @@ do
             message = message:gsub('^"(.*)"$', '%1'):gsub("^'(.*)'$", '%1')
             message = message:gsub("```", ""):gsub("[\r\n]+", " "):gsub("%s+", " "):match("^%s*(.-)%s*$") or ""
             message = message:gsub("^[Aa]ssistant%s*:%s*", ""):gsub("^[Bb]ot%s*:%s*", "")
-            message = message:gsub("^[-*Ã¢â‚¬Â¢]%s+", "")
+            message = message:gsub("^[-*ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢]%s+", "")
             if message == "" then return false, "" end
             if lastSentText ~= "" and message:lower() == lastSentText:lower() then return false, "" end
             local originalMessage = message
@@ -9386,7 +9386,7 @@ do
             reply = reply:gsub("^%s*(.-)%s*$", "%1")
             reply = reply:gsub("^[Aa]ssistant%s*:%s*", "")
             reply = reply:gsub("^[Bb]ot%s*:%s*", "")
-            reply = reply:gsub("^[-*Ã¢â‚¬Â¢]%s+", "")
+            reply = reply:gsub("^[-*ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢]%s+", "")
             if reply == "" then return nil end
 
             local allowedSingle = {
@@ -9410,13 +9410,13 @@ do
                 or (displayName ~= "" and lowerText:find(displayName, 1, true))
                 or lowerText:match("%f[%a]ai%f[%A]")
                 or lowerText:match("%f[%a]bot%f[%A]")
-                or lowerText:find("ÃÂ¸ÃÂ¸", 1, true)
-                or lowerText:find("ÃÂ±ÃÂ¾Ã‘â€š", 1, true)
+                or lowerText:find("ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¸", 1, true)
+                or lowerText:find("ÃƒÂÃ‚Â±ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â‚¬Å¡", 1, true)
         end
 
         local function messageLooksLikeQuestion(text, lowerText)
             if text:find("?", 1, true) then return true end
-            for _, word in ipairs({"what", "why", "how", "where", "when", "who", "can", "could", "ÃÂºÃ‘â€šÃÂ¾", "Ã‘â€¡Ã‘â€šÃÂ¾", "ÃÂ³ÃÂ´ÃÂµ", "ÃÂºÃÂ¾ÃÂ³ÃÂ´ÃÂ°", "ÃÂ¿ÃÂ¾Ã‘â€¡ÃÂµÃÂ¼Ã‘Æ’", "ÃÂ·ÃÂ°Ã‘â€¡ÃÂµÃÂ¼", "ÃÂºÃÂ°ÃÂº", "ÃÂ¼ÃÂ¾ÃÂ¶ÃÂµÃ‘Ë†Ã‘Å’"}) do
+            for _, word in ipairs({"what", "why", "how", "where", "when", "who", "can", "could", "ÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾", "Ãƒâ€˜Ã¢â‚¬Â¡Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾", "ÃƒÂÃ‚Â³ÃƒÂÃ‚Â´ÃƒÂÃ‚Âµ", "ÃƒÂÃ‚ÂºÃƒÂÃ‚Â¾ÃƒÂÃ‚Â³ÃƒÂÃ‚Â´ÃƒÂÃ‚Â°", "ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â‚¬Â¡ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼Ãƒâ€˜Ã†â€™", "ÃƒÂÃ‚Â·ÃƒÂÃ‚Â°Ãƒâ€˜Ã¢â‚¬Â¡ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼", "ÃƒÂÃ‚ÂºÃƒÂÃ‚Â°ÃƒÂÃ‚Âº", "ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â¶ÃƒÂÃ‚ÂµÃƒâ€˜Ã‹â€ Ãƒâ€˜Ã…â€™"}) do
                 if lowerText:sub(1, #word) == word then return true end
             end
             return false
@@ -9499,7 +9499,7 @@ do
                         local sent, sentText = say(cleanReply)
                         if sent then addToHistory("assistant", sentText) end
                     else
-                        Notify("AI Chat", "ÃÅ¾Ã‘â€šÃÂ²ÃÂµÃ‘â€š ÃÂ¼ÃÂ¾ÃÂ´ÃÂµÃÂ»ÃÂ¸ ÃÂ¾Ã‘â€šÃÂ±Ã‘â‚¬ÃÂ¾Ã‘Ë†ÃÂµÃÂ½: ÃÂ¿ÃÂ¾ÃÂ²Ã‘â‚¬ÃÂµÃÂ¶ÃÂ´Ã‘â€˜ÃÂ½ÃÂ½Ã‘â€¹ÃÂ¹ Ã‘â€šÃÂµÃÂºÃ‘ÂÃ‘â€š", 2)
+                        Notify("AI Chat", "ÃƒÂÃ…Â¾Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â´ÃƒÂÃ‚ÂµÃƒÂÃ‚Â»ÃƒÂÃ‚Â¸ ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â±Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¾Ãƒâ€˜Ã‹â€ ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½: ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â²Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¶ÃƒÂÃ‚Â´Ãƒâ€˜Ã¢â‚¬ËœÃƒÂÃ‚Â½ÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Â¹ÃƒÂÃ‚Â¹ Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚ÂµÃƒÂÃ‚ÂºÃƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡", 2)
                     end
                 elseif err then
                     Notify("AI Error", tostring(err), 4)
@@ -9958,7 +9958,7 @@ do
     info.TextColor3 = T.Tx4; pcall(function() info:SetAttribute("ThemeColorRole_TextColor3", "Tx4") end)
     info.TextWrapped = true
     info.TextXAlignment = Enum.TextXAlignment.Left
-    info.Text = "Left-click = select targets (multi Ã¢â‚¬â€ pick several; Fun & Follow use the NEAREST selected). 'Auto' clears the selection = nearest of all."
+    info.Text = "Left-click = select targets (multi ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â pick several; Fun & Follow use the NEAREST selected). 'Auto' clears the selection = nearest of all."
     local searchBox = Instance.new("TextBox")
     searchBox.Parent = sec1
     searchBox.LayoutOrder = 2
@@ -10513,7 +10513,7 @@ do
             S._resetMyCharacter()
             Notify("Blink", "Failed to activate Blink", 3)
         else
-            Notify("Blink", "Blink active Ã¢â‚¬â€ move to teleport", 4)
+            Notify("Blink", "Blink active ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â move to teleport", 4)
         end
     end
 end
@@ -11119,7 +11119,7 @@ local function mkWatermark()
         value.TextColor3 = T.Tx; pcall(function() value:SetAttribute("ThemeColorRole_TextColor3", "Tx") end)
         value.TextXAlignment = Enum.TextXAlignment.Left
         value.TextTruncate = Enum.TextTruncate.AtEnd
-        value.Text = "Ã¢â‚¬â€"
+        value.Text = "ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â"
         value.ZIndex = 866
         return value
     end
@@ -13163,7 +13163,7 @@ do
     syncDesc.Size = UDim2.new(1, -10, 0, 45)
     syncDesc.Position = UDim2.new(0, 5, 0, 0)
     syncDesc.TextWrapped = true
-    syncDesc.Text = "ÃÂ­Ã‘â€šÃÂ° Ã‘â€žÃ‘Æ’ÃÂ½ÃÂºÃ‘â€ ÃÂ¸Ã‘Â ÃÂ¸Ã‘ÂÃÂ¿Ã‘â‚¬ÃÂ°ÃÂ²ÃÂ»Ã‘ÂÃÂµÃ‘â€š ÃÂ°ÃÂ²Ã‘â€šÃÂ¾Ã‘â€žÃÂ°Ã‘â‚¬ÃÂ¼, ÃÂµÃ‘ÂÃÂ»ÃÂ¸ ÃÂ¾ÃÂ½ ÃÂ·ÃÂ°Ã‘ÂÃ‘â€šÃ‘â‚¬ÃÂµÃÂ²ÃÂ°ÃÂµÃ‘â€š ÃÂ½ÃÂ° ÃÂ¼ÃÂ¾ÃÂ½ÃÂµÃ‘â€šÃÂµ. Ãâ€™ÃÂºÃÂ»Ã‘Å½Ã‘â€¡ÃÂ°ÃÂ¹Ã‘â€šÃÂµ ÃÂµÃ‘â€˜ Ã‘â€šÃÂ¾ÃÂ»Ã‘Å’ÃÂºÃÂ¾ ÃÂµÃ‘ÂÃÂ»ÃÂ¸ Ã‘Æ’ÃÂ²ÃÂµÃ‘â‚¬ÃÂµÃÂ½Ã‘â€¹, Ã‘â€¡Ã‘â€šÃÂ¾ ÃÂ²ÃÂ°Ã‘Ë† ÃÂ¸Ã‘ÂÃÂ¿ÃÂ¾ÃÂ»ÃÂ½ÃÂ¸Ã‘â€šÃÂµÃÂ»Ã‘Å’ (executor) ÃÂ¿ÃÂ¾ÃÂ»ÃÂ½ÃÂ¾Ã‘ÂÃ‘â€šÃ‘Å’Ã‘Å½ Ã‘ÂÃÂ¾ÃÂ²ÃÂ¼ÃÂµÃ‘ÂÃ‘â€šÃÂ¸ÃÂ¼ Ã‘ÂÃÂ¾ Ã‘ÂÃÂºÃ‘â‚¬ÃÂ¸ÃÂ¿Ã‘â€šÃÂ¾ÃÂ¼, ÃÂ¸ÃÂ½ÃÂ°Ã‘â€¡ÃÂµ ÃÂ¸ÃÂ³Ã‘â‚¬ÃÂ° ÃÂ¼ÃÂ¾ÃÂ¶ÃÂµÃ‘â€š ÃÂ²Ã‘â€¹ÃÂ»ÃÂµÃ‘â€šÃÂµÃ‘â€šÃ‘Å’."
+    syncDesc.Text = "ÃƒÂÃ‚Â­Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â° Ãƒâ€˜Ã¢â‚¬Å¾Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â½ÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚Â¸Ãƒâ€˜Ã‚Â ÃƒÂÃ‚Â¸Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â¿Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²ÃƒÂÃ‚Â»Ãƒâ€˜Ã‚ÂÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ ÃƒÂÃ‚Â°ÃƒÂÃ‚Â²Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â‚¬Å¾ÃƒÂÃ‚Â°Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¼, ÃƒÂÃ‚ÂµÃƒâ€˜Ã‚ÂÃƒÂÃ‚Â»ÃƒÂÃ‚Â¸ ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â½ ÃƒÂÃ‚Â·ÃƒÂÃ‚Â°Ãƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚ÂµÃƒÂÃ‚Â²ÃƒÂÃ‚Â°ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ ÃƒÂÃ‚Â½ÃƒÂÃ‚Â° ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â½ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Âµ. ÃƒÂÃ¢â‚¬â„¢ÃƒÂÃ‚ÂºÃƒÂÃ‚Â»Ãƒâ€˜Ã…Â½Ãƒâ€˜Ã¢â‚¬Â¡ÃƒÂÃ‚Â°ÃƒÂÃ‚Â¹Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Âµ ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Ëœ Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â»Ãƒâ€˜Ã…â€™ÃƒÂÃ‚ÂºÃƒÂÃ‚Â¾ ÃƒÂÃ‚ÂµÃƒâ€˜Ã‚ÂÃƒÂÃ‚Â»ÃƒÂÃ‚Â¸ Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â²ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚ÂµÃƒÂÃ‚Â½Ãƒâ€˜Ã¢â‚¬Â¹, Ãƒâ€˜Ã¢â‚¬Â¡Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾ ÃƒÂÃ‚Â²ÃƒÂÃ‚Â°Ãƒâ€˜Ã‹â€  ÃƒÂÃ‚Â¸Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â»ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¸Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚ÂµÃƒÂÃ‚Â»Ãƒâ€˜Ã…â€™ (executor) ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â»ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¾Ãƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã…â€™Ãƒâ€˜Ã…Â½ Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â¾ÃƒÂÃ‚Â²ÃƒÂÃ‚Â¼ÃƒÂÃ‚ÂµÃƒâ€˜Ã‚ÂÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¼ Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â¾ Ãƒâ€˜Ã‚ÂÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â¿Ãƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â¼, ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â½ÃƒÂÃ‚Â°Ãƒâ€˜Ã¢â‚¬Â¡ÃƒÂÃ‚Âµ ÃƒÂÃ‚Â¸ÃƒÂÃ‚Â³Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â° ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â¶ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ ÃƒÂÃ‚Â²Ãƒâ€˜Ã¢â‚¬Â¹ÃƒÂÃ‚Â»ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã…â€™."
     syncDesc.TextColor3 = Color3.fromRGB(180, 180, 180)
     syncDesc.Font = Enum.Font.Gotham
     syncDesc.TextSize = 11
@@ -14333,8 +14333,8 @@ do
         end)
         if #arr == 0 then mkRow(savedScroll, 1, "No saved servers yet", {}) end
         for i, s in ipairs(arr) do
-            local prefix = s.fav and "FAV  Ã‚Â·  " or ""
-            mkRow(savedScroll, i, prefix .. tostring(s.label) .. "   Ã‚Â·   " .. shortId(s.id), {
+            local prefix = s.fav and "FAV  Ãƒâ€šÃ‚Â·  " or ""
+            mkRow(savedScroll, i, prefix .. tostring(s.label) .. "   Ãƒâ€šÃ‚Â·   " .. shortId(s.id), {
                 { text = s.fav and "UNFAV" or "FAV", width = 48, color = FAV_COLOR, cb = function() toggleFav(s.id); refreshSaved() end },
                 { text = "JOIN", width = 42, color = T.Tx, cb = function() joinId(s.id) end },
                 { text = "COPY", width = 44, color = T.Tx, cb = function() copyId(s.id) end },
@@ -15543,7 +15543,7 @@ do
         end
         if not surfing then
             surfing = true
-            Notify("Pixel Surf", "Surfing Ã¢â‚¬â€ WASD to strafe, Space to hop", 2)
+            Notify("Pixel Surf", "Surfing ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â WASD to strafe, Space to hop", 2)
         end
         pcall(function() hum.PlatformStand = true end)
         local cam = workspace.CurrentCamera
@@ -16505,44 +16505,44 @@ local emoteCatalog = {
     { name = "intrusive awkward wave", id = 85665834724929 },
     { name = "Feeling Cute", id = 112540347880956 },
     { name = "Chinese Dance: Da Koto Nai [BEST]", id = 104539498095025 },
-    { name = "Ã¢Å“â€¦ Obby Head - Emote [ORIGINAL]", id = 122814100170962 },
+    { name = "ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Obby Head - Emote [ORIGINAL]", id = 122814100170962 },
     { name = "Cute Pretty Girly Girl Fierce Slay Idle Pose", id = 135853357333509 },
     { name = "TWICE - What Is Love", id = 91811386043367 },
-    { name = "Ã¢â„¢Â¡ Cute n shy Idle Emote Profile Pose", id = 135994700702758 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ Cute n shy Idle Emote Profile Pose", id = 135994700702758 },
     { name = "Cute crouch", id = 120224229260879 },
     { name = "Emperor Of The Auraverse [[Aura]]", id = 133594786690861 },
     { name = "Hype Boy - NewJeans", id = 105324347192111 },
     { name = "KATSEYE - Better in Denim (GAP)", id = 86184456144623 },
     { name = "Flopping Fish", id = 133142324349281 },
-    { name = "kawaii whimsy airplane profile pose ÃŠÅ¡Ã¢â„¢Â¡Ã‰Å¾", id = 122803615354190 },
+    { name = "kawaii whimsy airplane profile pose ÃƒÅ Ã…Â¡ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡Ãƒâ€°Ã…Â¾", id = 122803615354190 },
     { name = "Brazil Dance", id = 126046375141676 },
-    { name = "Ã¢â„¢Â¡ : super shy girly idle pose", id = 132436768198498 },
-    { name = "Ã¢â„¢Â¡ kawaii magical girl kpop idle pose", id = 126228947948058 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ : super shy girly idle pose", id = 132436768198498 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ kawaii magical girl kpop idle pose", id = 126228947948058 },
     { name = "Rock Out - Bebe Rexha", id = 18225077553 },
     { name = "Just be competent", id = 124041369408613 },
     { name = "Just Your Doll", id = 78724951673945 },
-    { name = "Pangya DanceÃ°Å¸Å½â‚¬", id = 89439360145889 },
+    { name = "Pangya DanceÃƒÂ°Ã…Â¸Ã…Â½Ã¢â€šÂ¬", id = 89439360145889 },
     { name = "L Lawliet", id = 139435106875573 },
     { name = "Party Rock Anthem", id = 105248382902194 },
     { name = "BLACKPINK Shut Down - Part 1", id = 14901369589 },
-    { name = "Floating Goddess (Matching Floating Adonis) Ã°Å¸â€“Â¤!", id = 106454952665088 },
-    { name = "Ã°Å¸Â¤Â cute n timid idle profile pose", id = 110252467018810 },
-    { name = "Ã¢â„¢Â¡ cute shy withdrawn sit", id = 81204065393762 },
+    { name = "Floating Goddess (Matching Floating Adonis) ÃƒÂ°Ã…Â¸Ã¢â‚¬â€œÃ‚Â¤!", id = 106454952665088 },
+    { name = "ÃƒÂ°Ã…Â¸Ã‚Â¤Ã‚Â cute n timid idle profile pose", id = 110252467018810 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ cute shy withdrawn sit", id = 81204065393762 },
     { name = "Chill Floating Fly Aura (Blinking)", id = 127195099938159 },
     { name = "rolling crybaby", id = 130726889233022 },
-    { name = "Ã°Å¸Å½Æ’ Creepy Scene Halloween Zombie Holding Head Ã°Å¸Å½Æ’", id = 139460224769900 },
+    { name = "ÃƒÂ°Ã…Â¸Ã…Â½Ã†â€™ Creepy Scene Halloween Zombie Holding Head ÃƒÂ°Ã…Â¸Ã…Â½Ã†â€™", id = 139460224769900 },
     { name = "Possessed", id = 102610758906338 },
     { name = "RUDE! - Hearts2Hearts", id = 72594018128577 },
     { name = "Make You Mine", id = 104485625389237 },
     { name = "BLACKPINK Shut Down - Part 2", id = 14901371589 },
     { name = "how did he hit every beat", id = 134311528115559 },
     { name = "Cut Water Summer Dance!", id = 71825767065274 },
-    { name = "Ã¢â„¢Â¡ cute bouncy anime dance", id = 108845097487486 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ cute bouncy anime dance", id = 108845097487486 },
     { name = "TWICE - The Feels", id = 79194689807074 },
     { name = "Metro Man arm swings", id = 136271269847411 },
     { name = "Sit", id = 139621472081340 },
     { name = "Catch Catch Setalcix", id = 129411309930167 },
-    { name = "Cute Excited SitÃ°Å¸Â¦â€¹", id = 73743026563647 },
+    { name = "Cute Excited SitÃƒÂ°Ã…Â¸Ã‚Â¦Ã¢â‚¬Â¹", id = 73743026563647 },
     { name = "Springtrapped (Face Animated)", id = 125974779288821 },
     { name = "Biblically Accurate Emote", id = 133596366979822 },
     { name = "Aura Fly Sitting", id = 72450410210932 },
@@ -16554,7 +16554,7 @@ local emoteCatalog = {
     { name = "Cute Sit", id = 72947568152049 },
     { name = "Moonwalk", id = 111378664166805 },
     { name = "Sneaky", id = 3576754235 },
-    { name = "BLACKPINK Pink Venom - I Bring the Pain LikeÃ¢â‚¬Â¦", id = 14548710952 },
+    { name = "BLACKPINK Pink Venom - I Bring the Pain LikeÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦", id = 14548710952 },
     { name = "Cute Bouncy Hip Shake Dance", id = 87963462118126 },
     { name = "Jamal Dance", id = 72213123467340 },
     { name = "happy hula", id = 113863828896103 },
@@ -16573,16 +16573,16 @@ local emoteCatalog = {
     { name = "Speed Mirage", id = 108946079729323 },
     { name = "KATSEYE - GNARLY", id = 133685484220846 },
     { name = "Popstar Moves", id = 87757463565936 },
-    { name = "Ã°Å¸â€™â‚¬ MM2 Fake Dead Emote", id = 114368587461466 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â€šÂ¬ MM2 Fake Dead Emote", id = 114368587461466 },
     { name = "Get Out", id = 3934984583 },
     { name = "Race Car", id = 121936817462716 },
-    { name = "Ã°Å¸â€Â¥I came to GROOVEÃ°Å¸â€Â¥[A peanut butter house] 4'10", id = 85913265750993 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥I came to GROOVEÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥[A peanut butter house] 4'10", id = 85913265750993 },
     { name = "Tyla Dance", id = 89145613574909 },
     { name = "Brazilian Funk Footwork", id = 88693910954718 },
     { name = "Jumping Cheer", id = 5895009708 },
     { name = "Sleeping Angel", id = 100885431049593 },
     { name = "Mesmerizer", id = 92707348383277 },
-    { name = "Aura RNG Fly Idle Ã¢Å“Â¨", id = 78755795767408 },
+    { name = "Aura RNG Fly Idle ÃƒÂ¢Ã…â€œÃ‚Â¨", id = 78755795767408 },
     { name = "Confess to Me", id = 105722319548703 },
     { name = "R15 Death (Accurate)", id = 114899970878842 },
     { name = "[ORIGINAL] It's Gangnam Style!", id = 130998336536045 },
@@ -16594,21 +16594,21 @@ local emoteCatalog = {
     { name = "Sponge Dance", id = 137261874619072 },
     { name = "Ya Ya Ying Dance", id = 130850357238599 },
     { name = "Spin", id = 138343476996773 },
-    { name = "Take The L Ã¢Å“â€¦", id = 82405492529515 },
+    { name = "Take The L ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦", id = 82405492529515 },
     { name = "Moon Walk", id = 79127989560307 },
     { name = "Crossed Arm Hip Sway", id = 122545939134570 },
-    { name = "Ã°Å¸â€¢Â·Ã¯Â¸Â Realy strange Hornet's Spider", id = 114530046828576 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã‚Â·ÃƒÂ¯Ã‚Â¸Ã‚Â Realy strange Hornet's Spider", id = 114530046828576 },
     { name = "Cute Kawaii Legs Up Shy Kicking Feet Cat Laying", id = 103155280474275 },
     { name = "Sweet Hug Pose V1 [MATCHING]", id = 100597438247721 },
     { name = "Jumpstyle dance", id = 133248139921782 },
     { name = "Stray Kids Walkin On Water", id = 100773414188482 },
     { name = "Flying Superhero Emote", id = 71574925787532 },
-    { name = "Ã¢â„¢Â¥Ã¯Â¸ÂOtsukare summer", id = 111032510525800 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¥ÃƒÂ¯Ã‚Â¸Ã‚ÂOtsukare summer", id = 111032510525800 },
     { name = "Thank You Bow Ladies and Gentlemen", id = 132566708912466 },
     { name = "Tomodachi Mii Hip Sway", id = 105909453197841 },
     { name = "essence - Slay Bestie", id = 100055506817628 },
     { name = "Jamal Brazil Groove", id = 117119421748582 },
-    { name = "Ã¢â„¢Â¡ cute bossy sassy girl idle pose", id = 137909901344953 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ cute bossy sassy girl idle pose", id = 137909901344953 },
     { name = "Da Hood Stomp", id = 92237689732858 },
     { name = "Around the Head", id = 114502615688717 },
     { name = "Relax Flying Anime (Floating Emote)", id = 131950236025472 },
@@ -16616,9 +16616,9 @@ local emoteCatalog = {
     { name = "Body Phone (Check Description)", id = 110262668561006 },
     { name = "Jumpstyle Dance", id = 89614983665331 },
     { name = "High Hands", id = 9710994651 },
-    { name = "Ã°Å¸â€™â€” Pangya Dance 3.0 !!", id = 136504778836355 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â‚¬â€ Pangya Dance 3.0 !!", id = 136504778836355 },
     { name = "cute doll ballerina music box spin", id = 111332667359868 },
-    { name = "YUNGBLUD Ã¢â‚¬â€œ HIGH KICK", id = 14022978026 },
+    { name = "YUNGBLUD ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ HIGH KICK", id = 14022978026 },
     { name = "Stray Kids - Do It", id = 95256633886548 },
     { name = "TWICE Set Me Free - Dance 2", id = 12715397488 },
     { name = "[BEST] Dougie (Everybody Loves Me)", id = 114756515400742 },
@@ -16626,23 +16626,23 @@ local emoteCatalog = {
     { name = "Floating Princess", id = 120160563346972 },
     { name = "Sigma Boy Dance", id = 111665668810578 },
     { name = "SpiderMan [Original]", id = 130987133773478 },
-    { name = "Floating Aura Emote Ã¢Å“Â¨ Power Anime Pose", id = 115793885897101 },
+    { name = "Floating Aura Emote ÃƒÂ¢Ã…â€œÃ‚Â¨ Power Anime Pose", id = 115793885897101 },
     { name = "LE SSERAFIM - Spaghetti", id = 81216108771843 },
     { name = "Dance All Night", id = 97139559228653 },
     { name = "True Heart", id = 103168660352906 },
     { name = "Hear Me Now!", id = 91110020647774 },
     { name = "Iuno Moon Goddess Intro Idle | Wuthering WuWa", id = 117373445253902 },
-    { name = "Ã Â­Â¨Ã Â­Â§: tadaa headless showoff profile pose! Ã¢â„¢Â¡", id = 119934579718052 },
+    { name = "ÃƒÂ Ã‚Â­Ã‚Â¨ÃƒÂ Ã‚Â­Ã‚Â§: tadaa headless showoff profile pose! ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡", id = 119934579718052 },
     { name = "Flex Walk", id = 15506506103 },
     { name = "Sit", id = 101743582461626 },
     { name = "Tyranno", id = 82026568595380 },
     { name = "AOK - Tai Verdes", id = 7942960760 },
-    { name = "Cute Angry Idle Ã°Å¸ËœÂ¡ [Dynamic Head]", id = 136895816311970 },
+    { name = "Cute Angry Idle ÃƒÂ°Ã…Â¸Ã‹Å“Ã‚Â¡ [Dynamic Head]", id = 136895816311970 },
     { name = "DearALICE - Ariana", id = 133765015173412 },
     { name = "Spice Queen of Da Place", id = 126468010841883 },
     { name = "Queen Runway Model", id = 108683274449989 },
     { name = "Nuh Uh! (Finger Wiggle)", id = 91380965860245 },
-    { name = "Ã°Å¸â€™â‚¬MM2 Fake Dead - 2", id = 95407766746448 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â€šÂ¬MM2 Fake Dead - 2", id = 95407766746448 },
     { name = "TWICE Like Ooh-Ahh", id = 14124050904 },
     { name = "Jacks", id = 3570649048 },
     { name = "Side Shuffle", id = 122127591991917 },
@@ -16658,20 +16658,20 @@ local emoteCatalog = {
     { name = "Neck Roll", id = 93641632427451 },
     { name = "Casual Sitting", id = 113039466758343 },
     { name = "Leaning Against Wall Arms Crossed", id = 77806145358673 },
-    { name = "Needy V sit Split Drop (OG) Ã°Å¸â€Â®", id = 111539333518905 },
+    { name = "Needy V sit Split Drop (OG) ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â®", id = 111539333518905 },
     { name = "Gangnam style", id = 80923445784018 },
     { name = "Xaviersobased Emote", id = 131763631172236 },
     { name = "Hotel Transylvania macarena dance", id = 81808860196321 },
     { name = "Street Glide", id = 137284968787523 },
     { name = "Jojo Torture Dance", id = 82910305160190 },
     { name = "Car Pose: Tokyo Lean", id = 118859160373597 },
-    { name = "Ã¢â„¢Â¡ : cute sitting idle pose", id = 139828710607670 },
-    { name = "HugÃ°Å¸â€™â€¢", id = 88712283515515 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ : cute sitting idle pose", id = 139828710607670 },
+    { name = "HugÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â‚¬Â¢", id = 88712283515515 },
     { name = "Upside Down Leg Trap", id = 104746315279105 },
     { name = "BLACKHOLE - IVE", id = 109032209212356 },
     { name = "Signature Shuffle", id = 81442470330880 },
     { name = "[MIRA] Kicking Feet Sit", id = 78758922757947 },
-    { name = "Ã°Å¸â€¢Â·Ã¯Â¸Â Spiderman Hanging", id = 82370885440550 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã‚Â·ÃƒÂ¯Ã‚Â¸Ã‚Â Spiderman Hanging", id = 82370885440550 },
     { name = "Dougie", id = 93675237485386 },
     { name = "Shattered", id = 124305244640379 },
     { name = "Worm Floating Endless", id = 125154823571632 },
@@ -16687,13 +16687,13 @@ local emoteCatalog = {
     { name = "Choso", id = 119042829278898 },
     { name = "Vecna Stranger Things Fly Animation Emote Bone", id = 90555063826230 },
     { name = "Sturdy NYC Dance", id = 122687759897103 },
-    { name = "Ã¢â„¢Â¡ cutesie shy idle !!", id = 120389512169914 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ cutesie shy idle !!", id = 120389512169914 },
     { name = "TYLA Chanel - Kpop Trendy Dance", id = 80341701361363 },
     { name = "Fishing", id = 3994129128 },
     { name = "Catwalk Walk Emote (FIRST,OG)", id = 138140141577966 },
     { name = "cute sway animation", id = 104612504371741 },
-    { name = "Ã°Å¸â€™â‚¬MM2 Fake Dead - 3", id = 79297779614324 },
-    { name = "Gap x Katseye - Better Than yours (Milkshake ) Ã°Å¸â€Â¥.", id = 136084484696445 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â€šÂ¬MM2 Fake Dead - 3", id = 79297779614324 },
+    { name = "Gap x Katseye - Better Than yours (Milkshake ) ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥.", id = 136084484696445 },
     { name = "Louder", id = 3576751796 },
     { name = "Jump - BLACKPINK", id = 106977382414370 },
     { name = "[AURA FARM] YN Wall Lean", id = 71556328869803 },
@@ -16718,16 +16718,16 @@ local emoteCatalog = {
     { name = "Relaxed Sit", id = 99568437064777 },
     { name = "Floating", id = 84052327668385 },
     { name = "NO HANDS", id = 95664256018756 },
-    { name = "ÃŠÅ¡Ã¢â„¢Â¡Ã‰Å¾ Cute shy avatar pose (LOOPED)", id = 126684112484206 },
+    { name = "ÃƒÅ Ã…Â¡ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡Ãƒâ€°Ã…Â¾ Cute shy avatar pose (LOOPED)", id = 126684112484206 },
     { name = "Reze Dance (Iris Out)", id = 91032553512904 },
-    { name = "Ã Â­Â¨Ã Â­Â§ Sweetest Angel Sit Pose", id = 129766891082557 },
+    { name = "ÃƒÂ Ã‚Â­Ã‚Â¨ÃƒÂ Ã‚Â­Ã‚Â§ Sweetest Angel Sit Pose", id = 129766891082557 },
     { name = "Spice Floor Call", id = 103399717097173 },
     { name = "Cyrene Fairy Swing Intro Idle | Honkai HSR", id = 130027779038512 },
     { name = "Money Hop Switch", id = 134222090358172 },
     { name = "levitate", id = 87826892596287 },
     { name = "Belly Dancing", id = 131939729732240 },
     { name = "Rock Star - Royal Blood", id = 6533100850 },
-    { name = "cute gasp Ã°Å¸ËœÂ±", id = 132029163919678 },
+    { name = "cute gasp ÃƒÂ°Ã…Â¸Ã‹Å“Ã‚Â±", id = 132029163919678 },
     { name = "Rabbit Hole - Miku", id = 133481721436918 },
     { name = "Shuffling", id = 115925652377890 },
     { name = "STURDY", id = 120302905807132 },
@@ -16736,18 +16736,18 @@ local emoteCatalog = {
     { name = "Sweet Fluffy Bunny Dance ORIGINAL", id = 85587917792339 },
     { name = "Billy Bounce", id = 126516908191316 },
     { name = "Katseye - Gnarly Pop Dance Emote", id = 100829635809504 },
-    { name = "Ã¢â„¢Â¡ cute halloween magical witch aura idle pose", id = 80094678034288 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ cute halloween magical witch aura idle pose", id = 80094678034288 },
     { name = "[Best] All Might Victory Pose R6", id = 100416618991324 },
-    { name = "cute bossy girl pose Ã¢â„¢Â¡Ã Â­Â¨Ã Â­Â§", id = 135078245258688 },
+    { name = "cute bossy girl pose ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ÃƒÂ Ã‚Â­Ã‚Â¨ÃƒÂ Ã‚Â­Ã‚Â§", id = 135078245258688 },
     { name = "[NEW] Runway Diva!", id = 110724441263151 },
-    { name = "Ã¢ÂÂ³[LIMITED]  Kicking Feet", id = 80365921763329 },
+    { name = "ÃƒÂ¢Ã‚ÂÃ‚Â³[LIMITED]  Kicking Feet", id = 80365921763329 },
     { name = "Vampire Pose [ORIGINAL]", id = 113919169704818 },
     { name = "La Detone - Dance", id = 103768845612667 },
     { name = "Like Jennie Dance from JENNIE", id = 92224509275999 },
     { name = "FORSAKEN John Doe Pose", id = 104072580597361 },
     { name = "KATSEYE TOUCH (CHEAP)", id = 75916539353418 },
     { name = "Fake Lag/Disconnect (TROLL)", id = 97523498583729 },
-    { name = "Hype dance Ã¡Æ’Â¦", id = 81224179573920 },
+    { name = "Hype dance ÃƒÂ¡Ã†â€™Ã‚Â¦", id = 81224179573920 },
     { name = "Jester Dance", id = 124057206061364 },
     { name = "Default Dance | OG", id = 80877772569772 },
     { name = "Scuba Trend", id = 135211326811898 },
@@ -16757,7 +16757,7 @@ local emoteCatalog = {
     { name = "Headlock", id = 140252879267563 },
     { name = "2 Phut Hon Dance", id = 115319301809339 },
     { name = "Brazillian Vibe", id = 112528616743393 },
-    { name = "[ OG Ã¢â„¢Â¡ ] brooklyn pop - kawaii hip swing dance", id = 104060042886647 },
+    { name = "[ OG ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ ] brooklyn pop - kawaii hip swing dance", id = 104060042886647 },
     { name = "One-legged Snare Trap", id = 108644020480886 },
     { name = "Urban Dance", id = 89466407313325 },
     { name = "Sassy Fashion Twirl", id = 103924340632445 },
@@ -16773,13 +16773,13 @@ local emoteCatalog = {
     { name = "Emote Loading. Please Wait... | spinning Robloxian", id = 84511772437190 },
     { name = "Alter Ego", id = 95944231654385 },
     { name = "MM2 Dead", id = 139859849852362 },
-    { name = "Ã¢â„¢Â¡ soft elegant stance !!", id = 90478555055303 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ soft elegant stance !!", id = 90478555055303 },
     { name = "Sleeping Sideways", id = 113546798537900 },
     { name = "Aura Gainer", id = 125717501705233 },
-    { name = "Pumpkin Legend Ã°Å¸â€Â¥", id = 132315093859677 },
+    { name = "Pumpkin Legend ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥", id = 132315093859677 },
     { name = "Catwalk Walk", id = 120380776076922 },
     { name = "Apple Store Girl Goofy Dance (do you want me)", id = 114202552805537 },
-    { name = "Ã°Å¸â€™Â©MEGA POOPING Ã°Å¸â€™Â© [AURA] Ã°Å¸Ëœâ€š", id = 106880906271071 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â©MEGA POOPING ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â© [AURA] ÃƒÂ°Ã…Â¸Ã‹Å“Ã¢â‚¬Å¡", id = 106880906271071 },
     { name = "Zombie Run Lag", id = 100868777466223 },
     { name = "WISH NLE", id = 125783279336153 },
     { name = "Louisiana Jigg", id = 75625820126017 },
@@ -16792,9 +16792,9 @@ local emoteCatalog = {
     { name = "Legend Aura Fly Emote", id = 75134843312906 },
     { name = "Jamal's Passinho (TikTok dance)", id = 75125571025711 },
     { name = "Upside down floating AURA", id = 89468381929192 },
-    { name = "Ã°Å¸â€Â¥Big Guy - Ice Spice/Spongebob Emote", id = 88312828363279 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥Big Guy - Ice Spice/Spongebob Emote", id = 88312828363279 },
     { name = "The Run Around", id = 88834614877886 },
-    { name = "Ã›Â¶Ã Â§Å½ doll cutely sitting pose", id = 125243870523332 },
+    { name = "Ãƒâ€ºÃ‚Â¶ÃƒÂ Ã‚Â§Ã…Â½ doll cutely sitting pose", id = 125243870523332 },
     { name = "Kawaii Groove", id = 94792423330715 },
     { name = "Rock n Roll", id = 15506496093 },
     { name = "Dancing with your eyes closed", id = 129637389787927 },
@@ -16808,12 +16808,12 @@ local emoteCatalog = {
     { name = "Rafa Polinesio Baile", id = 133047022806044 },
     { name = "Floating Sit", id = 83475540437708 },
     { name = "Bubbly Sit [3.0]", id = 82070133181200 },
-    { name = "Ã¢â„¢Â¡ Ãªâ€™Â° Cute Shy Pose", id = 136701250296230 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ ÃƒÂªÃ¢â‚¬â„¢Ã‚Â° Cute Shy Pose", id = 136701250296230 },
     { name = "Hide", id = 121167704249654 },
     { name = "Cry For Me [OG]", id = 98263064912190 },
     { name = "California Girl Dance [OG]", id = 132074413582912 },
     { name = "cute sit", id = 131875333242836 },
-    { name = "Ã¢â„¢Â¡ Cute Wave Pose Ã¢â„¢Â¡", id = 102370555981017 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ Cute Wave Pose ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡", id = 102370555981017 },
     { name = "Golden dance [best]", id = 77945789109199 },
     { name = "Aura Idle", id = 82096188761745 },
     { name = "Rock Guitar - Royal Blood", id = 6532155086 },
@@ -16821,13 +16821,13 @@ local emoteCatalog = {
     { name = "Be tall creature", id = 87939300658851 },
     { name = "Victory - 24kGoldn", id = 9178397781 },
     { name = "Get Sturdy", id = 120896030393583 },
-    { name = "[ OG Ã¢â„¢Â¡ ] bunny party dance", id = 104922087218459 },
-    { name = "SpongeBob Imaginaaation Ã°Å¸Å’Ë†", id = 18443268949 },
+    { name = "[ OG ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ ] bunny party dance", id = 104922087218459 },
+    { name = "SpongeBob Imaginaaation ÃƒÂ°Ã…Â¸Ã…â€™Ã‹â€ ", id = 18443268949 },
     { name = "Borock's Rage", id = 3236848555 },
     { name = "Boxing", id = 117648669357990 },
     { name = "Harley Dance", id = 119258520125004 },
     { name = "TWICE I GOT YOU part 1", id = 16215060261 },
-    { name = "Needy Leg Splits!! (OG) Ã°Å¸Ëœâ€¡", id = 137064024843676 },
+    { name = "Needy Leg Splits!! (OG) ÃƒÂ°Ã…Â¸Ã‹Å“Ã¢â‚¬Â¡", id = 137064024843676 },
     { name = "needy me", id = 137894800082618 },
     { name = "Big Papa Squat", id = 114443541753616 },
     { name = "sharp's French Confidence", id = 113927348020837 },
@@ -16846,18 +16846,18 @@ local emoteCatalog = {
     { name = "Michael Jackson", id = 140440735589603 },
     { name = "Floating Upside-Down!", id = 95999178112240 },
     { name = "Soda Pop - Saja Boys", id = 88398357963696 },
-    { name = "Ã°Å¸â€Â¥ Godly Floating Sleeping Aura Pose Ã°Å¸â€Â¥", id = 122498540377510 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ Godly Floating Sleeping Aura Pose ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥", id = 122498540377510 },
     { name = "Swan Dance", id = 7466048475 },
-    { name = "Ã°Å¸Âªâ„¢ Relax Coin Flip", id = 128000234046934 },
+    { name = "ÃƒÂ°Ã…Â¸Ã‚ÂªÃ¢â€žÂ¢ Relax Coin Flip", id = 128000234046934 },
     { name = "Making Faces", id = 89535391366809 },
     { name = "I see Kareem Groove", id = 85913309003871 },
     { name = "[OG BEST] Spicy bounce", id = 87377941256447 },
-    { name = "Ã°Å¸â€™Â© MEGA POOP SNIFF Ã°Å¸Ëœâ€š [AURA]", id = 82904146092287 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â© MEGA POOP SNIFF ÃƒÂ°Ã…Â¸Ã‹Å“Ã¢â‚¬Å¡ [AURA]", id = 82904146092287 },
     { name = "Halloween Headless Effortless Aura", id = 94684994062212 },
     { name = "KATSEYE - Gabriela (Megan)", id = 98012296914799 },
     { name = "Big Back Baby Boo", id = 122461225964217 },
     { name = "Teto Territory", id = 97263450325496 },
-    { name = "Hug Ã°Å¸Â¤â€”Ã¢ÂÂ¤Ã¯Â¸Â", id = 102822553233176 },
+    { name = "Hug ÃƒÂ°Ã…Â¸Ã‚Â¤Ã¢â‚¬â€ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â", id = 102822553233176 },
     { name = "HEADLESS HOOPER - basketball", id = 80436375269036 },
     { name = "BLACKPINK - Get em Get em Get em", id = 131561465960751 },
     { name = "Box Pet", id = 101460910804544 },
@@ -16879,7 +16879,7 @@ local emoteCatalog = {
     { name = "Michael Jackson", id = 122773107025712 },
     { name = "Glitch through walls (phase)", id = 132366431744296 },
     { name = "Slow Dembow", id = 73236219340808 },
-    { name = "Spongebob Shuffle Dance Ã°Å¸Â§Â½", id = 107899954696611 },
+    { name = "Spongebob Shuffle Dance ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â½", id = 107899954696611 },
     { name = "Baddie Shake", id = 134817530495903 },
     { name = "Nicki Minaj Anaconda", id = 15571539403 },
     { name = "Jotaro Pose (aura)", id = 104330991197585 },
@@ -16888,17 +16888,17 @@ local emoteCatalog = {
     { name = "Will has power!!! STRANGER THINGS 5", id = 93772541546815 },
     { name = "apple store girl (do you want me)", id = 136290878980267 },
     { name = "6-7", id = 106367055475970 },
-    { name = "ALTÃƒâ€°GO - CouldnÃ¢â‚¬â„¢t Care Less", id = 92859581691366 },
+    { name = "ALTÃƒÆ’Ã¢â‚¬Â°GO - CouldnÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢t Care Less", id = 92859581691366 },
     { name = "Hip Bounce", id = 139271706064778 },
     { name = "Fireball - Pitbull [OG] [BEST]", id = 93298430995886 },
     { name = "Little Obbyist", id = 134584040095037 },
-    { name = "[Ã°Å¸Å½â‚¬] Kayah's Cute Pose", id = 124031351335869 },
+    { name = "[ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â€šÂ¬] Kayah's Cute Pose", id = 124031351335869 },
     { name = "TrackMaker Dance", id = 75541759268466 },
     { name = "I see Kareem Groove", id = 114386008104939 },
     { name = "POP DAT THANG", id = 113910843410865 },
     { name = "Cute Sit", id = 90244178386698 },
     { name = "TWICE Moonlight Sunrise", id = 12715393154 },
-    { name = "Catgirl Sitting Down Ã°Å¸ËœÂ»", id = 124682757478598 },
+    { name = "Catgirl Sitting Down ÃƒÂ°Ã…Â¸Ã‹Å“Ã‚Â»", id = 124682757478598 },
     { name = "Heart", id = 84396003438766 },
     { name = "M3GAN's Dance", id = 127271798262177 },
     { name = "Slow Aura Run", id = 104785408689451 },
@@ -16908,24 +16908,24 @@ local emoteCatalog = {
     { name = "Exotic : APEX Emote [Sol's RNG]", id = 106674068664046 },
     { name = "Corrupted Entity", id = 104321872987170 },
     { name = "Make You Mine", id = 130214067086591 },
-    { name = "Ã¢â„¢Â¡ : cute kawaii hugging and kicking feet", id = 117617643410205 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ : cute kawaii hugging and kicking feet", id = 117617643410205 },
     { name = "IShowSpeed Bounce Dance", id = 140269876098643 },
     { name = "Crumble", id = 107058556707413 },
     { name = "Phibz", id = 95386318624540 },
     { name = "reggeton dembow", id = 117178268034885 },
     { name = "Dembow - De Lado", id = 111531137576108 },
     { name = "candy cookie chocolate miku teto", id = 121463501824419 },
-    { name = "Imagine Dragons - Ã¢â‚¬Å“BonesÃ¢â‚¬Â Dance", id = 15689314578 },
+    { name = "Imagine Dragons - ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œBonesÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Dance", id = 15689314578 },
     { name = "The coolest standing pose in the world", id = 110330632237517 },
     { name = "Lay down Aura Farm", id = 140452259654428 },
     { name = "Vroom Vroom", id = 18526410572 },
     { name = "Head Pat High [Matching Set]", id = 120833029935011 },
     { name = "Jump - BLACKPINK [BEST]", id = 123831614665513 },
     { name = "Confident Needy Hip Shake Dance", id = 85115037529002 },
-    { name = "BADDIE Mirror Pose Ã°Å¸â€™â€¦", id = 74621691174733 },
+    { name = "BADDIE Mirror Pose ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â‚¬Â¦", id = 74621691174733 },
     { name = "I Never Seen", id = 113584649324281 },
     { name = "/e dance2", id = 124072098165199 },
-    { name = "Ã¢â„¢Â¡ ICONIC BY MISTAKE [CHORUS]", id = 128402456731579 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ ICONIC BY MISTAKE [CHORUS]", id = 128402456731579 },
     { name = "Pangya Dance (HQ)", id = 135495405058646 },
     { name = "Fashionable [CHEAP]", id = 93285483814710 },
     { name = "I'm Talm 'Bout Innit (OG)", id = 117301403779781 },
@@ -16937,22 +16937,22 @@ local emoteCatalog = {
     { name = "Angry Idle", id = 91171596265030 },
     { name = "I Want Money (Prince of egypt)", id = 133751526608969 },
     { name = "Take The L", id = 133005847117851 },
-    { name = "I can FLY!! Ã°Å¸ÂÂ¦", id = 90844099582284 },
-    { name = "Spice NÃ¢â‚¬â„¢ Slide", id = 103814076459025 },
+    { name = "I can FLY!! ÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â¦", id = 90844099582284 },
+    { name = "Spice NÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Slide", id = 103814076459025 },
     { name = "GAG IT DEATH DROP", id = 134737246939931 },
-    { name = "Ã¢â„¢Â¡ Cute Kawaii Shy Doll Stance", id = 78712622250645 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ Cute Kawaii Shy Doll Stance", id = 78712622250645 },
     { name = "Creepy Ventriloquist Puppet", id = 95800106960533 },
     { name = "Throw That Mafa Setalcix", id = 116626107611887 },
     { name = "MASSIVE POOP", id = 83417429144154 },
     { name = "Cute anime bounce", id = 97233973386966 },
-    { name = "A Rose?Ã°Å¸Å’Â¹", id = 91739079549341 },
+    { name = "A Rose?ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â¹", id = 91739079549341 },
     { name = "JOYRIDE LEFT", id = 106015503327885 },
-    { name = "[Ã¢Å’â€º] Stranger Things Vecna Kill Emote", id = 80981189893654 },
+    { name = "[ÃƒÂ¢Ã…â€™Ã¢â‚¬Âº] Stranger Things Vecna Kill Emote", id = 80981189893654 },
     { name = "NewJeans - ETA", id = 94694691436126 },
     { name = "Honor Knight Kneel Dark Souls", id = 89198573930777 },
     { name = "Olivia Rodrigo good 4 u", id = 15554013003 },
     { name = "Mr \"ant\" Tenna's Kick - Deltarune", id = 71912700800803 },
-    { name = "Rose GiftÃ°Å¸Å’Â¹", id = 132380943956928 },
+    { name = "Rose GiftÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â¹", id = 132380943956928 },
     { name = "Umamusume Dance", id = 130838810836830 },
     { name = "Low Cortisol hip sway", id = 138149876527113 },
     { name = "Lets Get Sturdy", id = 119341017234649 },
@@ -16966,24 +16966,24 @@ local emoteCatalog = {
     { name = "Discombobulated", id = 129916107176034 },
     { name = "Faceless Aura", id = 103981563274328 },
     { name = "Hear Me Now", id = 113116746603315 },
-    { name = "/e Fly - Accurate Admin FlyÃ°Å¸ÂÂ¤", id = 97830214926142 },
+    { name = "/e Fly - Accurate Admin FlyÃƒÂ°Ã…Â¸Ã‚ÂÃ‚Â¤", id = 97830214926142 },
     { name = "Spongebob", id = 123043305808890 },
     { name = "Do That Thang", id = 98064631733787 },
     { name = "JOYRIDE RIGHT", id = 103149155540509 },
-    { name = "Pose for the Pic Ã°Å¸â€œÂ¸", id = 108922782921118 },
+    { name = "Pose for the Pic ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¸", id = 108922782921118 },
     { name = "Car Transforming", id = 79360981055415 },
     { name = "Angel Flying", id = 102256275785620 },
     { name = "Street Flow Bounce", id = 91773089278851 },
     { name = "rollie", id = 124522011862575 },
     { name = "The Tylil Dance [Kai Cenat Dance]", id = 107010273569673 },
-    { name = "Ã¢â„¢â€º Honor Knight Kneel", id = 103663987050338 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã¢â‚¬Âº Honor Knight Kneel", id = 103663987050338 },
     { name = "Cute kicking Feet Sit", id = 130253041293561 },
-    { name = "Ã¢â„¢Â¡ (BEST) sassy model catwalk diva", id = 137435098987579 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ (BEST) sassy model catwalk diva", id = 137435098987579 },
     { name = "JoJos | Jonathan's Pose", id = 84195923658292 },
     { name = "Spice Happy Jumping", id = 133319600812587 },
     { name = "Angry Snake", id = 118102737243919 },
-    { name = "Ã¢ÂÂ³[LIMITED] Vibing Sit", id = 126847889432485 },
-    { name = "Ã¢â„¢Â¡ Magical Float", id = 87526114329356 },
+    { name = "ÃƒÂ¢Ã‚ÂÃ‚Â³[LIMITED] Vibing Sit", id = 126847889432485 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ Magical Float", id = 87526114329356 },
     { name = "Sleeping Soundly", id = 104024961010344 },
     { name = "MM2 Fake Dead Pose!", id = 83548980186247 },
     { name = "Helicopter Spin", id = 84555218084038 },
@@ -17003,16 +17003,16 @@ local emoteCatalog = {
     { name = "That's RED RED - Cortis", id = 78868540419185 },
     { name = "Cute Kawaii Sitting Idle Pose", id = 124674379179873 },
     { name = "Ima sit back | Baddie Emote", id = 74726067041025 },
-    { name = "Mae Stephens Ã¢â‚¬â€œ Arm Wave", id = 16584496781 },
+    { name = "Mae Stephens ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ Arm Wave", id = 16584496781 },
     { name = "Sit", id = 93262662842394 },
     { name = "Michael Myers Bounce", id = 102592510788385 },
-    { name = "[Ã°Å¸â€Â«]Finger-Gun", id = 138671863009472 },
+    { name = "[ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â«]Finger-Gun", id = 138671863009472 },
     { name = "Billy Bounce", id = 93450937830334 },
     { name = "Happy Snake", id = 92510136312766 },
     { name = "TWICE I GOT YOU part 2", id = 16256253954 },
     { name = "kawaii chibi pose", id = 91333024824710 },
-    { name = "[RAPID FIRE] Ã°Å¸â€Â« Gun Morph", id = 73562814360939 },
-    { name = "Ã¢ÂÂ¤Ã¯Â¸Â Catch Catch", id = 122758585008323 },
+    { name = "[RAPID FIRE] ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â« Gun Morph", id = 73562814360939 },
+    { name = "ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â Catch Catch", id = 122758585008323 },
     { name = "Tommy K-Pop Mic Drop", id = 14024722653 },
     { name = "67", id = 136415352218982 },
     { name = "Wally's Pose", id = 131961970776128 },
@@ -17027,7 +17027,7 @@ local emoteCatalog = {
     { name = "MOSH", id = 118307905798773 },
     { name = "Slow-Mo Backflip | IShowSpeed Flip [NEW]", id = 86617727183442 },
     { name = "Rise Above - The Chainsmokers", id = 13071993910 },
-    { name = "Ã¢â„¢Â¡ Cute Heart Hands Emote Profile Pose", id = 89791686345950 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ Cute Heart Hands Emote Profile Pose", id = 89791686345950 },
     { name = "California Girls", id = 130248288787333 },
     { name = "Needy Cartwheel Split", id = 91490872407594 },
     { name = "Aura floating emote", id = 73100418080632 },
@@ -17036,7 +17036,7 @@ local emoteCatalog = {
     { name = "Garry's Dance (GMOD)", id = 129861012882037 },
     { name = "Big G Rilla Step", id = 78512766320761 },
     { name = "Boom Boom Clap - George Ezra", id = 10370934040 },
-    { name = "Ã¢Å“â€¦ Obby - Emote", id = 76394392186917 },
+    { name = "ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Obby - Emote", id = 76394392186917 },
     { name = "Elevation", id = 134928834792631 },
     { name = "Shy hip sway", id = 100107749035207 },
     { name = "Jinu Pose - Saja Boys", id = 130641944883645 },
@@ -17048,22 +17048,22 @@ local emoteCatalog = {
     { name = "ericdoa - dance", id = 15698510244 },
     { name = "Cute Kpop Poses - Profile Poses", id = 90929823390861 },
     { name = "Body assembly", id = 122844127161903 },
-    { name = "Ã°Å¸Å½â‚¬ Princess Hip Sway Dance", id = 105626165333309 },
+    { name = "ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â€šÂ¬ Princess Hip Sway Dance", id = 105626165333309 },
     { name = "Rat Dance", id = 105515769832740 },
     { name = "Dave's Spin Move - Glass Animals", id = 16276501655 },
     { name = "sharp's Bloodpop Jo Slide", id = 124987679420663 },
     { name = "Spin Around With A Friend Matching", id = 70617440339521 },
-    { name = "[OG] ME! ME! ME! Daoko Dance Ã¢â„¢Â¡", id = 111603027132774 },
+    { name = "[OG] ME! ME! ME! Daoko Dance ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡", id = 111603027132774 },
     { name = "Needy Playful Cat Girl", id = 96622556579696 },
     { name = "Legendary Lovers", id = 116256886592834 },
     { name = "Bunny Hop", id = 4646296016 },
-    { name = "Ã°Å¸Â¤ÂªSkibidi ShakeÃ¢Å¡Â¡", id = 80115988215727 },
+    { name = "ÃƒÂ°Ã…Â¸Ã‚Â¤Ã‚ÂªSkibidi ShakeÃƒÂ¢Ã…Â¡Ã‚Â¡", id = 80115988215727 },
     { name = "Alo Yoga Pose - Triangle", id = 12507120275 },
     { name = "I SEE KAREEM DANCE (ICE CREAM)", id = 90293723561810 },
     { name = "Money Hop Spin", id = 126821507055878 },
     { name = "Side Sit", id = 85370173309996 },
     { name = "OH WHO IS YOU", id = 91023138078288 },
-    { name = "[CHEAPÃ°Å¸â€Â¥] Needy Night Out", id = 73823025897559 },
+    { name = "[CHEAPÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥] Needy Night Out", id = 73823025897559 },
     { name = "Pasinho do Jamal", id = 71286446361487 },
     { name = "Wall Lean", id = 88969192102242 },
     { name = "Helicopter", id = 119431985170060 },
@@ -17076,14 +17076,14 @@ local emoteCatalog = {
     { name = "Cha-Cha", id = 3696764866 },
     { name = "KATSEYE - Touch", id = 139021427684680 },
     { name = "Air Guitar", id = 3696761354 },
-    { name = "Ã°Å¸ËœÂ L Dance", id = 73039500693145 },
+    { name = "ÃƒÂ°Ã…Â¸Ã‹Å“Ã‚Â L Dance", id = 73039500693145 },
     { name = "Dog", id = 84198855496510 },
     { name = "Ragdoll Push", id = 91452077708399 },
     { name = "Take The L", id = 75633408126191 },
     { name = "BLACKPINK Pink Venom - Get em Get em Get em", id = 14548709888 },
     { name = "Fry Dance", id = 124799741487022 },
     { name = "Heisman Pose", id = 3696763549 },
-    { name = "Annyeong (Ã¬â€¢Ë†Ã«â€¦â€¢)", id = 9528286240 },
+    { name = "Annyeong (ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¢â‚¬Â¦Ã¢â‚¬Â¢)", id = 9528286240 },
     { name = "Superhero Reveal", id = 3696759798 },
     { name = "Worm", id = 108956933782219 },
     { name = "TWICE Feel Special", id = 14900153406 },
@@ -17099,7 +17099,7 @@ local emoteCatalog = {
     { name = "Vibing / Community Animation Aura Idle", id = 70508706371253 },
     { name = "Low Cortisol Dance Pill", id = 125822752810863 },
     { name = "GloRilla - \"Tomorrow\" Dance", id = 15689315657 },
-    { name = "cant catch my tail.. ( ;Ã‚Â´ - `;) (klees idle spin)", id = 90177445015685 },
+    { name = "cant catch my tail.. ( ;Ãƒâ€šÃ‚Â´ - `;) (klees idle spin)", id = 90177445015685 },
     { name = "Deltarune - Tenna Dance", id = 102492229412911 },
     { name = "Scene roblox profile pose", id = 96118122806813 },
     { name = "JUMP K-POP Dance Choreo", id = 111481711726876 },
@@ -17127,7 +17127,7 @@ local emoteCatalog = {
     { name = "Hakari Dance", id = 115380777754385 },
     { name = "Chk Chk Boom - STRAY KIDS [DANCEBREAK]", id = 98718871207695 },
     { name = "[BEST] Not Cute Anymore - KPop Dance (ILLIT)", id = 107753335763254 },
-    { name = "Smooth CriminalÃ°Å¸â€¢Â´Ã¯Â¸Â Michael Jackson Dance Emote", id = 94226046885073 },
+    { name = "Smooth CriminalÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã‚Â´ÃƒÂ¯Ã‚Â¸Ã‚Â Michael Jackson Dance Emote", id = 94226046885073 },
     { name = "Ledge/Railing Sit", id = 129389629031100 },
     { name = "FREE EMOTE : CODE - KICK67", id = 128118777898011 },
     { name = "Cute kawaii girly magical idle Profile pose", id = 128174269567586 },
@@ -17135,33 +17135,33 @@ local emoteCatalog = {
     { name = "Floating Lying Down: Metro Man", id = 107758711296968 },
     { name = "ONCE HOP HOP!", id = 104304182344567 },
     { name = "Lily Braids", id = 75503857471233 },
-    { name = "[Ã¢ÂÂ³LIMITED] Head Spin & Chill Aura Float", id = 109006665341377 },
+    { name = "[ÃƒÂ¢Ã‚ÂÃ‚Â³LIMITED] Head Spin & Chill Aura Float", id = 109006665341377 },
     { name = "Cutie Floating", id = 140014568209050 },
     { name = "Nagi Seishiro's Celebration", id = 94925651501842 },
     { name = "Trendy Nicki Leg Pose", id = 92846015938931 },
     { name = "Sukuna Aura Idle", id = 89424059240713 },
-    { name = "Ã¢â„¢Â¡ cute kawaii girly idle pose 2", id = 90831367043789 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ cute kawaii girly idle pose 2", id = 90831367043789 },
     { name = "Phibz [OG]", id = 128729212388115 },
     { name = "Be Not Afraid", id = 70635223083942 },
     { name = "Laying on clouds", id = 80422524668416 },
     { name = "Attitude Moves Bounce", id = 132514953046792 },
-    { name = "Ã¢ËœÂ Ã¯Â¸Å½ Myspace Cute Scene Pose XD Ã¢ËœÂ Ã¯Â¸Å½", id = 73002781025226 },
-    { name = "Ã¢â„¢Â¡ : cute pop-pop hip sway dance", id = 113455601219440 },
+    { name = "ÃƒÂ¢Ã‹Å“Ã‚Â ÃƒÂ¯Ã‚Â¸Ã…Â½ Myspace Cute Scene Pose XD ÃƒÂ¢Ã‹Å“Ã‚Â ÃƒÂ¯Ã‚Â¸Ã…Â½", id = 73002781025226 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ : cute pop-pop hip sway dance", id = 113455601219440 },
     { name = "Caramell", id = 85936805522788 },
     { name = "Sit Comfy Idle", id = 91223337249721 },
     { name = "Silent Hill Nurse Walk", id = 126273142521762 },
     { name = "Wally Speedster Run", id = 133948663586698 },
     { name = "Ya Ya Ying Dance [OG]", id = 114457468919031 },
     { name = "Hakari Dance", id = 131013239122616 },
-    { name = "Stateside - Ã°Å¸â€Â¥ PinkPantheress + Zara Larsson", id = 85028685451071 },
+    { name = "Stateside - ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ PinkPantheress + Zara Larsson", id = 85028685451071 },
     { name = "Funny Goofy Wiggle", id = 74277551575520 },
     { name = "Swaying Sit", id = 120565455646158 },
-    { name = "chiwawa Ãâ€¦- Ã¯Â»Å’ -Ãâ€¦Ã¢Â¸ÂÃ¢Â¸Â (just dance)", id = 81562978486917 },
+    { name = "chiwawa ÃƒÂÃ¢â‚¬Â¦- ÃƒÂ¯Ã‚Â»Ã…â€™ -ÃƒÂÃ¢â‚¬Â¦ÃƒÂ¢Ã‚Â¸Ã‚ÂÃƒÂ¢Ã‚Â¸Ã‚Â (just dance)", id = 81562978486917 },
     { name = "Cute Hips Profile Pose", id = 86039610121898 },
     { name = "67", id = 79159574589173 },
     { name = "Take The L Emote", id = 124573621747512 },
     { name = "Cute Baddie Profile Idle Pose", id = 136040668407140 },
-    { name = "Ã¢â„¢Â¡ cute dolly girl idle pose", id = 91771584024127 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ cute dolly girl idle pose", id = 91771584024127 },
     { name = "Onion", id = 113890289455724 },
     { name = "Chubibi Dance", id = 76881316748390 },
     { name = "SpongeBob Dance", id = 18443271885 },
@@ -17173,7 +17173,7 @@ local emoteCatalog = {
     { name = "Royale High Kawaii Dance", id = 109892068975068 },
     { name = "Sonic Adventure Profile Pose", id = 104721659176603 },
     { name = "Rat dance", id = 121838903053629 },
-    { name = "Ã¢â„¢Â¡ : Shy Doll Cute Standing Idle Profile Pose", id = 115140876718590 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ : Shy Doll Cute Standing Idle Profile Pose", id = 115140876718590 },
     { name = "Bust It Down!", id = 88164107371806 },
     { name = "Headless Emote", id = 101151842500262 },
     { name = "Gojo Floating The Honored One", id = 100953557187752 },
@@ -17194,11 +17194,11 @@ local emoteCatalog = {
     { name = "Flying Celestial Dunhuang Feitian Apsara Immortal", id = 134683696656199 },
     { name = "Drummer Moves - Twenty One Pilots", id = 7422838770 },
     { name = "Body Phone", id = 95714033584938 },
-    { name = "Ã°Å¸â€™â€¢ Hug [Player 1]", id = 102303622774230 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â‚¬Â¢ Hug [Player 1]", id = 102303622774230 },
     { name = "Springtrap Dance", id = 132007669525235 },
     { name = "\"Billie Jean Is Not My Lover\" Dance Intro", id = 99116342229357 },
     { name = "Child's Tantrum", id = 104628550103800 },
-    { name = "paparazzi dance Ã°Å¸â€™â€¢", id = 107080697327035 },
+    { name = "paparazzi dance ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â‚¬Â¢", id = 107080697327035 },
     { name = "Godly Aura Pose", id = 134388005886833 },
     { name = "Cutesy Cat Sit Profile Pose", id = 72185261708093 },
     { name = "Mini Kong", id = 17000058939 },
@@ -17215,14 +17215,14 @@ local emoteCatalog = {
     { name = "The Whistle Occurence 3", id = 73371232180986 },
     { name = "Effortless Aura Pose", id = 101573394483995 },
     { name = "Chappell Roan HOT TO GO!", id = 79312439851071 },
-    { name = "Hwaiting (Ã­â„¢â€Ã¬ÂÂ´Ã­Å’â€¦)", id = 9528291779 },
+    { name = "Hwaiting (ÃƒÂ­Ã¢â€žÂ¢Ã¢â‚¬ÂÃƒÂ¬Ã‚ÂÃ‚Â´ÃƒÂ­Ã…â€™Ã¢â‚¬Â¦)", id = 9528291779 },
     { name = "Country Line Dance - Lil Nas X (LNX)", id = 5915780563 },
     { name = "Sturdy Dance - Ice Spice", id = 17746270218 },
     { name = "Phase", id = 79653736088166 },
     { name = "Elton John - Rock Out", id = 11753545334 },
     { name = "Mae Stephens - Piano Hands", id = 16553249658 },
     { name = "BURBERRY LOLA ATTITUDE - REFLEX", id = 10147921916 },
-    { name = "Ã°Å¸Â¥Âª Flat Sandwich", id = 93321486801164 },
+    { name = "ÃƒÂ°Ã…Â¸Ã‚Â¥Ã‚Âª Flat Sandwich", id = 93321486801164 },
     { name = "Olivia Rodrigo Head Bop", id = 15554010118 },
     { name = "BURBERRY LOLA ATTITUDE - BLOOM", id = 10147919199 },
     { name = "SHAKE", id = 132367660388476 },
@@ -17232,7 +17232,7 @@ local emoteCatalog = {
     { name = "Spiderman Hang", id = 108635834286627 },
     { name = "Chill Bounce", id = 132112297758791 },
     { name = "Telekinesis Head Floating Aura", id = 81666519067619 },
-    { name = "Ã°Å¸â€¢Â·Ã¯Â¸Â Hornet's Spider Dance Ã°Å¸â€¢Â·Ã¯Â¸Â", id = 74716792202343 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã‚Â·ÃƒÂ¯Ã‚Â¸Ã‚Â Hornet's Spider Dance ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã‚Â·ÃƒÂ¯Ã‚Â¸Ã‚Â", id = 74716792202343 },
     { name = "TWICE What Is Love", id = 13344121112 },
     { name = "BURBERRY LOLA ATTITUDE - GEM", id = 10147916560 },
     { name = "hip sway", id = 80963950541052 },
@@ -17257,7 +17257,7 @@ local emoteCatalog = {
     { name = "Floating on clouds", id = 111426928948833 },
     { name = "Rat Dance", id = 98603994713783 },
     { name = "Fast Hands", id = 4272351660 },
-    { name = "Ã°Å¸â€™â‚¬MM2 Fake Dead", id = 132384701706046 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã¢â€šÂ¬MM2 Fake Dead", id = 132384701706046 },
     { name = "Cute Feet Kicking", id = 78224683906191 },
     { name = "Swag Walk", id = 10478377385 },
     { name = "/e fly", id = 93511411593120 },
@@ -17265,7 +17265,7 @@ local emoteCatalog = {
     { name = "Wake Up Call - KSI", id = 7202900159 },
     { name = "The Conductor - George Ezra", id = 10370926562 },
     { name = "Rodeo Dance - Lil Nas X (LNX)", id = 5938397555 },
-    { name = "Floating in Love Ã°Å¸Â¥Â°", id = 97164262994588 },
+    { name = "Floating in Love ÃƒÂ°Ã…Â¸Ã‚Â¥Ã‚Â°", id = 97164262994588 },
     { name = "Elton John - Still Standing", id = 11435177473 },
     { name = "Power Blast", id = 4849497510 },
     { name = "Basketball Head", id = 107282826166809 },
@@ -17286,7 +17286,7 @@ local emoteCatalog = {
     { name = "Idol", id = 4102317848 },
     { name = "Nicki Minaj Starships", id = 15571540519 },
     { name = "silly jumping spider dance", id = 89157328525577 },
-    { name = "Ã°Å¸Å½Æ’Pumpkin KingÃ°Å¸â€˜â€˜", id = 105381637724646 },
+    { name = "ÃƒÂ°Ã…Â¸Ã…Â½Ã†â€™Pumpkin KingÃƒÂ°Ã…Â¸Ã¢â‚¬ËœÃ¢â‚¬Ëœ", id = 105381637724646 },
     { name = "Tree", id = 4049634387 },
     { name = "MJ - P.Y.T. Pretty Young Thing", id = 137234266130963 },
     { name = "Beckon", id = 5230615437 },
@@ -17303,7 +17303,7 @@ local emoteCatalog = {
     { name = "Nicki Minaj Boom Boom Boom", id = 15571538346 },
     { name = "Bubbly Sit", id = 112758073578333 },
     { name = "Sol de Janeiro - Samba", id = 16276506814 },
-    { name = "Ã¢Ëœâ€¦ curiously cute sitting pose", id = 76261461321661 },
+    { name = "ÃƒÂ¢Ã‹Å“Ã¢â‚¬Â¦ curiously cute sitting pose", id = 76261461321661 },
     { name = "California Girls", id = 86036504023673 },
     { name = "Flex Your UGC Muscles Emote", id = 74248485441791 },
     { name = "Lasso Turn - Tai Verdes", id = 7942972744 },
@@ -17318,29 +17318,29 @@ local emoteCatalog = {
     { name = "It Ain't My Fault - Zara Larsson", id = 6797948622 },
     { name = "Olivia Rodrigo Fall Back to Float", id = 15554016057 },
     { name = "Nyan Nyan!", id = 73796726960568 },
-    { name = "Ã¢Å¡Â¡ Raiden Punching Armstrong Loop", id = 115203580644128 },
+    { name = "ÃƒÂ¢Ã…Â¡Ã‚Â¡ Raiden Punching Armstrong Loop", id = 115203580644128 },
     { name = "Flowing Breeze", id = 7466047578 },
     { name = "I WANNA RUN AWAY", id = 135431679610889 },
     { name = "Robot", id = 3576721660 },
     { name = "Rat Dance", id = 85364777159340 },
     { name = "Cute Sit", id = 129575609080331 },
     { name = "Aura Posing", id = 93043556902763 },
-    { name = "Ã°Å¸ËœÂ Default Dance", id = 133158580522571 },
+    { name = "ÃƒÂ°Ã…Â¸Ã‹Å“Ã‚Â Default Dance", id = 133158580522571 },
     { name = "Dancin' Shoes - Twenty One Pilots", id = 7405123844 },
-    { name = "Ã°Å¸â€¢Â·Ã¯Â¸Â Peter Parker Dance", id = 101033489367553 },
-    { name = "Ã°Å¸Å½â€° Distraction Dance", id = 112248683157717 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã‚Â·ÃƒÂ¯Ã‚Â¸Ã‚Â Peter Parker Dance", id = 101033489367553 },
+    { name = "ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Â° Distraction Dance", id = 112248683157717 },
     { name = "Scuba Nick Wilde", id = 70919402339484 },
-    { name = "Ã°Å¸â€™Âµ Dahood Dance", id = 123783725600432 },
+    { name = "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Âµ Dahood Dance", id = 123783725600432 },
     { name = "Charming Cute Look Pose", id = 101275066718933 },
-    { name = "Ã¢â„¢Â¡: Kawaii Bouncy Anime Girl Dance [OG]", id = 130855166586798 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡: Kawaii Bouncy Anime Girl Dance [OG]", id = 130855166586798 },
     { name = "Block Partier", id = 6865011755 },
     { name = "TWICE Fancy", id = 13520623514 },
-    { name = "Ã¢ËœÂ Ã¯Â¸ÂMM2 FAKE DEATH", id = 75278921479463 },
-    { name = "Ã¢ËœÂ Ã¯Â¸ÂMM2 FAKE DEATH 2", id = 138181827835887 },
+    { name = "ÃƒÂ¢Ã‹Å“Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚ÂMM2 FAKE DEATH", id = 75278921479463 },
+    { name = "ÃƒÂ¢Ã‹Å“Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚ÂMM2 FAKE DEATH 2", id = 138181827835887 },
     { name = "Hide/Fly Glitch", id = 77536221090796 },
     { name = "Roll Out", id = 118445737906352 },
     { name = "cute dancy dance", id = 83917238288783 },
-    { name = "Ã°Å¸Â¤Â£ GOOFY FLAP FLY ANIME", id = 120904242187887 },
+    { name = "ÃƒÂ°Ã…Â¸Ã‚Â¤Ã‚Â£ GOOFY FLAP FLY ANIME", id = 120904242187887 },
     { name = "Tell Me, Tell Me! - Wonder Girls", id = 112118419325053 },
     { name = "Catwalk Walk", id = 87739743400914 },
     { name = "Lush Life", id = 82727664018494 },
@@ -17374,31 +17374,31 @@ local emoteCatalog = {
     { name = "Fairy sit floating anime girl pose", id = 132152702263080 },
     { name = "Disagree", id = 4849495710 },
     { name = "Baby Queen - Dramatic Bow", id = 14353419229 },
-    { name = "Ã¢â„¢Â¡ cute halloween magical witch idle pose", id = 96252923654843 },
+    { name = "ÃƒÂ¢Ã¢â€žÂ¢Ã‚Â¡ cute halloween magical witch idle pose", id = 96252923654843 },
     { name = "Agnes Tachyon's Low Cortisol Dance (In Tempo) V1", id = 112396548575695 },
     { name = "Scene Profile Idle Pose Y2K", id = 125386993330077 },
     { name = "I Want Money", id = 89114994401113 },
     { name = "On The Outside - Twenty One Pilots", id = 7422841700 },
     { name = "RiRiRi Happy Halloween", id = 98464793617142 },
     { name = "Spice Keep Bouncing", id = 121347449465835 },
-    { name = "Korean Greeting! (Annyeong / Ã¬â€¢Ë†Ã«â€¦â€¢)", id = 135719167611495 },
+    { name = "Korean Greeting! (Annyeong / ÃƒÂ¬Ã¢â‚¬Â¢Ã‹â€ ÃƒÂ«Ã¢â‚¬Â¦Ã¢â‚¬Â¢)", id = 135719167611495 },
     { name = "[BEST] Soda Pop", id = 87905326034362 },
     { name = "sitting squat idle pose", id = 113960239878969 },
     { name = "Zero Two Dance V2", id = 95385842020103 },
     { name = "Aerial Silk Floating Ballerina Carol of the Bells", id = 88521791290140 },
     { name = "Kissy Roblox Profile Pose", id = 73398162799786 },
     { name = "Courtly bow", id = 72613272882226 },
-    { name = "Ã¢Â¸Â¸Ãªâ€™Â± cute knee sit idle pose", id = 72753598082403 },
+    { name = "ÃƒÂ¢Ã‚Â¸Ã‚Â¸ÃƒÂªÃ¢â‚¬â„¢Ã‚Â± cute knee sit idle pose", id = 72753598082403 },
     { name = "Kick It Dance Move - NCT 127", id = 12259888240 },
     { name = "Tantrum", id = 5104374556 },
     { name = "Wall Aura Farm Pose", id = 118853736905967 },
     { name = "Uprise - Tommy Hilfiger", id = 10275057230 },
-    { name = "Big Guy - Ã°Å¸â€Â¥ Ice Spice x Spongebob", id = 107708114415320 },
+    { name = "Big Guy - ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ Ice Spice x Spongebob", id = 107708114415320 },
     { name = "Secret Handshake Dance 2 - Wicked Official", id = 134373057501582 },
     { name = "Floating Idle animation", id = 117134539591727 },
     { name = "griddy", id = 129149402922241 },
     { name = "Hypnotize - XG", id = 108696364245824 },
-    { name = "[HOTÃ°Å¸â€Â¥] Spinning Cat", id = 75739251269771 },
+    { name = "[HOTÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥] Spinning Cat", id = 75739251269771 },
     { name = "Cartwheel - George Ezra", id = 10370929905 },
     { name = "Floating Aura", id = 79795305221612 },
     { name = "Hype Dance", id = 3696757129 },
@@ -17589,7 +17589,7 @@ local function syncEmotePinButtons()
         local item = emoteMatches[index]
         local pin = row and row:FindFirstChild("Pin")
         if pin and item then
-            pin.Text = pinnedById[tostring(item.id)] and "Ã¢Ëœâ€¦" or "+"
+            pin.Text = pinnedById[tostring(item.id)] and "ÃƒÂ¢Ã‹Å“Ã¢â‚¬Â¦" or "+"
         end
     end
 end
@@ -17667,7 +17667,7 @@ renderPinnedEmotesHUD = function()
         remove.Font = FB
         remove.TextSize = 12
         remove.TextColor3 = T.Tx
-        remove.Text = "Ãƒâ€”"
+        remove.Text = "ÃƒÆ’Ã¢â‚¬â€"
         Corner(remove, 5)
 
         play.MouseButton1Click:Connect(function() SFX.Click(); playEmbeddedEmote(item) end)
@@ -17736,7 +17736,7 @@ local function renderEmbeddedEmoteWindow()
             pin.Font = FB
             pin.TextSize = 16
             pin.TextColor3 = T.Tx
-            pin.Text = pinnedById[tostring(item.id)] and "Ã¢Ëœâ€¦" or "+"
+            pin.Text = pinnedById[tostring(item.id)] and "ÃƒÂ¢Ã‹Å“Ã¢â‚¬Â¦" or "+"
             Corner(pin, 7)
             Stroke(pin, T.Bd2, 1, 0.45)
             pin.MouseButton1Click:Connect(function()
@@ -18543,7 +18543,7 @@ if MOBILE and Pages.Buttons then
     note.TextColor3 = T.Tx3; pcall(function() note:SetAttribute("ThemeColorRole_TextColor3", "Tx3") end)
     note.TextXAlignment = Enum.TextXAlignment.Left
     note.TextWrapped = true
-    note.Text = "Ãâ€™Ã‘â€¹ÃÂ½ÃÂµÃ‘ÂÃÂ¸ Ã‘â€žÃ‘Æ’ÃÂ½ÃÂºÃ‘â€ ÃÂ¸Ã‘Å½ ÃÂ½ÃÂ° Ã‘ÂÃÂºÃ‘â‚¬ÃÂ°ÃÂ½ Ã¢â‚¬â€ ÃÂºÃÂ½ÃÂ¾ÃÂ¿ÃÂºÃ‘Æ’ ÃÂ¼ÃÂ¾ÃÂ¶ÃÂ½ÃÂ¾ ÃÂ¿ÃÂµÃ‘â‚¬ÃÂµÃ‘â€šÃÂ°Ã‘â€°ÃÂ¸Ã‘â€šÃ‘Å’ ÃÂ¿ÃÂ°ÃÂ»Ã‘Å’Ã‘â€ ÃÂµÃÂ¼, ÃÂ¿ÃÂ¾ÃÂ·ÃÂ¸Ã‘â€ ÃÂ¸Ã‘Â Ã‘ÂÃÂ¾Ã‘â€¦Ã‘â‚¬ÃÂ°ÃÂ½Ã‘ÂÃÂµÃ‘â€šÃ‘ÂÃ‘Â."
+    note.Text = "ÃƒÂÃ¢â‚¬â„¢Ãƒâ€˜Ã¢â‚¬Â¹ÃƒÂÃ‚Â½ÃƒÂÃ‚ÂµÃƒâ€˜Ã‚ÂÃƒÂÃ‚Â¸ Ãƒâ€˜Ã¢â‚¬Å¾Ãƒâ€˜Ã†â€™ÃƒÂÃ‚Â½ÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚Â¸Ãƒâ€˜Ã…Â½ ÃƒÂÃ‚Â½ÃƒÂÃ‚Â° Ãƒâ€˜Ã‚ÂÃƒÂÃ‚ÂºÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°ÃƒÂÃ‚Â½ ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ÃƒÂÃ‚ÂºÃƒÂÃ‚Â½ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â¿ÃƒÂÃ‚ÂºÃƒâ€˜Ã†â€™ ÃƒÂÃ‚Â¼ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â¶ÃƒÂÃ‚Â½ÃƒÂÃ‚Â¾ ÃƒÂÃ‚Â¿ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡ÃƒÂÃ‚Â°Ãƒâ€˜Ã¢â‚¬Â°ÃƒÂÃ‚Â¸Ãƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã…â€™ ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â°ÃƒÂÃ‚Â»Ãƒâ€˜Ã…â€™Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚ÂµÃƒÂÃ‚Â¼, ÃƒÂÃ‚Â¿ÃƒÂÃ‚Â¾ÃƒÂÃ‚Â·ÃƒÂÃ‚Â¸Ãƒâ€˜Ã¢â‚¬Â ÃƒÂÃ‚Â¸Ãƒâ€˜Ã‚Â Ãƒâ€˜Ã‚ÂÃƒÂÃ‚Â¾Ãƒâ€˜Ã¢â‚¬Â¦Ãƒâ€˜Ã¢â€šÂ¬ÃƒÂÃ‚Â°ÃƒÂÃ‚Â½Ãƒâ€˜Ã‚ÂÃƒÂÃ‚ÂµÃƒâ€˜Ã¢â‚¬Å¡Ãƒâ€˜Ã‚ÂÃƒâ€˜Ã‚Â."
 
     local filterBox = Instance.new("TextBox")
     filterBox.Name = "FloatingButtonSearch"

@@ -1363,7 +1363,7 @@ local FootRight = Instance.new("TextLabel")
 FootRight.Parent = Footer; FootRight.BackgroundTransparency = 1
 FootRight.AnchorPoint = Vector2.new(1, 0); FootRight.Position = UDim2.new(1, -16, 0, 0)
 FootRight.Size = UDim2.new(0, 220, 1, 0)
-FootRight.Font = F; FootRight.Text = "Insert — menu"; FootRight.TextColor3 = T.Tx3; FootRight.TextSize = 12
+FootRight.Font = F; FootRight.Text = "Insert â€” menu"; FootRight.TextColor3 = T.Tx3; FootRight.TextSize = 12
 FootRight.TextXAlignment = Enum.TextXAlignment.Right
 
 local isMinimized = false
@@ -1608,7 +1608,7 @@ openAppearance = (function()
 	close.Parent = panel; close.AnchorPoint = Vector2.new(1, 0)
 	close.Position = UDim2.new(1, -12, 0, 12); close.Size = UDim2.fromOffset(MOBILE and 36 or 26, MOBILE and 36 or 26)
 	close.BackgroundColor3 = T.Elev; close.BorderSizePixel = 0; close.AutoButtonColor = false
-	close.Font = FM; close.TextSize = MOBILE and 22 or 18; close.TextColor3 = T.Tx2; close.Text = "×"; close.ZIndex = 1502
+	close.Font = FM; close.TextSize = MOBILE and 22 or 18; close.TextColor3 = T.Tx2; close.Text = "Ã—"; close.ZIndex = 1502
 	Corner(close, MOBILE and 10 or 7); Stroke(close, T.Bd2, 1, 0.4)
 
 	local body = Instance.new("ScrollingFrame")
@@ -1766,7 +1766,7 @@ local BindPromptSub = Instance.new("TextLabel")
 BindPromptSub.Parent = BindPrompt; BindPromptSub.BackgroundTransparency = 1
 BindPromptSub.Position = UDim2.fromOffset(12, 24); BindPromptSub.Size = UDim2.new(1, -24, 0, 15)
 BindPromptSub.Font = F; BindPromptSub.TextSize = 11; BindPromptSub.TextColor3 = T.Tx2
-BindPromptSub.TextXAlignment = Enum.TextXAlignment.Left; BindPromptSub.Text = "Press a key or mouse button — Esc clears"
+BindPromptSub.TextXAlignment = Enum.TextXAlignment.Left; BindPromptSub.Text = "Press a key or mouse button â€” Esc clears"
 BindPromptSub.ZIndex = 981
 
 local function bindTokenFromInput(input)
@@ -1783,9 +1783,9 @@ local function bindTokenFromInput(input)
 end
 
 local function bindTokenTitle(token)
-	if type(token) ~= "string" then return "—" end
+	if type(token) ~= "string" then return "â€”" end
 	local kind, value = token:match("^(%a+):(.+)$")
-	if not kind or not value then return "—" end
+	if not kind or not value then return "â€”" end
 	local pretty = {
 		LeftControl = "LCTRL", RightControl = "RCTRL", LeftShift = "LSHIFT", RightShift = "RSHIFT",
 		LeftAlt = "LALT", RightAlt = "RALT", MouseButton1 = "M1", MouseButton2 = "M2", MouseButton3 = "M3",
@@ -1868,7 +1868,7 @@ local function finishBindCapture(token)
 	setKeybind(id, token)
 	local entry = BindRegistry[id]
 	if token then
-		Notify("Keybind", entry.label .. " → " .. bindTokenTitle(token), 1.8, "success")
+		Notify("Keybind", entry.label .. " â†’ " .. bindTokenTitle(token), 1.8, "success")
 	else
 		Notify("Keybind", entry.label .. " cleared", 1.6, "info")
 	end
@@ -3206,8 +3206,8 @@ do
 	note.TextColor3 = T.Tx3; note.TextXAlignment = Enum.TextXAlignment.Left
 	note.TextWrapped = MOBILE
 	note.Text = MOBILE
-		and "Кнопка BTN справа от функции выносит её на экран. Все изменения сохраняются автоматически."
-		or "ПКМ по функции — назначить бинд. Все изменения сохраняются автоматически."
+		and "ÐšÐ½Ð¾Ð¿ÐºÐ° BTN ÑÐ¿Ñ€Ð°Ð²Ð° Ð¾Ñ‚ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð²Ñ‹Ð½Ð¾ÑÐ¸Ñ‚ ÐµÑ‘ Ð½Ð° ÑÐºÑ€Ð°Ð½. Ð’ÑÐµ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÑŽÑ‚ÑÑ Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸."
+		or "ÐŸÐšÐœ Ð¿Ð¾ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ â€” Ð½Ð°Ð·Ð½Ð°Ñ‡Ð¸Ñ‚ÑŒ Ð±Ð¸Ð½Ð´. Ð’ÑÐµ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÑŽÑ‚ÑÑ Ð°Ð²Ñ‚Ð¾Ð¼Ð°Ñ‚Ð¸Ñ‡ÐµÑÐºÐ¸."
 end
 
 if MOBILE and Pages.Buttons then
@@ -4000,7 +4000,7 @@ local statusRoom = Instance.new("TextLabel")
 statusRoom.Parent = StatusHUD; statusRoom.BackgroundTransparency = 1
 statusRoom.Position = UDim2.fromOffset(12, 31); statusRoom.Size = UDim2.new(1, -24, 0, 16)
 statusRoom.Font = FM; statusRoom.TextSize = 12; statusRoom.TextColor3 = T.White
-statusRoom.TextXAlignment = Enum.TextXAlignment.Left; statusRoom.Text = "ROOM —"
+statusRoom.TextXAlignment = Enum.TextXAlignment.Left; statusRoom.Text = "ROOM â€”"
 
 local function mkVitalRow(parent, label, y)
 	local text = Instance.new("TextLabel")
@@ -4183,7 +4183,7 @@ do
 		value.TextColor3 = T.Tx
 		value.TextXAlignment = Enum.TextXAlignment.Left
 		value.TextTruncate = Enum.TextTruncate.AtEnd
-		value.Text = "—"
+		value.Text = "â€”"
 		return value
 	end
 	local iO2 = islandMetric(116, 60, "O2")
@@ -4240,7 +4240,7 @@ do
 				local m = getMain(); local ox = m and m.OxygenTank
 				local tank = type(ox) == "table" and ox.TankValue or nil
 				local oxygen = tank and tonumber(tank.Value) or nil
-				iO2.Text = oxygen and (tostring(math.floor(oxygen + 0.5)) .. "%") or "—"
+				iO2.Text = oxygen and (tostring(math.floor(oxygen + 0.5)) .. "%") or "â€”"
 				local lowO2 = oxygen and oxygen <= 25
 				iO2.TextColor3 = lowO2 and Color3.fromRGB(255, 180, 75) or T.Tx
 				iDot.BackgroundColor3 = lowO2 and Color3.fromRGB(255, 180, 75) or T.Accent
@@ -4274,7 +4274,7 @@ local function getThreatArrow(index)
 	arrow.Parent = holder; arrow.BackgroundTransparency = 1
 	arrow.AnchorPoint = Vector2.new(0.5, 0.5); arrow.Position = UDim2.fromOffset(48, 12)
 	arrow.Size = UDim2.fromOffset(24, 24); arrow.Font = FB; arrow.TextSize = 20
-	arrow.Text = "▲"; arrow.TextColor3 = Color3.fromRGB(255, 85, 85)
+	arrow.Text = "â–²"; arrow.TextColor3 = Color3.fromRGB(255, 85, 85)
 	local label = Instance.new("TextLabel")
 	label.Parent = holder; label.BackgroundTransparency = 1
 	label.Position = UDim2.fromOffset(0, 25); label.Size = UDim2.new(1, 0, 0, 16)
@@ -4368,7 +4368,7 @@ tc(RunService.Heartbeat:Connect(function()
 	if S._bindHUDDirty and S._refreshKeybindHUD then S._refreshKeybindHUD() end
 	if S.StatusHUD then
 		local room = LP:GetAttribute("RoomNum")
-		statusRoom.Text = "ROOM " .. (room and tostring(room) or "—")
+		statusRoom.Text = "ROOM " .. (room and tostring(room) or "â€”")
 		local hum = getHum()
 		local hp = hum and math.clamp(hum.Health, 0, hum.MaxHealth > 0 and hum.MaxHealth or 100) or 0
 		local maxHp = hum and hum.MaxHealth > 0 and hum.MaxHealth or 100
@@ -4537,7 +4537,7 @@ tc(RunService.RenderStepped:Connect(function()
 					if S.NameESP then parts[#parts + 1] = plr.Name end
 					if S.HealthESP and hum then parts[#parts + 1] = math.floor(hum.Health + 0.5) .. " HP" end
 					parts[#parts + 1] = math.floor(dist + 0.5) .. "m"
-					o.txt.Text = table.concat(parts, "  ·  ")
+					o.txt.Text = table.concat(parts, "  Â·  ")
 				else o.bill.Enabled = false end
 			else
 				o.box.Visible = false; o.tracer.Visible = false; o.bill.Enabled = false
@@ -4628,7 +4628,7 @@ task.spawn(function()
 	hookEvent("PandemoniumDoorLock", function() ShowEntityWarning("PANDEMONIUM", "Doors are locking") end)
 	hookEvent("PermanentEyefestation", function() ShowEntityWarning("EYEFESTATION", "Do not look at it") end)
 	hookEvent("CarnationIndicator", function() ShowEntityWarning("CARNATION", "Stare it down, don't look away") end)
-	hookEvent("DozerScreenShow", function() if S.BossAlerts then Notify("Dozer", "Dozer encounter active — move quietly", 4, "warn") end end)
+	hookEvent("DozerScreenShow", function() if S.BossAlerts then Notify("Dozer", "Dozer encounter active â€” move quietly", 4, "warn") end end)
 	hookEvent("DoombringerToggleScream", function() if S.BossAlerts then Notify("Doombringer", "Boss is active", 4, "danger") end end)
 
 	hookEvent("ZoneChange", function(zone)
@@ -4672,13 +4672,13 @@ task.spawn(function()
 		if loaded or reason == "missing" or reason == "readfile unavailable" then break end
 	end
 	S._autoConfigLoaded, S._autoConfigReason = loaded, reason
-	local openHint = MOBILE and "кнопка MENU на экране" or "Insert opens the menu"
+	local openHint = MOBILE and "ÐºÐ½Ð¾Ð¿ÐºÐ° MENU Ð½Ð° ÑÐºÑ€Ð°Ð½Ðµ" or "Insert opens the menu"
 	if loaded then
-		Notify("Pressure Hub", "Config restored — " .. openHint, 3, "success")
+		Notify("Pressure Hub", "Config restored â€” " .. openHint, 3, "success")
 	elseif reason ~= "missing" and reason ~= "readfile unavailable" then
 		Notify("Config", "Autoload skipped: " .. tostring(reason), 3, "warn")
 	else
-		Notify("Pressure Hub", "Loaded — " .. openHint, 3, "info")
+		Notify("Pressure Hub", "Loaded â€” " .. openHint, 3, "info")
 	end
 	print("[PressureHub] Loaded OK")
 end)

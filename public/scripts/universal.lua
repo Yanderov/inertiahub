@@ -1,9 +1,9 @@
 --[[
-    ╔════════════════════════════════════════════════════════════════════════╗
-    ║                 INERTIAHUB UNIVERSAL ROBLOX SCRIPT                     ║
-    ║                 Aesthetic: Matte Dark Charcoal / Zinc                  ║
-    ║                 Engine: Full-Featured Multi-Game Suite                 ║
-    ╚════════════════════════════════════════════════════════════════════════╝
+    â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+    â•‘                 INERTIAHUB UNIVERSAL ROBLOX SCRIPT                     â•‘
+    â•‘                 Aesthetic: Matte Dark Charcoal / Zinc                  â•‘
+    â•‘                 Engine: Full-Featured Multi-Game Suite                 â•‘
+    â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 ]]
 
 if _G.Universal_Inertia_Script then
@@ -1206,7 +1206,7 @@ HudLabel.TextSize = 11
 HudLabel.TextColor3 = Color3.fromRGB(220, 220, 230)
 HudLabel.TextXAlignment = Enum.TextXAlignment.Left
 HudLabel.RichText = true
-HudLabel.Text = "INERTIA UNIVERSAL • 60 FPS • 45ms"
+HudLabel.Text = "INERTIA UNIVERSAL â€¢ 60 FPS â€¢ 45ms"
 HudLabel.Parent = HudFrame
 
 local lastFpsTime = tick()
@@ -1227,7 +1227,7 @@ trackConn(RunService.RenderStepped:Connect(function()
         end)
 
         HudFrame.Visible = S.HUD_Watermark or S.HUD_FPS
-        HudLabel.Text = string.format("<b>INERTIA</b> <font color=\"#71717A\">v2.9</font> • <font color=\"#38BDF8\">%d FPS</font> • <font color=\"#A1A1AA\">%dms</font>", currentFps, ping)
+        HudLabel.Text = string.format("<b>INERTIA</b> <font color=\"#71717A\">v2.9</font> â€¢ <font color=\"#38BDF8\">%d FPS</font> â€¢ <font color=\"#A1A1AA\">%dms</font>", currentFps, ping)
     end
 end))
 

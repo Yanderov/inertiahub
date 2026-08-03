@@ -1,9 +1,9 @@
 --[[
-    ╔════════════════════════════════════════════════════════════════════════╗
-    ║             INERTIAHUB UNIVERSAL ROBLOX SCRIPT (MOBILE)                ║
-    ║             Aesthetic: Matte Dark Charcoal / Zinc                      ║
-    ║             Engine: Touch-Optimized Multi-Game Suite                   ║
-    ╚════════════════════════════════════════════════════════════════════════╝
+    â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+    â•‘             INERTIAHUB UNIVERSAL ROBLOX SCRIPT (MOBILE)                â•‘
+    â•‘             Aesthetic: Matte Dark Charcoal / Zinc                      â•‘
+    â•‘             Engine: Touch-Optimized Multi-Game Suite                   â•‘
+    â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 ]]
 
 _G.INERTIA_MOBILE = true
@@ -1172,7 +1172,7 @@ HudLabel.TextSize = 10
 HudLabel.TextColor3 = Color3.fromRGB(220, 220, 230)
 HudLabel.TextXAlignment = Enum.TextXAlignment.Left
 HudLabel.RichText = true
-HudLabel.Text = "INERTIA MOBILE • 60 FPS • 45ms"
+HudLabel.Text = "INERTIA MOBILE â€¢ 60 FPS â€¢ 45ms"
 HudLabel.Parent = HudFrame
 
 local lastFpsTime = tick()
@@ -1193,7 +1193,7 @@ trackConn(RunService.RenderStepped:Connect(function()
         end)
 
         HudFrame.Visible = S.HUD_Watermark or S.HUD_FPS
-        HudLabel.Text = string.format("<b>INERTIA</b> <font color=\"#71717A\">v2.9</font> • <font color=\"#38BDF8\">%d FPS</font> • <font color=\"#A1A1AA\">%dms</font>", currentFps, ping)
+        HudLabel.Text = string.format("<b>INERTIA</b> <font color=\"#71717A\">v2.9</font> â€¢ <font color=\"#38BDF8\">%d FPS</font> â€¢ <font color=\"#A1A1AA\">%dms</font>", currentFps, ping)
     end
 end))
 
