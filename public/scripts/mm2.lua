@@ -19830,4 +19830,5 @@ do
         end
     end)
 end
+end
 -- <<< INERTIA AUTO ROLES LOGIC <<<
