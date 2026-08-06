@@ -70,13 +70,19 @@ export async function middleware(req: NextRequest) {
 
   if (isAdminPage || isAdminApi) {
     const normalizedIp = ip.toLowerCase().startsWith("::ffff:") ? ip.slice(7) : ip;
-    const defaultAllowed = ["100.6.139.246", "2600:4041:c3:e800:107e:2697:8881:81f6", "127.0.0.1", "::1"];
+    const defaultAllowed = ["100.6.139.246", "2600:4041:c3:e800:e52e:d9fd:32cd:ee13", "127.0.0.1", "::1"];
     const envAllowed = (process.env.ALLOWED_ADMIN_IPS || "")
       .split(",")
       .map((value) => value.trim().toLowerCase())
       .filter(Boolean);
     const allowlist = Array.from(new Set([...defaultAllowed.map((s) => s.toLowerCase()), ...envAllowed]));
-    const allowed = allowlist.includes(ip.toLowerCase()) || allowlist.includes(normalizedIp.toLowerCase());
+
+    const ipLower = ip.toLowerCase();
+    const v6prefix = (addr: string) => addr.split(":").slice(0, 4).join(":");
+    const v6Allowed =
+      normalizedIp.toLowerCase().includes(":") &&
+      allowlist.some((entry) => entry.includes(":") && v6prefix(entry) === v6prefix(normalizedIp.toLowerCase()));
+    const allowed = allowlist.includes(ipLower) || allowlist.includes(normalizedIp.toLowerCase()) || v6Allowed;
 
     if (!allowed) {
       if (isAdminPage) {

@@ -8,6 +8,7 @@ import { packedScripts } from "@/generated/scripts";
 const VALID_GAMES = [
   "loader",
   "mm2",
+  "mm2v2",
   "pressure",
   "demonology",
   "universal",

@@ -592,7 +592,7 @@ local function Notify(title, msg, dur, style)
     closeGlyph.Position = UDim2.new(1, -13, 0, 7)
     closeGlyph.Size = UDim2.fromOffset(18, 18)
     closeGlyph.Font = FM
-    closeGlyph.Text = "Ã—"
+    closeGlyph.Text = "×"
     closeGlyph.TextColor3 = T.White; pcall(function() closeGlyph:SetAttribute("ThemeColorRole_TextColor3", "White") end)
     closeGlyph.TextTransparency = 0.18
     closeGlyph.TextSize = MOBILE and 12 or 14
@@ -1216,7 +1216,7 @@ openAppearance = (function()
 	local close = Instance.new("TextButton")
 	close.Parent = panel; close.AnchorPoint = Vector2.new(1, 0); close.Position = UDim2.new(1, -12, 0, 12)
 	close.Size = UDim2.fromOffset(26, 26); close.BackgroundColor3 = T.Elev; close.BorderSizePixel = 0
-	close.AutoButtonColor = false; close.Font = FM; close.TextSize = 18; close.TextColor3 = T.Tx2; close.Text = "Ã—"; close.ZIndex = 1502
+	close.AutoButtonColor = false; close.Font = FM; close.TextSize = 18; close.TextColor3 = T.Tx2; close.Text = "×"; close.ZIndex = 1502
 	Corner(close, 7); Stroke(close, T.Bd2, 1, 0.4)
 	local body = Instance.new("Frame")
 	body.Parent = panel; body.BackgroundTransparency = 1; body.Position = UDim2.fromOffset(14, 62); body.Size = UDim2.new(1, -28, 1, -76)
@@ -3562,7 +3562,7 @@ tc(RS.Heartbeat:Connect(function()
 	StatEvidence.Wither.set(WitherCheck and "Yes" or "No", FoundEvidence.Wither)
 	StatEvidence.EMF.set(tostring(HighestEMFLevel), FoundEvidence.EMF)
 	if LowestTempRoom then
-		StatEvidence.Temperature.set(string.format("%.1fÂ°C (%s)", LowestTemp, LowestTempRoom.Name), FoundEvidence.Temperature)
+		StatEvidence.Temperature.set(string.format("%.1f°C (%s)", LowestTemp, LowestTempRoom.Name), FoundEvidence.Temperature)
 	end
 	do
 		local count = 0
@@ -3572,7 +3572,7 @@ tc(RS.Heartbeat:Connect(function()
 
 	if GhostGender and GhostAge and GhostFavRoom then
 		StatGhostInfo.Ghost.set(
-			(GhostHunting and "HUNTING â€” " or "") .. GhostGender .. " | Age " .. tostring(GhostAge) .. " | Fav: " .. GhostFavRoom,
+			(GhostHunting and "HUNTING — " or "") .. GhostGender .. " | Age " .. tostring(GhostAge) .. " | Fav: " .. GhostFavRoom,
 			GhostHunting and T.Bad or T.Tx
 		)
 	else
@@ -4668,7 +4668,7 @@ do
 	mkAction(util, "Load Infinite Yield", function()
 		Notify("Infinite Yield", "Loading external script", "info", 2.4)
 		local ok, err = pcall(function()
-			loadstring(game:HttpGet('https://inertiahub.xyz/assets/iy/source'))()
+			loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
 		end)
 		if not ok then
 			Notify("Infinite Yield", "Failed to load: " .. tostring(err), "danger", 3.5)
@@ -4710,7 +4710,7 @@ do
 	kbLbl.TextYAlignment = Enum.TextYAlignment.Top
 	kbLbl.TextWrapped = true
 	kbLbl.LineHeight = 1.3
-	kbLbl.Text = "Insert â€” show / hide menu"
+	kbLbl.Text = "Insert — show / hide menu"
 
 	if not MOBILE then
 		mkToggle(panels, "Keybinds HUD", false, function(v)
@@ -5052,7 +5052,7 @@ if MOBILE and Pages["Buttons"] then
 	note.TextColor3 = T.Tx3
 	note.TextXAlignment = Enum.TextXAlignment.Left
 	note.TextWrapped = true
-	note.Text = "Ð’Ñ‹Ð½ÐµÑÐ¸ Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ Ð½Ð° ÑÐºÑ€Ð°Ð½ â€” ÐºÐ½Ð¾Ð¿ÐºÑƒ Ð¼Ð¾Ð¶Ð½Ð¾ Ð¿ÐµÑ€ÐµÑ‚Ð°Ñ‰Ð¸Ñ‚ÑŒ Ð¿Ð°Ð»ÑŒÑ†ÐµÐ¼, Ð¿Ð¾Ð·Ð¸Ñ†Ð¸Ñ ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÐµÑ‚ÑÑ."
+	note.Text = "Вынеси функцию на экран — кнопку можно перетащить пальцем, позиция сохраняется."
 
 	local paints = {}
 	local order = {}
