@@ -34,9 +34,7 @@ export default function Footer() {
             <a href="#code" className="text-zinc-400 hover:text-white transition-colors">
               Source Code
             </a>
-            <a href="#executors" className="text-zinc-400 hover:text-white transition-colors">
-              Executors
-            </a>
+
             <Link href="/admin" className="text-zinc-400 hover:text-white transition-colors flex items-center gap-1">
               <ShieldCheck className="w-3 h-3 text-zinc-500" />
               Admin

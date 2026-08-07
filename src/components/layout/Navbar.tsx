@@ -33,8 +33,6 @@ export default function Navbar() {
     { id: "features", label: "Modules", targetId: "features" },
     { id: "code", label: "Source", targetId: "code" },
     { id: "gallery", label: "Live Captures", targetId: "gallery" },
-    { id: "executors", label: "Executors", targetId: "executors" },
-    { id: "changelog", label: "Changelog", targetId: "changelog" },
   ];
 
   const handleNavClick = (e: React.MouseEvent, targetId: string) => {

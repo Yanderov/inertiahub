@@ -6,8 +6,6 @@ import ScriptModuleShowcase from "@/components/script/ScriptModuleShowcase";
 import ScriptCodeViewer from "@/components/script/ScriptCodeViewer";
 import ScriptGallery from "@/components/script/ScriptGallery";
 import ScriptFeatures from "@/components/script/ScriptFeatures";
-import ScriptExecutors from "@/components/script/ScriptExecutors";
-import ScriptChangelogFeed from "@/components/script/ScriptChangelogFeed";
 import Footer from "@/components/layout/Footer";
 
 export default function HomePage() {
@@ -24,8 +22,6 @@ export default function HomePage() {
         <ScriptCodeViewer />
         <ScriptGallery />
         <ScriptFeatures />
-        <ScriptExecutors />
-        <ScriptChangelogFeed />
       </main>
       <Footer />
     </div>
