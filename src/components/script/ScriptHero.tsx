@@ -2,40 +2,20 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Copy, Check, Download, Terminal, CheckCircle2 } from "lucide-react";
+import { Copy, Download, Terminal, CheckCircle2 } from "lucide-react";
 
 export default function ScriptHero() {
   const [copied, setCopied] = useState(false);
-  const [selectedScript, setSelectedScript] = useState<"loader" | "mm2" | "pressure" | "demonology">("loader");
 
-  const scriptSnippets: Record<string, { title: string; game: string; code: string; downloadPath?: string }> = {
-    loader: {
-      title: "Universal Auto-Detection Loader",
-      game: "Auto-Game Detector",
-      code: `loadstring(game:HttpGet("https://inertiahub.xyz/api/v1/script/loader"))()`,
-    },
-    mm2: {
-      title: "Murder Mystery 2 (Dedicated v2.4)",
-      game: "Murder Mystery 2",
-      code: `loadstring(game:HttpGet("https://inertiahub.xyz/scripts/murdermistery2.lua"))()`,
-      downloadPath: "/scripts/murdermistery2.lua",
-    },
-    pressure: {
-      title: "Pressure (Hadal Blacksite)",
-      game: "Pressure",
-      code: `loadstring(game:HttpGet("https://inertiahub.xyz/api/v1/script/pressure"))()`,
-    },
-    demonology: {
-      title: "Demonology (Ghost Hunting)",
-      game: "Demonology",
-      code: `loadstring(game:HttpGet("https://inertiahub.xyz/api/v1/script/demonology"))()`,
-    },
+  const mm2Script = {
+    title: "Murder Mystery 2 (Dedicated v2.4)",
+    game: "Murder Mystery 2",
+    code: `loadstring(game:HttpGet("https://inertiahub.xyz/scripts/murdermistery2.lua"))()`,
+    downloadPath: "/scripts/murdermistery2.lua",
   };
 
-  const currentSnippet = scriptSnippets[selectedScript];
-
   const handleCopy = () => {
-    navigator.clipboard.writeText(currentSnippet.code);
+    navigator.clipboard.writeText(mm2Script.code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -58,7 +38,7 @@ export default function ScriptHero() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
-            <span className="font-semibold text-white">MM2 v2.4 Live</span>
+            <span className="font-semibold text-white">MM2 v2.4 Dedicated</span>
             <span className="text-zinc-600">|</span>
             <span className="text-zinc-400">Quantum Blink 0ms & Heartbeat Desync</span>
           </div>
@@ -81,51 +61,13 @@ export default function ScriptHero() {
           transition={{ duration: 0.35, delay: 0.1 }}
           className="max-w-2xl mx-auto text-xs sm:text-sm md:text-base text-zinc-400 text-center mb-8 leading-relaxed font-normal"
         >
-          High-performance Luau script suite for Murder Mystery 2, Pressure, and Demonology.
-          Zero execution lag, native drawing library hooks, and aggressive desync physics.
+          High-performance Luau script engine engineered specifically for Murder Mystery 2.
+          Zero execution lag, instantaneous gun recovery, and aggressive desync physics.
         </motion.p>
-
-        {/* Script Selection Tabs */}
-        <div id="script" className="flex items-center justify-center gap-1.5 mb-4 flex-wrap">
-          {[
-            { id: "loader", label: "Universal Loader", badge: "Auto-Detect" },
-            { id: "mm2", label: "Murder Mystery 2", badge: "8.0k lines" },
-            { id: "pressure", label: "Pressure", badge: "Blacksite" },
-            { id: "demonology", label: "Demonology", badge: "Ghost Hunt" },
-          ].map((tab) => {
-            const isSelected = selectedScript === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedScript(tab.id as any)}
-                className={`relative px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-2 select-none cursor-pointer ${
-                  isSelected
-                    ? "text-white font-semibold"
-                    : "text-zinc-400 hover:text-zinc-200"
-                }`}
-              >
-                {isSelected && (
-                  <motion.div
-                    layoutId="activeScriptHeroTab"
-                    transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                    className="absolute inset-0 bg-[#222226] border border-zinc-700/80 rounded-lg shadow-sm"
-                  />
-                )}
-                <span className="relative z-10">{tab.label}</span>
-                <span className={`relative z-10 text-[10px] px-1.5 py-0.2 rounded border ${
-                  isSelected 
-                    ? "bg-[#111113] text-zinc-300 border-zinc-700" 
-                    : "bg-[#111113] text-zinc-500 border-zinc-800"
-                }`}>
-                  {tab.badge}
-                </span>
-              </button>
-            );
-          })}
-        </div>
 
         {/* Loadstring Code Box */}
         <motion.div 
+          id="script"
           layout
           className="rounded-2xl border border-zinc-800 bg-[#0d0d0f]/95 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/80 mb-8"
         >
@@ -138,7 +80,7 @@ export default function ScriptHero() {
                 <span className="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-700" />
               </div>
               <span className="text-xs font-mono text-zinc-300 pl-1">
-                {currentSnippet.title}
+                {mm2Script.title}
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -159,7 +101,7 @@ export default function ScriptHero() {
                 <span className="text-zinc-500">:</span>
                 <span className="text-zinc-200">HttpGet</span>
                 <span className="text-zinc-500">(</span>
-                <span className="text-emerald-400">"{currentSnippet.code.split('"')[1]}"</span>
+                <span className="text-emerald-400">"https://inertiahub.xyz/scripts/murdermistery2.lua"</span>
                 <span className="text-zinc-500">))()</span>
               </code>
             </div>
@@ -172,7 +114,7 @@ export default function ScriptHero() {
                 {copied ? (
                   <>
                     <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    <span>Copied to Clipboard</span>
+                    <span>Copied Script</span>
                   </>
                 ) : (
                   <>
@@ -182,17 +124,15 @@ export default function ScriptHero() {
                 )}
               </button>
 
-              {currentSnippet.downloadPath && (
-                <a
-                  href={currentSnippet.downloadPath}
-                  download="murdermistery2.lua"
-                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-[#18181b] hover:bg-[#222226] text-zinc-200 border border-zinc-800 font-mono text-xs transition-all active:scale-95 shadow-sm"
-                  title="Download raw .lua source code"
-                >
-                  <Download className="w-4 h-4 text-zinc-400" />
-                  <span>.lua</span>
-                </a>
-              )}
+              <a
+                href={mm2Script.downloadPath}
+                download="murdermistery2.lua"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-[#18181b] hover:bg-[#222226] text-zinc-200 border border-zinc-800 font-mono text-xs transition-all active:scale-95 shadow-sm"
+                title="Download raw .lua source code"
+              >
+                <Download className="w-4 h-4 text-zinc-400" />
+                <span>.lua</span>
+              </a>
             </div>
           </div>
         </motion.div>

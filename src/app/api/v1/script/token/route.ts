@@ -7,11 +7,9 @@ const VALID_GAMES = [
   "mm2",
   "pressure",
   "demonology",
-  "universal",
   "mm2_mobile",
   "pressure_mobile",
   "demonology_mobile",
-  "universal_mobile",
 ];
 const TOKEN_TTL_MS = 5 * 60 * 1000;
 

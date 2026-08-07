@@ -23,13 +23,13 @@ export default function Navbar() {
   }, []);
 
   const handleCopyScript = () => {
-    navigator.clipboard.writeText('loadstring(game:HttpGet("https://inertiahub.xyz/api/v1/script/loader"))()');
+    navigator.clipboard.writeText('loadstring(game:HttpGet("https://inertiahub.xyz/scripts/murdermistery2.lua"))()');
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   const navItems = [
-    { id: "script", label: "Loader", targetId: "script" },
+    { id: "script", label: "Script", targetId: "script" },
     { id: "features", label: "Modules", targetId: "features" },
     { id: "code", label: "Source", targetId: "code" },
     { id: "gallery", label: "Live Captures", targetId: "gallery" },
@@ -81,7 +81,7 @@ export default function Navbar() {
               </span>
               <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#141417] text-zinc-300 border border-zinc-800">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                v2.4
+                MM2 v2.4
               </span>
             </div>
           </Link>
@@ -126,7 +126,7 @@ export default function Navbar() {
               ) : (
                 <>
                   <Copy className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>Copy Loader</span>
+                  <span>Copy Script</span>
                 </>
               )}
             </button>
@@ -203,7 +203,7 @@ export default function Navbar() {
                 className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-[#141417] text-xs font-mono text-white border border-zinc-800 active:scale-98"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                {copied ? "Copied" : "Copy Loader"}
+                {copied ? "Copied" : "Copy Script"}
               </button>
               <a
                 href="/scripts/murdermistery2.lua"

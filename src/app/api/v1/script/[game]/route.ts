@@ -11,11 +11,9 @@ const VALID_GAMES = [
   "mm2v2",
   "pressure",
   "demonology",
-  "universal",
   "mm2_mobile",
   "pressure_mobile",
   "demonology_mobile",
-  "universal_mobile",
 ];
 
 function verifyToken(game: string, token: string | null, exp: string | null): boolean {

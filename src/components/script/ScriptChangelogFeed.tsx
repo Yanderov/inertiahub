@@ -18,13 +18,13 @@ export default function ScriptChangelogFeed() {
       ],
     },
     {
-      version: "v2.3.0 — Multi-Game Expansion",
+      version: "v2.3.0 — Silent Aim & ESP Overhaul",
       badge: "Previous Patch",
       isLatest: false,
       items: [
-        "Added dedicated Pressure (Hadal Blacksite) suite with monster alerts & fast swim",
-        "Added Demonology ghost investigation module with automated evidence logging",
-        "Unified all game modules under a single universal auto-detect loader",
+        "Rebuilt Sheriff and Knife silent aim with predictive trajectory compensation",
+        "Added full role ESP with color-coded highlights and gun drop tracers",
+        "Pixel Surf Engine for smooth slope movement and auto bunny-hop",
       ],
     },
   ];

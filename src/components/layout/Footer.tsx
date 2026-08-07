@@ -19,14 +19,14 @@ export default function Footer() {
             </span>
             <span className="text-zinc-700">•</span>
             <span className="text-zinc-500 font-mono text-[11px]">
-              MM2 • Pressure • Demonology
+              Murder Mystery 2
             </span>
           </div>
 
           {/* Links */}
           <div className="flex items-center gap-4 text-xs">
             <a href="#script" className="text-zinc-400 hover:text-white transition-colors">
-              Loader
+              Script
             </a>
             <a href="#features" className="text-zinc-400 hover:text-white transition-colors">
               Modules

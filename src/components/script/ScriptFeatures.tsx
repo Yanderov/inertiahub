@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Crosshair, Zap, ShieldCheck, Compass, Ghost, Cpu } from "lucide-react";
+import { Crosshair, Zap, ShieldCheck, Eye, Move, Cpu } from "lucide-react";
 
 export default function ScriptFeatures() {
   const features = [
@@ -13,7 +13,7 @@ export default function ScriptFeatures() {
     {
       icon: Crosshair,
       title: "Quantum Blink Gun Recovery",
-      desc: "Instantaneous fallen gun pickup. Replicates character CFrame for a single frame, triggers multi-limb touch events, and returns before the server can reject.",
+      desc: "Instantaneous fallen gun pickup (0ms). Dispatches multi-limb touch replication directly into the dropped revolver without character teleportation lag.",
     },
     {
       icon: ShieldCheck,
@@ -21,14 +21,14 @@ export default function ScriptFeatures() {
       desc: "Predictive trajectory vector calculation with ping compensation, wall check bypass, and customizable hit parts (HumanoidRootPart / Head).",
     },
     {
-      icon: Compass,
-      title: "Pressure Blacksite Suite",
-      desc: "Deep-sea monster alerts (Angler, Froger, Pandemonium, Blitz), keycard pathfinder, high-speed swimming physics, and infinite oxygen.",
+      icon: Eye,
+      title: "Role ESP & Gun Drop Tracers",
+      desc: "Full-color role highlights (Murderer, Sheriff, Hero, Innocents), weapon hold alerts, and real-time tracers connecting straight to dropped revolvers.",
     },
     {
-      icon: Ghost,
-      title: "Demonology Ghost Hunter",
-      desc: "Real-time ghost distance tracking, favorite room locator, automated evidence identification (EMF 5, Freezing, Spirit Box), and cursed items ESP.",
+      icon: Move,
+      title: "Pixel Surf & Movement",
+      desc: "CFrame-assisted smooth slope sliding, automatic bunny-hop acceleration, anti-fling physics shielding, and instant void rescue teleportation.",
     },
     {
       icon: Cpu,

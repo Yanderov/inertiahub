@@ -9,13 +9,9 @@ import {
   Sparkles,
   Zap,
   Sliders,
-  Compass,
-  Ghost,
-  CheckCircle2
 } from "lucide-react";
 
 export default function ScriptModuleShowcase() {
-  const [activeGame, setActiveGame] = useState<"mm2" | "pressure" | "demonology">("mm2");
   const [activeTab, setActiveTab] = useState<string>("combat");
 
   // Local state for interactive UI controls
@@ -37,14 +33,6 @@ export default function ScriptModuleShowcase() {
     "Anti-Fling & Void Rescue": true,
     "Smart Coin Aura": true,
     "Fake Headless & Korblox": true,
-    // Pressure
-    "Angler & Froger ESP": true,
-    "Door & Keycard ESP": true,
-    "Infinite Oxygen & Stamina": true,
-    // Demonology
-    "Ghost Tracker & Radar": true,
-    "EMF Level 5 Auto-Logger": true,
-    "Cursed Items ESP": true,
   });
 
   const [sliders, setSliders] = useState<Record<string, number>>({
@@ -75,27 +63,14 @@ export default function ScriptModuleShowcase() {
     setDropdowns((prev) => ({ ...prev, [key]: val }));
   };
 
-  const tabsByGame = {
-    mm2: [
-      { id: "combat", label: "Sheriff & Knife", icon: Crosshair },
-      { id: "desync", label: "Desync & Ghost", icon: Zap },
-      { id: "gun", label: "Gun Recovery (0ms)", icon: Sparkles },
-      { id: "visuals", label: "Visuals & ESP", icon: Eye },
-      { id: "movement", label: "Movement & Surf", icon: Move },
-      { id: "misc", label: "Economy & Misc", icon: Sliders },
-    ],
-    pressure: [
-      { id: "monsters", label: "Monsters & Alert", icon: Compass },
-      { id: "esp", label: "Rooms & Keycards", icon: Eye },
-      { id: "utility", label: "Oxygen & Speed", icon: Zap },
-    ],
-    demonology: [
-      { id: "ghost", label: "Ghost Radar & ESP", icon: Ghost },
-      { id: "evidence", label: "Auto-Evidence", icon: CheckCircle2 },
-    ],
-  };
-
-  const currentTabs = tabsByGame[activeGame];
+  const tabs = [
+    { id: "combat", label: "Sheriff & Knife", icon: Crosshair },
+    { id: "desync", label: "Desync & Ghost", icon: Zap },
+    { id: "gun", label: "Gun Recovery (0ms)", icon: Sparkles },
+    { id: "visuals", label: "Visuals & ESP", icon: Eye },
+    { id: "movement", label: "Movement & Surf", icon: Move },
+    { id: "misc", label: "Economy & Misc", icon: Sliders },
+  ];
 
   return (
     <section id="features" className="py-16 bg-transparent relative z-10">
@@ -112,47 +87,8 @@ export default function ScriptModuleShowcase() {
             Module Architecture
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400">
-            Preview the live in-game menu tabs, toggles, sliders, and desync configurations.
+            Preview the live Murder Mystery 2 in-game menu tabs, toggles, sliders, and desync configurations.
           </p>
-        </div>
-
-        {/* Game Switcher Tabs */}
-        <div className="flex items-center gap-1.5 mb-6 p-1 rounded-xl bg-[#111113] border border-zinc-800">
-          {[
-            { id: "mm2", name: "Murder Mystery 2", count: "v2.4 Live" },
-            { id: "pressure", name: "Pressure", count: "Hadal Suite" },
-            { id: "demonology", name: "Demonology", count: "Ghost Hunting" },
-          ].map((game) => {
-            const isSelected = activeGame === game.id;
-            return (
-              <button
-                key={game.id}
-                onClick={() => {
-                  setActiveGame(game.id as any);
-                  setActiveTab(tabsByGame[game.id as keyof typeof tabsByGame][0].id);
-                }}
-                className={`relative flex-1 py-2 px-3 rounded-lg text-xs font-medium transition-all select-none cursor-pointer flex items-center justify-center gap-2 ${
-                  isSelected ? "text-white font-semibold" : "text-zinc-400 hover:text-zinc-200"
-                }`}
-              >
-                {isSelected && (
-                  <motion.div
-                    layoutId="activeGameSelectorTab"
-                    transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                    className="absolute inset-0 bg-[#222226] border border-zinc-700/80 rounded-lg shadow-sm"
-                  />
-                )}
-                <span className="relative z-10">{game.name}</span>
-                <span className={`relative z-10 text-[10px] font-mono px-1.5 py-0.2 rounded border ${
-                  isSelected 
-                    ? "bg-[#111113] text-zinc-200 border-zinc-700" 
-                    : "bg-[#141417] text-zinc-500 border-zinc-800"
-                }`}>
-                  {game.count}
-                </span>
-              </button>
-            );
-          })}
         </div>
 
         {/* Interactive In-Game Window Mockup */}
@@ -162,7 +98,7 @@ export default function ScriptModuleShowcase() {
             <div className="flex items-center gap-2.5">
               <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-xs font-mono text-white font-semibold">
-                Inertia Hub UI • {activeGame.toUpperCase()}
+                Inertia Hub • Murder Mystery 2
               </span>
             </div>
             <span className="text-[11px] font-mono text-zinc-500">
@@ -172,7 +108,7 @@ export default function ScriptModuleShowcase() {
 
           {/* Subcategory Navigation Tabs */}
           <div className="flex items-center gap-1 p-2 border-b border-zinc-800 bg-[#101012] overflow-x-auto no-scrollbar">
-            {currentTabs.map((tab) => {
+            {tabs.map((tab) => {
               const Icon = tab.icon;
               const isSelected = activeTab === tab.id;
               return (
@@ -200,7 +136,7 @@ export default function ScriptModuleShowcase() {
           {/* Module Content */}
           <div className="p-4 sm:p-6 min-h-[290px] bg-[#09090b]/60">
             {/* MM2 COMBAT */}
-            {activeGame === "mm2" && activeTab === "combat" && (
+            {activeTab === "combat" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
                   <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
@@ -226,7 +162,7 @@ export default function ScriptModuleShowcase() {
             )}
 
             {/* MM2 DESYNC */}
-            {activeGame === "mm2" && activeTab === "desync" && (
+            {activeTab === "desync" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
                   <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
@@ -254,7 +190,7 @@ export default function ScriptModuleShowcase() {
             )}
 
             {/* MM2 GUN RECOVERY */}
-            {activeGame === "mm2" && activeTab === "gun" && (
+            {activeTab === "gun" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
                   <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
@@ -285,7 +221,7 @@ export default function ScriptModuleShowcase() {
             )}
 
             {/* MM2 VISUALS */}
-            {activeGame === "mm2" && activeTab === "visuals" && (
+            {activeTab === "visuals" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
                   <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
@@ -319,7 +255,7 @@ export default function ScriptModuleShowcase() {
             )}
 
             {/* MM2 MOVEMENT */}
-            {activeGame === "mm2" && activeTab === "movement" && (
+            {activeTab === "movement" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
                   <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
@@ -338,7 +274,7 @@ export default function ScriptModuleShowcase() {
             )}
 
             {/* MM2 MISC */}
-            {activeGame === "mm2" && activeTab === "misc" && (
+            {activeTab === "misc" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
                   <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
@@ -352,47 +288,6 @@ export default function ScriptModuleShowcase() {
                     Local Cosmetics
                   </div>
                   <ToggleItem label="Fake Headless & Korblox" enabled={toggles["Fake Headless & Korblox"]} onToggle={() => handleToggle("Fake Headless & Korblox")} />
-                </div>
-              </div>
-            )}
-
-            {/* PRESSURE */}
-            {activeGame === "pressure" && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
-                  <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
-                    Entity Detection
-                  </div>
-                  <ToggleItem label="Angler & Froger ESP" enabled={toggles["Angler & Froger ESP"]} onToggle={() => handleToggle("Angler & Froger ESP")} />
-                  <ToggleItem label="Door & Keycard ESP" enabled={toggles["Door & Keycard ESP"]} onToggle={() => handleToggle("Door & Keycard ESP")} />
-                </div>
-                <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
-                  <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
-                    Vitals & Speed
-                  </div>
-                  <ToggleItem label="Infinite Oxygen & Stamina" enabled={toggles["Infinite Oxygen & Stamina"]} onToggle={() => handleToggle("Infinite Oxygen & Stamina")} />
-                </div>
-              </div>
-            )}
-
-            {/* DEMONOLOGY */}
-            {activeGame === "demonology" && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
-                  <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
-                    Paranormal Investigation
-                  </div>
-                  <ToggleItem label="Ghost Tracker & Radar" enabled={toggles["Ghost Tracker & Radar"]} onToggle={() => handleToggle("Ghost Tracker & Radar")} />
-                  <ToggleItem label="EMF Level 5 Auto-Logger" enabled={toggles["EMF Level 5 Auto-Logger"]} onToggle={() => handleToggle("EMF Level 5 Auto-Logger")} />
-                  <ToggleItem label="Cursed Items ESP" enabled={toggles["Cursed Items ESP"]} onToggle={() => handleToggle("Cursed Items ESP")} />
-                </div>
-                <div className="p-4 rounded-xl bg-[#111113] border border-zinc-800 space-y-3">
-                  <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-zinc-800">
-                    Investigation Tools
-                  </div>
-                  <p className="text-xs text-zinc-400 leading-relaxed">
-                    Live favorite room visualizer, spirit box frequency logger, and instant sanity freeze during ghost hunting phases.
-                  </p>
                 </div>
               </div>
             )}

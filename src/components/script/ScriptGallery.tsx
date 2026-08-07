@@ -2,29 +2,24 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Crosshair, Compass, Ghost, ZoomIn } from "lucide-react";
+import { X, Crosshair, Zap, Eye, Sliders, ZoomIn } from "lucide-react";
 
 interface GalleryItem {
   id: string;
   title: string;
-  game: string;
-  category: "mm2" | "pressure" | "demonology";
-  image: string;
   badge: string;
+  image: string;
   desc: string;
   icon: any;
 }
 
 export default function ScriptGallery() {
   const [selectedImage, setSelectedImage] = useState<GalleryItem | null>(null);
-  const [filter, setFilter] = useState<string>("all");
 
   const galleryItems: GalleryItem[] = [
     {
       id: "mm2-gameplay",
-      title: "MM2 Role HUD & Gun Status",
-      game: "Murder Mystery 2",
-      category: "mm2",
+      title: "MM2 Role HUD & Live Gun Status",
       badge: "In-Game Live HUD",
       image: "/gallery/mm2_1.jpg",
       desc: "Real-time role identification showing Murderer, Sheriff, Hero, and Gun status with minimal screen footprint.",
@@ -33,114 +28,51 @@ export default function ScriptGallery() {
     {
       id: "mm2-menu",
       title: "MM2 Inertia Menu & Sheriff Combat",
-      game: "Murder Mystery 2",
-      category: "mm2",
       badge: "Combat & Desync",
       image: "/gallery/mm2_2.png",
       desc: "Tactical Sheriff aim control with Silent Aim, Quantum Gun Grab, Anti-Desync, and Instant Revolver Fire.",
-      icon: Crosshair,
+      icon: Zap,
     },
     {
-      id: "pressure-station",
-      title: "Pressure Hadal Blacksite Sector",
-      game: "Pressure",
-      category: "pressure",
-      badge: "Hadal Station Live",
-      image: "/gallery/pressure_1.png",
-      desc: "Hadal Blacksite atmospheric depth run with entity alerts, room tracking, and mission waypoint highlights.",
-      icon: Compass,
+      id: "mm2-esp",
+      title: "Role ESP, Chams & Gun Tracers",
+      badge: "Visuals Engine",
+      image: "/gallery/mm2_preview.jpg",
+      desc: "Full-color role highlights, player chams, weapon alerts, and real-time line tracers to fallen revolvers.",
+      icon: Eye,
     },
     {
-      id: "pressure-menu",
-      title: "Pressure Inertia Module & Vitals",
-      game: "Pressure",
-      category: "pressure",
-      badge: "Entity Radar & UI",
-      image: "/gallery/pressure_2.png",
-      desc: "Inertia script menu loaded inside Pressure with full Potassium compatibility, oxygen monitor, and entity radar.",
-      icon: Compass,
-    },
-    {
-      id: "demonology-night",
-      title: "Demonology Paranormal Investigation",
-      game: "Demonology",
-      category: "demonology",
-      badge: "Ghost Hunting Live",
-      image: "/gallery/demonology_1.png",
-      desc: "Night-time paranormal investigation showing Ghost Radar, room locator, and active ghost distance tracking.",
-      icon: Ghost,
-    },
-    {
-      id: "demonology-radar",
-      title: "Demonology Evidence & Entity List",
-      game: "Demonology",
-      category: "demonology",
-      badge: "Evidence & Radar",
-      image: "/gallery/demonology_2.png",
-      desc: "Live ghost identification database, EMF level 5 recorder, spirit box response helper, and directional radar compass.",
-      icon: Ghost,
+      id: "mm2-gui",
+      title: "In-Game Configuration & Themes",
+      badge: "UI & Settings",
+      image: "/gallery/gui_preview.jpg",
+      desc: "High-performance dark theme UI with draggable panels, slider controls, keybinds, and instant config saving.",
+      icon: Sliders,
     },
   ];
-
-  const filteredItems =
-    filter === "all"
-      ? galleryItems
-      : galleryItems.filter((item) => item.category === filter);
 
   return (
     <section id="gallery" className="py-16 bg-transparent relative z-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-white" />
-              <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
-                Live In-Game Captures
-              </span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
-              Visual Demonstration
-            </h2>
-            <p className="text-xs sm:text-sm text-zinc-400">
-              Captured directly on live Roblox production instances.
-            </p>
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-white" />
+            <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
+              Live In-Game Captures
+            </span>
           </div>
-
-          {/* Filter Tabs */}
-          <div className="flex items-center gap-1 bg-[#111113] p-1 rounded-xl border border-zinc-800 backdrop-blur-md">
-            {[
-              { id: "all", label: "All Games" },
-              { id: "mm2", label: "MM2" },
-              { id: "pressure", label: "Pressure" },
-              { id: "demonology", label: "Demonology" },
-            ].map((tab) => {
-              const isSelected = filter === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setFilter(tab.id)}
-                  className={`relative px-3 py-1 rounded-lg text-xs font-medium transition-all select-none cursor-pointer ${
-                    isSelected ? "text-white font-semibold" : "text-zinc-400 hover:text-zinc-200"
-                  }`}
-                >
-                  {isSelected && (
-                    <motion.div
-                      layoutId="activeGalleryFilterTab"
-                      transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                      className="absolute inset-0 bg-[#222226] border border-zinc-700/80 rounded-lg shadow-sm"
-                    />
-                  )}
-                  <span className="relative z-10">{tab.label}</span>
-                </button>
-              );
-            })}
-          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+            Visual Demonstration
+          </h2>
+          <p className="text-xs sm:text-sm text-zinc-400">
+            Captured directly on live Murder Mystery 2 Roblox production instances.
+          </p>
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          {filteredItems.map((item, idx) => {
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {galleryItems.map((item, idx) => {
             const Icon = item.icon;
             return (
               <motion.div
@@ -185,7 +117,7 @@ export default function ScriptGallery() {
                   <h3 className="text-sm font-bold text-white mb-1 tracking-tight">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                  <p className="text-xs text-zinc-400 leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
@@ -219,7 +151,7 @@ export default function ScriptGallery() {
                     {selectedImage.title}
                   </span>
                   <span className="text-xs font-mono text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">
-                    {selectedImage.game}
+                    Murder Mystery 2
                   </span>
                 </div>
                 <button

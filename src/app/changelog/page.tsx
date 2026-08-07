@@ -5,26 +5,27 @@ import Footer from "@/components/layout/Footer";
 export default function ChangelogPage() {
   const releases = [
     {
-      id: "v3.5.0",
-      version: "v3.5.0",
-      title: "Multi-Game Engine & Internal Executor Support",
+      id: "v2.4.0",
+      version: "v2.4.0",
+      title: "Ultra Desync & Quantum Blink Gun Grab",
       date: "Latest",
       changes: [
-        "Added Pressure (Hadal Blacksite) script with monster warning radar, keycard ESP & infinite oxygen",
-        "Added Demonology ghost hunting suite with ghost ESP, automated evidence logging & sanity tracker",
-        "Added Murder Mystery 2 role ESP, knife silent aim & pixel surf engine",
+        "Rebuilt Desync Engine from scratch with 6 modes: Ultra Jitter, Hyper Orbit, Teleport Blink, Sky/Void, and Chaos",
+        "Quantum Blink Gun Grab: 0ms dropped gun pickup with multi-limb touch replication",
+        "Velocity Desync with Break Predict & Sky Launch to evade aimbots",
+        "Fixed Sheriff Silent Aim remote call signature and vector calculation",
         "Exclusive optimizations for Potassium, Volt, and Velocity internal executors",
       ],
     },
     {
-      id: "v3.4.0",
-      version: "v3.4.0",
-      title: "Universal Loader & Atmospheric Post-Processing",
+      id: "v2.3.0",
+      version: "v2.3.0",
+      title: "Silent Aim & ESP Overhaul",
       date: "Previous",
       changes: [
-        "Automated game detection upon injection",
-        "10 built-in colorway themes (Graphite, Ocean, Forest, Wine, Violet, etc.)",
-        "Multilingual UI with English, Russian, Ukrainian & Spanish support",
+        "Rebuilt Sheriff and Knife silent aim with predictive trajectory compensation",
+        "Full role ESP with color-coded highlights and gun drop tracers",
+        "Pixel Surf Engine for smooth slope movement and auto bunny-hop",
       ],
     },
   ];
@@ -46,7 +47,7 @@ export default function ChangelogPage() {
             Changelog
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400">
-            Multi-game script update history and internal injector patches.
+            Murder Mystery 2 script update history and engine patches.
           </p>
         </div>
 
