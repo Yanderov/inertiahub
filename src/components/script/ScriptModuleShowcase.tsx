@@ -283,12 +283,14 @@ export default function ScriptModuleShowcase() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl bg-[#111115] border border-[#1e1e26] space-y-3">
                   <div className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider pb-1 border-b border-[#1a1a22]">
-                    Ultra-Fast Gun Grab
+                    Instant Gun Recovery (Zero Teleport)
                   </div>
                   <ToggleItem label="Auto Grab Gun" enabled={toggles["Auto Grab Gun"]} onToggle={() => handleToggle("Auto Grab Gun")} />
-                  <DropdownItem label="Grab Method" value={dropdowns["Grab Method"]} options={["Quantum Blink (Fastest)", "Touch Packet Spam", "Direct Teleport"]} onChange={(v) => handleDropdown("Grab Method", v)} />
                   <ToggleItem label="Auto Equip Gun" enabled={toggles["Auto Equip Gun"]} onToggle={() => handleToggle("Auto Equip Gun")} />
                   <ToggleItem label="Gun Drop Notify" enabled={toggles["Gun Drop Notify"]} onToggle={() => handleToggle("Gun Drop Notify")} />
+                  <div className="text-[11px] text-zinc-400 bg-[#0a0a0d] p-2.5 rounded-lg border border-[#181820] leading-relaxed">
+                    Mode: <span className="text-emerald-400 font-mono font-semibold">Pure Packet Touch</span> (Zero Teleport). Multi-limb firetouchinterest replicated in 0ms.
+                  </div>
                 </div>
 
                 <div className="p-4 rounded-xl bg-[#111115] border border-[#1e1e26] space-y-3 flex flex-col justify-between">
@@ -297,7 +299,7 @@ export default function ScriptModuleShowcase() {
                       Manual Pickup Action
                     </div>
                     <p className="text-xs text-zinc-400 leading-relaxed mb-3">
-                      Quantum Blink grabs the dropped gun instantly by replicating position for 1 micro-tick, touching with all character limbs, and returning back.
+                      Sends high-priority touch replication packets directly into the dropped gun without modifying your character coordinates or triggering movement checks.
                     </p>
                   </div>
                   <button className="w-full py-2.5 rounded-lg bg-white text-black font-semibold text-xs transition-all hover:bg-zinc-200">

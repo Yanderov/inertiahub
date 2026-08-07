@@ -2273,16 +2273,15 @@ do
 end
 
 -- gun recovery ---------------------------------------------------------
--- Сверхбыстрый автоматический и ручной подбор пистолета (быстрее всех в лобби):
--- 1. Мгновенная детекция появления GunDrop через ChildAdded, DescendantAdded и Heartbeat.
--- 2. Quantum Blink: моментальный перенос CFrame к дропу на 1 сетевой тик с
---    одновременным спамом firetouchinterest всеми частями тела (HRP, Torso, Limbs, Head).
--- 3. Как только оружие падает в инвентарь — мгновенный возврат на исходную точку и авто-экипировка.
+-- Чистый пакетный подбор пистолета (Zero Teleport / Instant Touch Packet Replication):
+-- 1. Никакого физического перемещения/телепортации персонажа (координаты игрока не меняются).
+-- 2. Мгновенная детекция GunDrop через ChildAdded, DescendantAdded и Heartbeat.
+-- 3. Пакетная отправка firetouchinterest всеми частями тела (HRP, Torso, Limbs, Head) 
+--    напрямую во все BasePart дропа пистолета в 0ms.
+-- 4. Автоматическая экипировка при падении оружия в инвентарь.
 do
     local notify = E.notify
     local cached, isGrabbing = nil, false
-
-    E.gunGrabMethods = { "Quantum Blink (Fastest)", "Touch Packet Spam", "Direct Teleport" }
 
     local function hasGun()
         local c, bp = LP.Character, LP:FindFirstChild("Backpack")
@@ -2311,10 +2310,18 @@ do
         return cached
     end
 
-    local function getDropPart(drop)
-        if not (drop and drop.Parent) then return nil end
-        if drop:IsA("BasePart") then return drop end
-        return drop:FindFirstChildWhichIsA("BasePart", true) or drop:FindFirstChild("Handle")
+    local function getDropParts(drop)
+        local parts = {}
+        if not (drop and drop.Parent) then return parts end
+        if drop:IsA("BasePart") then
+            table.insert(parts, drop)
+        end
+        for _, obj in ipairs(drop:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                table.insert(parts, obj)
+            end
+        end
+        return parts
     end
 
     local function getAllLimbs(char)
@@ -2328,84 +2335,30 @@ do
         return limbs
     end
 
-    local function fireAllTouches(limbs, dropPart)
-        if not (dropPart and firetouchinterest) then return end
-        for _, limb in ipairs(limbs) do
-            pcall(firetouchinterest, limb, dropPart, 0)
-            pcall(firetouchinterest, limb, dropPart, 1)
-        end
-    end
-
-    local function executeGrab(drop, method)
+    local function sendTouchPackets(drop)
         if hasGun() then return true end
-        local part = getDropPart(drop)
         local char = LP.Character
-        local hrp = char and char:FindFirstChild("HumanoidRootPart")
-        local hum = char and char:FindFirstChildOfClass("Humanoid")
-        if not (part and hrp and hum and hum.Health > 0) then return false end
-
-        local mode = method or F.GunGrabMethod or "Quantum Blink (Fastest)"
+        if not char then return false end
         local limbs = getAllLimbs(char)
+        local parts = getDropParts(drop)
+        if #limbs == 0 or #parts == 0 then return false end
 
-        if mode == "Touch Packet Spam" then
-            -- Чистый спам пакетов без смещения позиции
-            for _ = 1, 10 do
-                fireAllTouches(limbs, part)
-                if hasGun() then break end
-            end
-        elseif mode == "Direct Teleport" then
-            -- Прямой телепорт к пистолету
-            hrp.CFrame = part.CFrame + Vector3.new(0, 1.5, 0)
-            hrp.AssemblyLinearVelocity = Vector3.zero
-            for _ = 1, 6 do
-                fireAllTouches(limbs, part)
-            end
-        else
-            -- Quantum Blink: Мгновенный перенос для сетевой репликации + спам тачей + моментальный возврат
-            local origCF = hrp.CFrame
-            local origLV = hrp.AssemblyLinearVelocity
-            local origAV = hrp.AssemblyAngularVelocity
-
-            -- 1. Смещаем прямо к пистолету
-            hrp.AssemblyLinearVelocity = Vector3.zero
-            hrp.AssemblyAngularVelocity = Vector3.zero
-            hrp.CFrame = part.CFrame + Vector3.new(0, 0.8, 0)
-
-            -- 2. Спамим тач всеми частями тела
-            for _ = 1, 8 do
-                fireAllTouches(limbs, part)
-            end
-
-            -- 3. Ждём микро-тик для отправки сетевых координат на сервер
-            local start = os.clock()
-            while not hasGun() and (os.clock() - start < 0.15) and drop and drop.Parent do
-                fireAllTouches(limbs, part)
-                RunService.Heartbeat:Wait()
-                if not hrp.Parent then break end
-                hrp.CFrame = part.CFrame + Vector3.new(0, 0.8, 0)
-            end
-
-            -- 4. Возвращаем персонажа обратно в исходную точку
-            if hrp and hrp.Parent then
-                hrp.CFrame = origCF
-                hrp.AssemblyLinearVelocity = origLV
-                hrp.AssemblyAngularVelocity = origAV
+        if firetouchinterest then
+            for _, dropPart in ipairs(parts) do
+                for _, limb in ipairs(limbs) do
+                    pcall(firetouchinterest, limb, dropPart, 0)
+                    pcall(firetouchinterest, limb, dropPart, 1)
+                end
             end
         end
 
-        if hasGun() then
-            if F.AutoEquipGun then
-                task.spawn(function()
-                    task.wait(0.03)
-                    local g = getGunTool()
-                    if g and g.Parent == LP:FindFirstChild("Backpack") and hum and hum.Parent then
-                        hum:EquipTool(g)
-                    end
-                end)
+        for _, prompt in ipairs(drop:GetDescendants()) do
+            if prompt:IsA("ProximityPrompt") and fireproximityprompt then
+                pcall(fireproximityprompt, prompt, 0)
             end
-            return true
         end
-        return false
+
+        return hasGun()
     end
 
     local function turboGrab(drop, silent)
@@ -2423,26 +2376,47 @@ do
             return false
         end
 
-        local ok = false
-        for _ = 1, 3 do
-            if hasGun() then ok = true; break end
-            ok = executeGrab(d)
-            if ok then break end
-            task.wait(0.02)
+        -- Мгновенная отправка пачки пакетов в 0ms (без движения персонажа)
+        local grabbed = false
+        for _ = 1, 15 do
+            if hasGun() then grabbed = true; break end
+            sendTouchPackets(d)
+            if hasGun() then grabbed = true; break end
+        end
+
+        if not grabbed then
+            -- Краткий асинхронный цикл на 0.2s для сетевого подтверждения
+            local start = os.clock()
+            while not hasGun() and (os.clock() - start < 0.25) and d and d.Parent do
+                sendTouchPackets(d)
+                RunService.Heartbeat:Wait()
+            end
+            grabbed = hasGun()
+        end
+
+        if grabbed and F.AutoEquipGun then
+            task.spawn(function()
+                task.wait(0.02)
+                local g = getGunTool()
+                local hum = LP.Character and LP.Character:FindFirstChildOfClass("Humanoid")
+                if g and g.Parent == LP:FindFirstChild("Backpack") and hum and hum.Parent then
+                    hum:EquipTool(g)
+                end
+            end)
         end
 
         isGrabbing = false
-        if ok and not silent then
+        if grabbed and not silent then
             notify("Grab Gun", "Gun grabbed successfully!")
         end
-        return ok
+        return grabbed
     end
 
     E.grabGun = function(silent)
         return turboGrab(findDrop(), silent)
     end
 
-    -- Мгновенная реакция на появление GunDrop через все события движка
+    -- Мгновенная детекция появления GunDrop через все события движка
     local function onGunDropDetected(drop)
         if not (drop and drop.Name == "GunDrop") then return end
         cached = drop
@@ -7315,7 +7289,6 @@ do
     Toggle(gun, "Auto Grab Gun", { flag = "AutoGrabGun", callback = function(v)
         if v then E.grabGun(true) end
     end })
-    Dropdown(gun, "Grab Method", E.gunGrabMethods, "Quantum Blink (Fastest)", "GunGrabMethod")
     Toggle(gun, "Auto Equip Gun", { flag = "AutoEquipGun", default = true })
     Toggle(gun, "Gun Drop Notify", { flag = "GunNotify" })
     Button(gun, "Grab Gun Now", function() E.grabGun(false) end, "act_grabgun")

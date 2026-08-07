@@ -2273,20 +2273,15 @@ do
 end
 
 -- gun recovery ---------------------------------------------------------
+-- Чистый пакетный подбор пистолета (Zero Teleport / Instant Touch Packet Replication):
+-- 1. Никакого физического перемещения/телепортации персонажа (координаты игрока не меняются).
+-- 2. Мгновенная детекция GunDrop через ChildAdded, DescendantAdded и Heartbeat.
+-- 3. Пакетная отправка firetouchinterest всеми частями тела (HRP, Torso, Limbs, Head) 
+--    напрямую во все BasePart дропа пистолета в 0ms.
+-- 4. Автоматическая экипировка при падении оружия в инвентарь.
 do
     local notify = E.notify
-    local cached, lastScan, token = nil, 0, 0
-
-    local function findDrop()
-        if cached and cached.Parent then return cached end
-        cached = workspace:FindFirstChild("GunDrop")
-        if cached then return cached end
-        if tick() - lastScan >= 0.1 then
-            lastScan = tick()
-            cached = workspace:FindFirstChild("GunDrop", true)
-        end
-        return cached
-    end
+    local cached, isGrabbing = nil, false
 
     local function hasGun()
         local c, bp = LP.Character, LP:FindFirstChild("Backpack")
@@ -2294,67 +2289,161 @@ do
             or (bp and (bp:FindFirstChild("Gun") or bp:FindFirstChild("Revolver"))) and true or false
     end
 
-    -- телепорт на дроп, firetouchinterest, возврат на место
-    local function grab(drop)
-        if not (drop and drop.Parent) then return false end
-        local part = drop:IsA("BasePart") and drop or drop:FindFirstChildWhichIsA("BasePart", true)
-        local hrp = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
-        if not (part and hrp) then return false end
-
-        local cf, lv, av = hrp.CFrame, hrp.AssemblyLinearVelocity, hrp.AssemblyAngularVelocity
-        hrp.AssemblyLinearVelocity, hrp.AssemblyAngularVelocity = Vector3.zero, Vector3.zero
-        hrp.CFrame = part.CFrame + Vector3.new(0, 1.25, 0)
-        if firetouchinterest then
-            pcall(firetouchinterest, hrp, part, 0)
-            pcall(firetouchinterest, hrp, part, 1)
+    local function getGunTool()
+        local c, bp = LP.Character, LP:FindFirstChild("Backpack")
+        if c then
+            local g = c:FindFirstChild("Gun") or c:FindFirstChild("Revolver")
+            if g then return g end
         end
-        if hrp.Parent then
-            hrp.CFrame, hrp.AssemblyLinearVelocity, hrp.AssemblyAngularVelocity = cf, lv, av
+        if bp then
+            local g = bp:FindFirstChild("Gun") or bp:FindFirstChild("Revolver")
+            if g then return g end
         end
-        return true
+        return nil
     end
 
-    local function burst(drop)
-        for _ = 1, 8 do
-            if hasGun() then return true end
-            pcall(grab, drop)
+    local function findDrop()
+        if cached and cached.Parent then return cached end
+        cached = workspace:FindFirstChild("GunDrop")
+        if cached then return cached end
+        cached = workspace:FindFirstChild("GunDrop", true)
+        return cached
+    end
+
+    local function getDropParts(drop)
+        local parts = {}
+        if not (drop and drop.Parent) then return parts end
+        if drop:IsA("BasePart") then
+            table.insert(parts, drop)
         end
+        for _, obj in ipairs(drop:GetDescendants()) do
+            if obj:IsA("BasePart") then
+                table.insert(parts, obj)
+            end
+        end
+        return parts
+    end
+
+    local function getAllLimbs(char)
+        local limbs = {}
+        if not char then return limbs end
+        for _, v in ipairs(char:GetChildren()) do
+            if v:IsA("BasePart") and not v.Name:lower():find("gun") and not v.Name:lower():find("knife") then
+                table.insert(limbs, v)
+            end
+        end
+        return limbs
+    end
+
+    local function sendTouchPackets(drop)
+        if hasGun() then return true end
+        local char = LP.Character
+        if not char then return false end
+        local limbs = getAllLimbs(char)
+        local parts = getDropParts(drop)
+        if #limbs == 0 or #parts == 0 then return false end
+
+        if firetouchinterest then
+            for _, dropPart in ipairs(parts) do
+                for _, limb in ipairs(limbs) do
+                    pcall(firetouchinterest, limb, dropPart, 0)
+                    pcall(firetouchinterest, limb, dropPart, 1)
+                end
+            end
+        end
+
+        for _, prompt in ipairs(drop:GetDescendants()) do
+            if prompt:IsA("ProximityPrompt") and fireproximityprompt then
+                pcall(fireproximityprompt, prompt, 0)
+            end
+        end
+
         return hasGun()
     end
 
-    local function loop(drop)
-        token = token + 1
-        local mine, deadline = token, tick() + 0.6
-        task.spawn(function()
-            while F.AutoGrabGun and mine == token and not dead and tick() < deadline do
-                if hasGun() then break end
-                local d = (drop and drop.Parent) and drop or findDrop()
-                if not d or burst(d) then break end
-                RunService.Heartbeat:Wait()
-            end
-        end)
-    end
-
-    E.grabGun = function(silent)
-        if F.AutoGrabGun then loop() end
+    local function turboGrab(drop, silent)
         if hasGun() then
             if not silent then notify("Grab Gun", "You already have the gun") end
             return true
         end
-        local drop = findDrop()
-        if drop and burst(drop) then return true end
-        if not silent then notify("Grab Gun", "No dropped gun found") end
-        return false
+        if isGrabbing then return false end
+        isGrabbing = true
+
+        local d = drop or findDrop()
+        if not d then
+            isGrabbing = false
+            if not silent then notify("Grab Gun", "No dropped gun found") end
+            return false
+        end
+
+        -- Мгновенная отправка пачки пакетов в 0ms (без движения персонажа)
+        local grabbed = false
+        for _ = 1, 15 do
+            if hasGun() then grabbed = true; break end
+            sendTouchPackets(d)
+            if hasGun() then grabbed = true; break end
+        end
+
+        if not grabbed then
+            -- Краткий асинхронный цикл на 0.2s для сетевого подтверждения
+            local start = os.clock()
+            while not hasGun() and (os.clock() - start < 0.25) and d and d.Parent do
+                sendTouchPackets(d)
+                RunService.Heartbeat:Wait()
+            end
+            grabbed = hasGun()
+        end
+
+        if grabbed and F.AutoEquipGun then
+            task.spawn(function()
+                task.wait(0.02)
+                local g = getGunTool()
+                local hum = LP.Character and LP.Character:FindFirstChildOfClass("Humanoid")
+                if g and g.Parent == LP:FindFirstChild("Backpack") and hum and hum.Parent then
+                    hum:EquipTool(g)
+                end
+            end)
+        end
+
+        isGrabbing = false
+        if grabbed and not silent then
+            notify("Grab Gun", "Gun grabbed successfully!")
+        end
+        return grabbed
     end
 
-    tc(workspace.DescendantAdded:Connect(function(ch)
-        if ch.Name ~= "GunDrop" then return end
-        cached = ch
-        if F.GunNotify then notify("Gun Dropped", "Sheriff killed, gun on floor") end
-        if F.AutoGrabGun then burst(ch); loop(ch) end
-    end))
+    E.grabGun = function(silent)
+        return turboGrab(findDrop(), silent)
+    end
+
+    -- Мгновенная детекция появления GunDrop через все события движка
+    local function onGunDropDetected(drop)
+        if not (drop and drop.Name == "GunDrop") then return end
+        cached = drop
+        if F.GunNotify then notify("Gun Dropped", "Sheriff died, gun on floor!") end
+        if F.AutoGrabGun and not hasGun() then
+            task.spawn(function()
+                turboGrab(drop, true)
+            end)
+        end
+    end
+
+    tc(workspace.ChildAdded:Connect(onGunDropDetected))
+    tc(workspace.DescendantAdded:Connect(onGunDropDetected))
     tc(workspace.DescendantRemoving:Connect(function(ch)
         if ch == cached then cached = nil end
+    end))
+
+    -- Real-time watcher: проверяет наличие GunDrop каждый Heartbeat при включенном AutoGrabGun
+    tc(RunService.Heartbeat:Connect(function()
+        if F.AutoGrabGun and not hasGun() and not isGrabbing then
+            local d = findDrop()
+            if d and d.Parent then
+                task.spawn(function()
+                    turboGrab(d, true)
+                end)
+            end
+        end
     end))
 end
 
@@ -3079,11 +3168,56 @@ do
 end
 
 -- desync ---------------------------------------------------------------
--- на Heartbeat швыряем корень в случайную точку, на первом же RenderStep
--- возвращаем: сервер получает мусорную позицию, клиент этого не видит
+-- Продвинутый высокочастотный десинк: на Heartbeat/PostSimulation выбрасывает
+-- серверную позицию и скорость по сложным траекториям (джиттер, гипер-орбита,
+-- фликер-блинк, скай/войд, хаос), а на первом приоритете RenderStep мгновенно
+-- возвращает на место. Для сервера и врагов моделька бешено мечется, а у
+-- локального игрока ходьба и камера остаются идеально плавными.
 do
-    local SPAN = 7777
     local lastCF, lastVel, lastAng, appliedTo = nil, nil, nil, nil
+    local tickCount = 0
+    local ghostPart = nil
+
+    E.desyncModes = { "Ultra Jitter", "Hyper Orbit", "Teleport Blink", "Sky/Void Blink", "Random Chaos", "Sine Phase" }
+    E.desyncAngles = { "Hyper Spin", "Random Chaos", "Inverted", "None" }
+    E.velDesyncModes = { "Break Predict", "Sky Launch", "Random Chaos", "Tornado" }
+
+    local function cleanupGhost()
+        if ghostPart and ghostPart.Parent then
+            pcall(function() ghostPart:Destroy() end)
+        end
+        ghostPart = nil
+    end
+
+    local function updateGhost(fakeCF)
+        if not F.DesyncGhost then
+            cleanupGhost()
+            return
+        end
+        if not (fakeCF and typeof(fakeCF) == "CFrame") then return end
+        if not (ghostPart and ghostPart.Parent) then
+            local p = Instance.new("Part")
+            p.Name = "DesyncServerGhost"
+            p.Size = Vector3.new(2, 5, 1)
+            p.CanCollide = false
+            p.CanTouch = false
+            p.CanQuery = false
+            p.Anchored = true
+            p.Material = Enum.Material.ForceField
+            p.Color = Color3.fromRGB(255, 50, 130)
+            p.Transparency = 0.45
+            local box = Instance.new("SelectionBox")
+            box.Adornee = p
+            box.Color3 = Color3.fromRGB(255, 80, 220)
+            box.LineThickness = 0.04
+            box.Parent = p
+            p.Parent = workspace
+            ghostPart = p
+        end
+        if ghostPart then
+            ghostPart.CFrame = fakeCF
+        end
+    end
 
     local function restoreNow()
         local hrp = appliedTo
@@ -3099,26 +3233,132 @@ do
 
     tc(RunService.Heartbeat:Connect(function()
         restoreNow()
-        if not (F.Desync or F.VelDesync) then return end
+        if not (F.Desync or F.VelDesync) then
+            cleanupGhost()
+            return
+        end
         local char = LP.Character
         local hrp = char and char:FindFirstChild("HumanoidRootPart")
         local hum = char and char:FindFirstChildOfClass("Humanoid")
-        if not (hrp and hum and hum.Health > 0) then return end
+        if not (hrp and hum and hum.Health > 0) then
+            cleanupGhost()
+            return
+        end
 
         local rnd = math.random
-        lastCF, lastVel, lastAng = hrp.CFrame, hrp.AssemblyLinearVelocity, hrp.AssemblyAngularVelocity
+        local range = tonumber(F.DesyncRange) or 500
+        local speed = tonumber(F.DesyncSpeed) or 20
+        local mode = F.DesyncMode or "Ultra Jitter"
+        local angMode = F.DesyncAngles or "Hyper Spin"
+        local vMode = F.VelDesyncMode or "Break Predict"
+        local vMult = tonumber(F.VelDesyncMult) or 10000
+
+        lastCF = hrp.CFrame
+        lastVel = hrp.AssemblyLinearVelocity
+        lastAng = hrp.AssemblyAngularVelocity
         appliedTo = hrp
+        tickCount = (tickCount + 1) % 1000000
+
+        local fakeOffset = Vector3.zero
 
         if F.Desync then
-            local pos = Vector3.new((rnd() * 2 - 1) * SPAN, rnd() * SPAN, (rnd() * 2 - 1) * SPAN)
-            local rot = CFrame.Angles(rnd() * 6.2832, rnd() * 6.2832, rnd() * 6.2832)
-            hrp.CFrame = (lastCF + pos) * rot
+            local t = os.clock() * speed
+            if mode == "Ultra Jitter" then
+                -- Бешеный мгновенный джиттер по всем осям каждый сетевой тик
+                local step = tickCount % 6
+                if step == 0 then
+                    fakeOffset = Vector3.new(range, (rnd() - 0.5) * range * 0.4, 0)
+                elseif step == 1 then
+                    fakeOffset = Vector3.new(-range, (rnd() - 0.5) * range * 0.4, 0)
+                elseif step == 2 then
+                    fakeOffset = Vector3.new(0, (rnd() - 0.5) * range * 0.4, range)
+                elseif step == 3 then
+                    fakeOffset = Vector3.new(0, (rnd() - 0.5) * range * 0.4, -range)
+                elseif step == 4 then
+                    fakeOffset = Vector3.new(range * 0.75, range * 0.5, range * 0.75)
+                else
+                    fakeOffset = Vector3.new(-range * 0.75, -range * 0.3, -range * 0.75)
+                end
+            elseif mode == "Hyper Orbit" then
+                -- Сверхбыстрое круговое и вертикальное вращение
+                local angle = t * 6
+                local r = range * (0.6 + 0.4 * math.sin(t * 3))
+                fakeOffset = Vector3.new(math.cos(angle) * r, math.sin(t * 4) * (range * 0.35), math.sin(angle) * r)
+            elseif mode == "Teleport Blink" then
+                -- Мгновенный прыжок в противоположные точки карты
+                if tickCount % 2 == 0 then
+                    fakeOffset = Vector3.new(range, 0, range)
+                else
+                    fakeOffset = Vector3.new(-range, 0, -range)
+                end
+            elseif mode == "Sky/Void Blink" then
+                -- Вылет в космос / бездну (убийство ножом физически невозможно)
+                if tickCount % 2 == 0 then
+                    fakeOffset = Vector3.new((rnd() - 0.5) * 50, math.clamp(range, 150, 3000), (rnd() - 0.5) * 50)
+                else
+                    fakeOffset = Vector3.new((rnd() - 0.5) * 50, -math.clamp(range * 0.5, 40, 400), (rnd() - 0.5) * 50)
+                end
+            elseif mode == "Random Chaos" then
+                -- Полный 3D хаос во всех направлениях
+                fakeOffset = Vector3.new(
+                    (rnd() * 2 - 1) * range,
+                    (rnd() * 2 - 1) * (range * 0.5),
+                    (rnd() * 2 - 1) * range
+                )
+            elseif mode == "Sine Phase" then
+                -- Сложные гармоники Лиссажу
+                fakeOffset = Vector3.new(
+                    math.sin(t * 1.8) * range,
+                    math.cos(t * 3.0) * (range * 0.4),
+                    math.cos(t * 2.2) * range
+                )
+            end
+
+            -- Углы вращения модели
+            local rot = CFrame.identity
+            if angMode == "Hyper Spin" then
+                local spin = (tickCount * 2.1) % 6.2832
+                rot = CFrame.Angles(0, spin, 0) * CFrame.Angles(spin * 0.4, 0, spin * 0.2)
+            elseif angMode == "Random Chaos" then
+                rot = CFrame.Angles(rnd() * 6.2832, rnd() * 6.2832, rnd() * 6.2832)
+            elseif angMode == "Inverted" then
+                rot = CFrame.Angles(math.pi, 0, math.pi)
+            end
+
+            local fakeCF = (lastCF + fakeOffset) * rot
+            hrp.CFrame = fakeCF
+            updateGhost(fakeCF)
+        else
+            cleanupGhost()
         end
-        -- скорость реплицируется отдельно от позиции: мусор в ней ломает
-        -- предсказание чужих аимботов даже без сдвига CFrame
+
+        -- Velocity Desync (разрушение чужих аимботов и систем упреждения)
         if F.VelDesync then
-            hrp.AssemblyLinearVelocity = Vector3.new(
-                (rnd() * 2 - 1) * SPAN, (rnd() * 2 - 1) * SPAN, (rnd() * 2 - 1) * SPAN)
+            local currentVel = lastVel or Vector3.zero
+            if vMode == "Break Predict" then
+                -- Инверсия скорости с огромным множителем (аимботы целятся в пустоту)
+                if currentVel.Magnitude > 0.5 then
+                    hrp.AssemblyLinearVelocity = -currentVel.Unit * vMult
+                else
+                    local rDir = Vector3.new(rnd() * 2 - 1, 0, rnd() * 2 - 1).Unit
+                    hrp.AssemblyLinearVelocity = rDir * vMult
+                end
+            elseif vMode == "Sky Launch" then
+                -- Скорость направлена вертикально вверх на миллионы единиц
+                hrp.AssemblyLinearVelocity = Vector3.new(0, vMult * 5, 0)
+            elseif vMode == "Random Chaos" then
+                -- Дикий разброс скорости
+                hrp.AssemblyLinearVelocity = Vector3.new(
+                    (rnd() * 2 - 1) * vMult,
+                    (rnd() * 2 - 1) * vMult,
+                    (rnd() * 2 - 1) * vMult
+                )
+            elseif vMode == "Tornado" then
+                -- Вихревая скорость
+                local t = os.clock() * speed
+                hrp.AssemblyLinearVelocity = Vector3.new(math.cos(t) * vMult, (rnd() - 0.5) * vMult, math.sin(t) * vMult)
+                hrp.AssemblyAngularVelocity = Vector3.new(0, vMult, 0)
+            end
         end
     end))
 
@@ -3126,6 +3366,7 @@ do
     RunService:BindToRenderStep(bindName, Enum.RenderPriority.First.Value - 1, restoreNow)
     gui.Destroying:Connect(function()
         pcall(function() RunService:UnbindFromRenderStep(bindName) end)
+        cleanupGhost()
         restoreNow()
     end)
 end
@@ -7048,6 +7289,7 @@ do
     Toggle(gun, "Auto Grab Gun", { flag = "AutoGrabGun", callback = function(v)
         if v then E.grabGun(true) end
     end })
+    Toggle(gun, "Auto Equip Gun", { flag = "AutoEquipGun", default = true })
     Toggle(gun, "Gun Drop Notify", { flag = "GunNotify" })
     Button(gun, "Grab Gun Now", function() E.grabGun(false) end, "act_grabgun")
 end
@@ -7446,7 +7688,14 @@ do
 
     local ds = Group(t.left, "Desync")
     Toggle(ds, "Desync (Fake Position)", { flag = "Desync" })
+    Dropdown(ds, "Desync Mode", E.desyncModes, "Ultra Jitter", "DesyncMode")
+    Slider(ds, "Teleport Range", 10, 3000, 500, " studs", "DesyncRange")
+    Slider(ds, "Desync Speed", 1, 50, 20, "x", "DesyncSpeed")
+    Dropdown(ds, "Spin Angles", E.desyncAngles, "Hyper Spin", "DesyncAngles")
     Toggle(ds, "Velocity Desync", { flag = "VelDesync" })
+    Dropdown(ds, "Velocity Mode", E.velDesyncModes, "Break Predict", "VelDesyncMode")
+    Slider(ds, "Velocity Power", 500, 50000, 10000, "", "VelDesyncMult")
+    Toggle(ds, "Show Server Ghost", { flag = "DesyncGhost" })
     Toggle(ds, "Anti-Coin", { flag = "AntiCoin" })
 
     local cs = Group(t.right, "Custom Sounds")
