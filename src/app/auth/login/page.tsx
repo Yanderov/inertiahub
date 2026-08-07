@@ -36,11 +36,7 @@ export default function LoginPage() {
   const [info, setInfo] = useState("");
 
   const redirectAfterLogin = (role?: string) => {
-    if (role === "ADMIN" || role === "EDITOR") {
-      router.push("/admin");
-    } else {
-      router.push("/");
-    }
+    router.push("/");
     router.refresh();
   };
 

@@ -7,10 +7,11 @@ export default function AnalyticsTracker() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Avoid tracking admin or api calls in client telemetry
-    if (pathname.startsWith("/api") || pathname.startsWith("/admin")) return;
+    // Avoid tracking api calls in client telemetry
+    if (pathname.startsWith("/api")) return;
 
-    const track = async () => {
+    // Report page view
+    const reportPageView = async () => {
       try {
         await fetch("/api/v1/analytics", {
           method: "POST",
@@ -27,7 +28,7 @@ export default function AnalyticsTracker() {
       }
     };
 
-    track();
+    reportPageView();
   }, [pathname]);
 
   return null;
