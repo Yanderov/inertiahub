@@ -26,23 +26,6 @@ export default function ScriptHero() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-white/[0.02] rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        {/* Minimal Pill Badge */}
-        <motion.div 
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="flex justify-center mb-6"
-        >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111113] border border-zinc-800 text-xs font-mono text-zinc-300 shadow-xl backdrop-blur-md">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
-            </span>
-            <span className="font-semibold text-white">MM2 v2.4 Dedicated</span>
-            <span className="text-zinc-600">|</span>
-            <span className="text-zinc-400">Quantum Blink 0ms & Heartbeat Desync</span>
-          </div>
-        </motion.div>
 
         {/* Title */}
         <motion.h1 
