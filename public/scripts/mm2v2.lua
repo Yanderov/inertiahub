@@ -477,7 +477,7 @@ do
         end
         -- всё, что скрипт умеет читать с диска, заводится сразу: пустая папка
         -- сама подсказывает, что туда можно положить
-        for _, sub in ipairs({ "configs", "cache", "bodies", "gif", "skyboxes" }) do
+        for _, sub in ipairs({ "configs", "cache", "bodies", "gif", "skyboxes", "hitsounds" }) do
             local p = GAME_DIR .. "/" .. sub
             if not isfolder(p) then pcall(makefolder, p) end
         end
@@ -990,7 +990,7 @@ local function Slider(parent, text, min, max, default, suffix, flag, callback)
         if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then dragging = false end
     end)
 
-    return { get = function() return value end }
+    return { get = function() return value end, frame = bar }
 end
 
 local function Dropdown(parent, text, options, default, flag, callback)
@@ -1271,7 +1271,18 @@ do
     local RoleCache, OriginalSheriff, CurrentHero, roleRound = {}, nil, nil, false
 
     local function isRoundActive()
-        return workspace:FindFirstChild("Normal") ~= nil or roleRound
+        if roleRound then return true end
+        if workspace:FindFirstChild("GunDrop") or workspace:FindFirstChild("Normal") then return true end
+        for _, p in ipairs(Players:GetPlayers()) do
+            local r = RoleCache[p.Name]
+            if r and r ~= "Innocent" and r ~= "Dead" then return true end
+            local c, bp = p.Character, p:FindFirstChildOfClass("Backpack")
+            if (c and (c:FindFirstChild("Knife") or c:FindFirstChild("Gun") or c:FindFirstChild("Revolver")))
+                or (bp and (bp:FindFirstChild("Knife") or bp:FindFirstChild("Gun") or bp:FindFirstChild("Revolver"))) then
+                return true
+            end
+        end
+        return false
     end
     E.isRoundActive = isRoundActive
 
@@ -1306,8 +1317,6 @@ do
         if ok then processData(data) end
     end)
 
-    -- require игрового модуля только в отдельном потоке: инлайном он ломает
-    -- доступ к GUI у текущего треда
     task.spawn(function()
         local mod = rs:FindFirstChild("CurrentRoundClient", true)
         if not mod then return end
@@ -1323,132 +1332,149 @@ do
         while not dead do task.wait(0.25); pcall(pull) end
     end)
 
-    local wasActive = workspace:FindFirstChild("Normal") ~= nil
+    -- Быстрая очистка ролей при завершении раунда
     tc(RunService.Heartbeat:Connect(function()
-        local active = workspace:FindFirstChild("Normal") ~= nil
-        if active ~= wasActive then
-            RoleCache, OriginalSheriff, CurrentHero = {}, nil, nil
-            if not active then roleRound = false end
-            wasActive = active
+        if not isRoundActive() then
+            if roleRound then
+                RoleCache = {}
+                OriginalSheriff, CurrentHero = nil, nil
+                roleRound = false
+            end
         end
     end))
 
-    -- кэш ролей первичен, оружие — только фолбэк (иначе Hero детектится с лагом)
+    -- Определение роли: живой скан оружия в руках/рюкзаке + кэш сетевых данных
     E.getRole = function(player)
-        if not isRoundActive() or not (player and player.Parent) then return "Innocent" end
+        if not (player and player.Parent) then return "Innocent" end
         local c = player.Character
         local hum = c and c:FindFirstChildOfClass("Humanoid")
         if not (hum and hum.Health > 0) then return "Innocent" end
 
-        local cached = RoleCache[player.Name]
-        if cached == "Murderer" or cached == "Sheriff" or cached == "Hero" then return cached end
-
+        -- 1. Скан инвентаря и персонажа на наличие оружия (наивысшая надежность)
         for _, box in ipairs({ c, player:FindFirstChildOfClass("Backpack") }) do
             if box then
-                if box:FindFirstChild("Knife") or box:FindFirstChild("KnifeServer") then return "Murderer" end
-                if box:FindFirstChild("Gun") or box:FindFirstChild("Revolver") then
-                    -- пока данные раунда не пришли, OriginalSheriff пуст, и держатель
-                    -- ствола ошибочно считался Hero — отсюда моргание роли
-                    if player.Name == CurrentHero then return "Hero" end
-                    if not OriginalSheriff then return "Sheriff" end
-                    return (player.Name == OriginalSheriff) and "Sheriff" or "Hero"
+                for _, item in ipairs(box:GetChildren()) do
+                    if item:IsA("Tool") then
+                        local n = item.Name:lower()
+                        if n:find("knife") or item:FindFirstChild("KnifeServer") or item:FindFirstChild("Stab") then
+                            RoleCache[player.Name] = "Murderer"
+                            roleRound = true
+                            return "Murderer"
+                        elseif n:find("gun") or n:find("revolver") or n:find("luger") or item:FindFirstChild("Shoot") then
+                            roleRound = true
+                            if player.Name == CurrentHero then return "Hero" end
+                            if not OriginalSheriff or OriginalSheriff == player.Name then
+                                OriginalSheriff = player.Name
+                                return "Sheriff"
+                            end
+                            return "Hero"
+                        end
+                    end
                 end
             end
         end
+
+        -- 2. Кэш сетевых данных
+        local cached = RoleCache[player.Name]
+        if cached == "Murderer" or cached == "Sheriff" or cached == "Hero" then
+            return cached
+        end
+
         return "Innocent"
     end
 end
 
 -- предсказание ---------------------------------------------------------
 do
-    local MSP = { History = {}, Latency = 0 }
-
-    -- Три рабочих режима вместо пяти теоретических. Упреждение = скорость цели
-    -- умножить на пинг с коэффициентом. Для хитскана MM2 верный коэффициент 2:
-    -- прошлые формулы с ускорением, джиттером и «скоростью пули» промахивались
-    -- именно потому, что накручивали поверх этого лишнее.
-    -- Замер на живых игроках (пинг 34 мс, скорость 16 ст/с): расхождение между
-    -- тем, что рисует клиент, и позицией пинг назад = ровно скорость × пинг.
-    -- Поэтому базовый множитель 1, а не 2 — двойка уводила выстрел вдвое дальше
-    -- цели и давала промахи по бегущим.
     local PRESETS = {
         Off    = 0,
         Low    = 0.5,
-        Normal = 1,
-        High   = 2,
+        Normal = 1.0,
+        High   = 1.8,
     }
     E.PredictNames = { "Off", "Low", "Normal", "High" }
 
-    tc(RunService.Heartbeat:Connect(function()
-        -- история копится только когда она кому-то нужна: это была одна из
-        -- причин постоянного лага в старом хабе
-        if not (F.SheriffSilentAim or F.KnifeSilentAim or F.ForceShoot) then return end
-
-        local ping = 0
-        pcall(function() ping = LP:GetNetworkPing() * 1000 end)
-        ping = math.clamp(ping, 50, 500)
-        MSP.Latency = ping / 1000
-
-        local now = tick()
-        local present = {}
-        for _, p in ipairs(Players:GetPlayers()) do
-            present[p.Name] = true
-            local hrp = p.Character and p.Character:FindFirstChild("HumanoidRootPart")
-            if hrp then
-                local e = MSP.History[p.Name]
-                if not e then
-                    MSP.History[p.Name] = { Pos = hrp.Position, Time = now, Vel = Vector3.new() }
-                else
-                    local dt = now - e.Time
-                    if dt > 0 then
-                        local vel = (hrp.Position - e.Pos) / dt
-                        e.Vel, e.Pos, e.Time = vel, hrp.Position, now
-                    end
-                end
+    local function getPingSeconds()
+        local ping = 0.05
+        pcall(function()
+            local raw = LP:GetNetworkPing()
+            if typeof(raw) == "number" and raw > 0 then
+                ping = raw
             end
-        end
-        -- выходивших игроков раньше никто не чистил: записи копились вечно
-        for name in pairs(MSP.History) do
-            if not present[name] then MSP.History[name] = nil end
-        end
-    end))
+        end)
+        return math.clamp(ping, 0.02, 0.4)
+    end
+    E.getPingSeconds = getPingSeconds
 
-    local function predictPos(char, partName, factor)
+    local function getVelocity(char)
+        if not char then return Vector3.zero end
         local hrp = char:FindFirstChild("HumanoidRootPart")
-        local part = char:FindFirstChild(partName) or char:FindFirstChild("Head")
-            or char:FindFirstChild("UpperTorso") or char:FindFirstChild("Torso") or hrp
-        if not (part and hrp) then return Vector3.new() end
+        if not hrp then return Vector3.zero end
+        local vel = hrp.AssemblyLinearVelocity or hrp.Velocity or Vector3.zero
+        if vel.Magnitude > 150 then
+            vel = vel.Unit * 150
+        end
+        return vel
+    end
+
+    local function predictPos(char, partName, factor, projectileSpeed)
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        local part = (partName and char:FindFirstChild(partName))
+            or char:FindFirstChild("Head")
+            or char:FindFirstChild("UpperTorso")
+            or char:FindFirstChild("Torso")
+            or hrp
+        if not (part and hrp) then return Vector3.zero end
         if factor == 0 then return part.Position end
 
-        -- скорость берём из истории: AssemblyLinearVelocity у чужого персонажа
-        -- дёргается и даёт выбросы
-        local hist = MSP.History[char.Name]
-        local vel = (hist and hist.Vel) or hrp.AssemblyLinearVelocity
-        if vel.Magnitude > 120 then vel = vel.Unit * 120 end
+        local vel = getVelocity(char)
+        if vel.Magnitude < 0.2 then return part.Position end
 
-        local lead = vel * (MSP.Latency * factor)
-        -- в воздухе цель ещё и падает
-        local hum = char:FindFirstChildOfClass("Humanoid")
-        if hum and hum.FloorMaterial == Enum.Material.Air then
-            local t = MSP.Latency * factor
-            lead = lead - Vector3.new(0, 0.5 * workspace.Gravity * t * t, 0)
+        local ping = getPingSeconds()
+        local totalTime = ping * factor
+
+        -- Если задана скорость снаряда (например, для броска ножа): учитываем время полёта
+        if projectileSpeed and projectileSpeed > 0 then
+            local myHrp = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
+            local myPos = myHrp and myHrp.Position or part.Position
+            local dist = (part.Position - myPos).Magnitude
+            totalTime = totalTime + (dist / projectileSpeed) * factor
         end
+
+        local lead = vel * totalTime
+
+        -- Учёт вертикального перемещения в прыжке/падении
+        local hum = char:FindFirstChildOfClass("Humanoid")
+        if hum and hum.FloorMaterial == Enum.Material.Air and vel.Y ~= 0 then
+            lead = lead + Vector3.new(0, vel.Y * totalTime * 0.5, 0)
+        end
+
         return part.Position + lead
     end
 
-    E.predict = function(char, partName, presetName, factor)
-        -- явный factor перебивает пресет: 0 = без упреждения (хитскан)
-        if factor ~= nil then return predictPos(char, partName, factor) end
-        return predictPos(char, partName, PRESETS[presetName] or PRESETS.Normal)
+    E.predict = function(char, partName, presetName, factor, projectileSpeed)
+        local mult = factor
+        if mult == nil then
+            if type(presetName) == "number" then
+                mult = presetName
+            else
+                mult = PRESETS[presetName] or PRESETS.Normal
+            end
+        end
+        return predictPos(char, partName, mult, projectileSpeed)
     end
 end
 
+-- пинг в секундах: им меряют и упреждение, и глубину бэктрака
+E.pingSeconds = function()
+    local ping = 0
+    pcall(function() ping = LP:GetNetworkPing() end)
+    return math.clamp(ping, 0.02, 0.5)
+end
+
 -- resolver ---------------------------------------------------------------
--- Куда именно стрелять по конкретной цели. Сервер видит игрока не там, где
--- его рисует твой клиент: позиция приходит с задержкой в пинг, а при десинке
--- ещё и прыгает. Резолвер выбирает точку из трёх кандидатов.
 do
-    local track = setmetatable({}, { __mode = "k" })   -- [player] = кольцо позиций
+    local track = setmetatable({}, { __mode = "k" })
     local RING = 24
 
     E.resolverModes = { "Off", "Backtrack", "Predict", "Auto" }
@@ -1462,19 +1488,11 @@ do
                 local ring = track[p]
                 if not ring then ring = { n = 0 }; track[p] = ring end
                 ring.n = (ring.n % RING) + 1
-                ring[ring.n] = { t = now, p = hrp.Position, v = hrp.AssemblyLinearVelocity }
+                ring[ring.n] = { t = now, p = hrp.Position, v = hrp.AssemblyLinearVelocity or hrp.Velocity or Vector3.zero }
             end
         end
     end))
 
-    local function pingSeconds()
-        local ping = 0
-        pcall(function() ping = LP:GetNetworkPing() end)
-        return math.clamp(ping, 0.02, 0.5)
-    end
-    E.pingSeconds = pingSeconds
-
-    -- где цель была depth секунд назад по нашей же истории
     local function backtracked(player, depth)
         local ring = track[player]
         if not ring then return nil end
@@ -1489,35 +1507,15 @@ do
         return best and best.p or nil
     end
 
-    -- насколько «дёргается» цель: большой разброс шагов = десинк
-    local function jumpiness(player)
-        local ring = track[player]
-        if not ring then return 0 end
-        local prev, worst = nil, 0
-        for i = 1, RING do
-            local e = ring[i]
-            if e then
-                if prev then
-                    local dt = math.max(e.t - prev.t, 1 / 240)
-                    local step = (e.p - prev.p).Magnitude / dt
-                    if step > worst then worst = step end
-                end
-                prev = e
-            end
-        end
-        return worst
-    end
-
-    -- Возвращает точку для выстрела по конкретной части цели.
     E.resolve = function(player, char, part)
         local base = part.Position
         local mode = F.Resolver or "Off"
         if mode == "Off" then return base end
 
         local hrp = char:FindFirstChild("HumanoidRootPart")
-        local vel = hrp and hrp.AssemblyLinearVelocity or Vector3.zero
+        local vel = hrp and (hrp.AssemblyLinearVelocity or hrp.Velocity) or Vector3.zero
         local speed = Vector3.new(vel.X, 0, vel.Z).Magnitude
-        local ping = pingSeconds()
+        local ping = E.getPingSeconds()
         local strength = (F.ResolverStrength or 100) / 100
 
         local function predictPoint()
@@ -1529,18 +1527,13 @@ do
         local function backtrackPoint()
             local past = backtracked(player, ping * strength)
             if not past or not hrp then return base end
-            -- смещение корня переносим на выбранную часть тела
             return base + (past - hrp.Position)
         end
 
         if mode == "Backtrack" then return backtrackPoint() end
         if mode == "Predict" then return predictPoint() end
 
-        -- Auto. Порог по «шагу за кадр» оказался бесполезен: у нормально
-        -- бегущих игроков он прыгает до 300-750 ст/с просто из-за того, что
-        -- позиции приходят пачками. Считаем иначе: у честной цели фактическое
-        -- смещение за пинг совпадает со скоростью, у десинкающейся — нет.
-        if speed < 4 then return base end
+        if speed < 3 then return base end
         if hrp then
             local past = backtracked(player, ping)
             if past then
@@ -1553,7 +1546,7 @@ do
     end
 end
 
--- выбор цели: ближайший подходящий по роли -----------------------------
+-- выбор цели -----------------------------------------------------------
 E.targetChar = function(mode, wallCheck, aimPartName)
     local mine = LP.Character and (LP.Character:FindFirstChild("HumanoidRootPart")
         or LP.Character:FindFirstChild("Head"))
@@ -1600,8 +1593,6 @@ do
     local MAX_STEP, STALE_AFTER = 200, 2.5
     local lastSeen = setmetatable({}, { __mode = "k" })
 
-    -- сервер иногда отдаёт телепортнувшуюся позицию: держим последнюю
-    -- правдоподобную и экстраполируем от неё
     local function sanePos(char, hrp)
         local raw = hrp.Position
         if not F.SheriffAntiDesync then return raw end
@@ -1616,7 +1607,7 @@ do
         end
 
         if inBounds and plausible then
-            local vel = hrp.AssemblyLinearVelocity
+            local vel = hrp.AssemblyLinearVelocity or hrp.Velocity or Vector3.zero
             if vel.Magnitude > MAX_STEP then
                 vel = prev and (raw - prev.p) / math.max(now - prev.t, 1 / 60) or Vector3.zero
             end
@@ -1632,52 +1623,17 @@ do
         return prev.p + step
     end
 
-    local function wallbangOrigin(mode, hitPos, char)
-        if mode == "Inside" then return CFrame.lookAt(hitPos, hitPos + Vector3.new(0, 0, 1)) end
-
-        -- вплотную сбоку: стена между нами уже не на линии выстрела
-        if mode == "Side" then
-            local hrp = char:FindFirstChild("HumanoidRootPart")
-            local right = hrp and hrp.CFrame.RightVector or Vector3.xAxis
-            return CFrame.lookAt(hitPos + right * 1.5, hitPos)
-        end
-        -- из-за спины цели
-        if mode == "Behind" then
-            local hrp = char:FindFirstChild("HumanoidRootPart")
-            local look = hrp and hrp.CFrame.LookVector or Vector3.zAxis
-            return CFrame.lookAt(hitPos - look * 2, hitPos)
-        end
-        -- прямо в ноги: нижняя часть тела реже перекрыта геометрией
-        if mode == "Feet" then
-            local hrp = char:FindFirstChild("HumanoidRootPart")
-            local base = hrp and (hrp.Position - Vector3.new(0, 2.2, 0)) or hitPos
-            return CFrame.lookAt(base + Vector3.new(0, 0.4, 0), base)
-        end
-        if mode == "Head" then
-            local h = char:FindFirstChild("Head")
-            local hp = h and h.Position or (hitPos + Vector3.new(0, 1.5, 0))
-            return CFrame.lookAt(hp + Vector3.new(0, 0.35, 0), hp)
-        end
-        if mode == "Above" then return CFrame.lookAt(hitPos + Vector3.new(0, 3, 0), hitPos) end
-        if mode == "Under" then return CFrame.lookAt(hitPos - Vector3.new(0, 2.5, 0), hitPos) end
-        if mode == "Orbit" then
-            local a = (tick() * 3) % (math.pi * 2)
-            return CFrame.lookAt(hitPos + Vector3.new(math.cos(a) * 2, 1, math.sin(a) * 2), hitPos)
-        end
-        local hrp = char:FindFirstChild("HumanoidRootPart")
-        local vel = hrp and hrp.AssemblyLinearVelocity or Vector3.zero
-        local back = (vel.Magnitude > 1.5) and (-vel.Unit * 2) or Vector3.new(0, 1.25, 0)
+    local function wallbangOrigin(hitPos, char)
+        local hrp = char and char:FindFirstChild("HumanoidRootPart")
+        local vel = hrp and (hrp.AssemblyLinearVelocity or hrp.Velocity) or Vector3.zero
+        local back = (vel.Magnitude > 1.5) and (-vel.Unit * 1.5) or Vector3.new(0, 0.8, 0)
         return CFrame.lookAt(hitPos + back, hitPos)
     end
 
-    -- Только мурдер. Фолбэка на ближайшего нет намеренно: за выстрел по
-    -- невиновному шериф умирает сам, так что при неопознанной роли выстрел
-    -- уходит туда, куда ты целился, без подмены.
     local function gunTarget()
         return E.targetChar("Murderer", F.SheriffWallCheck, "Head")
     end
 
-    -- самая крупная видимая часть: попадание надёжнее, чем строго по голове
     local function bestAimPart(char, from)
         local best, bestScore
         for _, name in ipairs({ "UpperTorso", "Torso", "Head", "LowerTorso" }) do
@@ -1693,7 +1649,7 @@ do
                 if not bestScore or score > bestScore then bestScore, best = score, part end
             end
         end
-        return best
+        return best or (char and char:FindFirstChild("Head"))
     end
 
     E.resolveGunShot = function()
@@ -1701,8 +1657,6 @@ do
         local hrp = char and char:FindFirstChild("HumanoidRootPart")
         if not hrp then return nil end
 
-        -- пробитие всегда стреляет в упор у жертвы (Point Blank): отдельные
-        -- типы убраны, тумблер Wall Bang сам решает, бить сквозь стену или нет
         local mode = F.SheriffPiercing and "Point Blank" or "Muzzle"
         local from
         if mode == "Muzzle" then
@@ -1714,8 +1668,7 @@ do
         local aimPart = bestAimPart(char, from) or hrp
         local pos
 
-        -- сначала резолвер: он сам решает, брать сырую точку, откат или упреждение
-        if (F.Resolver or "Off") ~= "Off" then
+        if (F.Resolver or "Off") ~= "Off" and F.Resolver ~= "Off" then
             local player = Players:GetPlayerFromCharacter(char)
             if player then
                 local ok, p = pcall(E.resolve, player, char, aimPart)
@@ -1729,14 +1682,11 @@ do
         pos = pos or aimPart.Position
         if F.SheriffAntiDesync then pos = sanePos(char, hrp) + (pos - hrp.Position) end
         if pos ~= pos then pos = aimPart.Position end
-        return pos, (mode ~= "Muzzle") and wallbangOrigin(mode, pos, char) or nil
+
+        local originCF = (mode == "Point Blank") and wallbangOrigin(pos, char) or nil
+        return pos, originCF
     end
 
-    -- Аргументы ремоутов оружия в MM2 не фиксированы: у ствола встречается и
-    -- (origin, target), и просто (target). Поэтому не пишем по индексу, а ищем
-    -- позиционные аргументы: последний из них это точка попадания, первый —
-    -- точка выстрела. Раньше подмена всегда шла во второй аргумент и при
-    -- одноаргументной сигнатуре уходила в пустоту.
     local function spots(args, n)
         local idx = {}
         for i = 1, n do
@@ -1756,61 +1706,77 @@ do
         local args = table.pack(...)
         args.n = nil
 
-        if self.Name == "Shoot" then
-            if E.playGunSound then E.playGunSound() end
-            if (F.SheriffSilentAim or F.SheriffPiercing) then
+        local rname = tostring(self and self.Name or "")
+
+        -- 1. Выстрел из пистолета (Gun / Revolver)
+        if rname == "Shoot" or rname:lower():find("shoot") then
+            if E.playGunSound then pcall(E.playGunSound) end
+            if F.SheriffSilentAim or F.SheriffPiercing then
                 local pos, origin = E.resolveGunShot()
                 if not pos then return nil end
 
                 local idx = spots(args, n)
                 if #idx == 0 then return nil end
+
                 writeSpot(args, idx[#idx], pos)
-                if origin and #idx > 1 then args[idx[1]] = origin end
+                if origin and #idx > 1 then
+                    args[idx[1]] = origin
+                end
 
                 if not announced then
                     announced = true
                     Notify("Silent Aim", "Shot redirected")
+                    task.delay(1, function() announced = false end)
                 end
                 return args, n
             end
         end
 
-        if self.Name == "KnifeThrown" and F.KnifeSilentAim then
-            local char = (F.KnifePrioritize and E.targetChar("SheriffOrHero", F.KnifeWallCheck, "Head"))
-                or E.targetChar("Nearest", F.KnifeWallCheck, "Head")
-            if not char then return nil end
-            local part = char:FindFirstChild("Head") or char:FindFirstChild("UpperTorso")
-                or char:FindFirstChild("Torso") or char:FindFirstChild("HumanoidRootPart")
-            if not part then return nil end
-
-            local mode = F.KnifePredict or "Off"
-            local pos
-            if (F.Resolver or "Off") ~= "Off" then
-                local player = Players:GetPlayerFromCharacter(char)
-                if player then
-                    local okR, p = pcall(E.resolve, player, char, part)
-                    if okR and typeof(p) == "Vector3" then pos = p end
+        -- 2. Бросок ножа (Knife / Throw)
+        if rname == "KnifeThrown" or rname:lower():find("throw") then
+            if F.KnifeSilentAim then
+                local char = (F.KnifePrioritize and E.targetChar("SheriffOrHero", F.KnifeWallCheck, "Head"))
+                    or E.targetChar("Nearest", F.KnifeWallCheck, "Head")
+                if not char then
+                    char = E.targetChar("Nearest", false, "Head")
                 end
-            end
-            if not pos then
-                pos = (mode == "Off") and part.Position or E.predict(char, part.Name, mode)
-            end
+                if not char then return nil end
 
-            local idx = spots(args, n)
-            if #idx == 0 then return nil end
-            writeSpot(args, idx[#idx], pos)
+                local part = char:FindFirstChild("Head") or char:FindFirstChild("UpperTorso")
+                    or char:FindFirstChild("Torso") or char:FindFirstChild("HumanoidRootPart")
+                if not part then return nil end
 
-            if not announced then
-                announced = true
-                Notify("Silent Aim", "Throw redirected")
+                local mode = F.KnifePredict or "Off"
+                local pos
+                if (F.Resolver or "Off") ~= "Off" and F.Resolver ~= "Off" then
+                    local player = Players:GetPlayerFromCharacter(char)
+                    if player then
+                        local okR, p = pcall(E.resolve, player, char, part)
+                        if okR and typeof(p) == "Vector3" then pos = p end
+                    end
+                end
+                if not pos then
+                    local knifeSpeed = (F.FlightSpeedControl and F.KnifeFlightSpeed) or 120
+                    pos = (mode == "Off") and part.Position or E.predict(char, part.Name, mode, nil, knifeSpeed)
+                end
+
+                local idx = spots(args, n)
+                if #idx == 0 then return nil end
+                writeSpot(args, idx[#idx], pos)
+
+                if not announced then
+                    announced = true
+                    Notify("Silent Aim", "Throw redirected")
+                    task.delay(1, function() announced = false end)
+                end
+                return args, n
             end
-            return args, n
         end
+
         return nil
     end
 
-    -- Piercing стреляет из точки в упор у жертвы, поэтому клиентский луч рисуется
-    -- от неё же. Подменяем startPos на дуло, чтобы выстрел выглядел обычным.
+    -- Визуальная коррекция выстрела для шерифа
     if getconnections and hookfunction then
         task.spawn(function()
             local hooked = {}
@@ -1827,9 +1793,6 @@ do
                             local fn = conn and conn.Function
                             if fn and not hooked[fn] then
                                 local old
-                                -- GunFired приходит и (startPos, endPos), и
-                                -- (handle, startPos, endPos): не сдвигаем аргументы
-                                -- вручную, а подменяем первый позиционный.
                                 local wrap = function(...)
                                     if F.SheriffPiercing then
                                         local n = select("#", ...)
@@ -1863,26 +1826,42 @@ do
         end)
     end
 
-    -- перевыпуск строго через self.FireServer: oldNamecall тут не срабатывает.
-    -- Повторный вызов идёт под флагом reemit, иначе ловим сами себя в рекурсию.
+    -- Универсальный перехват FireServer (__namecall + hookfunction)
     if hookmetamethod then
         local oldNamecall
         oldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(self, ...)
-            if reemit then return oldNamecall(self, ...) end
-            local okName, name = pcall(getnamecallmethod)
-            if not dead and not (checkcaller and checkcaller())
-                and okName and name == "FireServer" then
-                local ok, args, count = pcall(handleFire, self, ...)
-                if ok and type(args) == "table" then
-                    -- длину передаём явно: среди аргументов бывают дырки
-                    reemit = true
-                    self.FireServer(self, table.unpack(args, 1, count or #args))
-                    reemit = false
-                    return
+            if not dead and not (checkcaller and checkcaller()) then
+                local okName, name = pcall(getnamecallmethod)
+                if okName and name == "FireServer" then
+                    local ok, args, count = pcall(handleFire, self, ...)
+                    if ok and type(args) == "table" then
+                        -- Только self.FireServer. Через oldNamecall вызов в MM2
+                        -- молча не доходит до сервера — это и есть «силент не
+                        -- работает вообще».
+                        return self.FireServer(self, table.unpack(args, 1, count or #args))
+                    end
                 end
             end
             return oldNamecall(self, ...)
         end))
+    end
+
+    -- Запасной путь: нужен, только если hookmetamethod недоступен. Держать оба
+    -- сразу нельзя — один выстрел уходил бы на сервер дважды.
+    if hookfunction and not hookmetamethod then
+        pcall(function()
+            local rawFire = Instance.new("RemoteEvent").FireServer
+            local oldFire
+            oldFire = hookfunction(rawFire, newcclosure(function(self, ...)
+                if not dead and not (checkcaller and checkcaller()) then
+                    local ok, args, count = pcall(handleFire, self, ...)
+                    if ok and type(args) == "table" then
+                        return oldFire(self, table.unpack(args, 1, count or #args))
+                    end
+                end
+                return oldFire(self, ...)
+            end))
+        end)
     end
 end
 
@@ -3154,15 +3133,17 @@ end
 -- sound mutes ----------------------------------------------------------
 do
     local WORDS = {
-        MuteGun    = { "gun", "revolver", "fire", "shoot", "shot", "bang", "pistol" },
-        MuteReload = { "reload", "cock", "clip", "magazine", "chamber" },
-        MuteCoin   = { "coin", "pickup", "collect", "ding", "cash", "gem" },
-        MuteKill   = { "death", "die", "dead", "stab", "slash", "knife", "hit", "hurt", "splat", "kill",
-                       "blood", "gib", "corpse", "thud", "squish", "scream", "grunt", "pain", "damage" },
-        MuteNotify = { "gameover", "roundover", "results", "win", "victory", "lose", "defeat" },
-        MuteEffect = { "ghost", "laser", "teddy", "slasher", "ice", "freeze", "vampire", "glitch",
-                       "radioactive", "ninja", "portal", "blackhole", "tornado", "gold", "crystal",
-                       "skull", "skeleton", "reaper", "effect", "shatter", "burn" },
+        MuteGun       = { "gun", "revolver", "fire", "shoot", "shot", "bang", "pistol", "luger" },
+        MuteReload    = { "reload", "cock", "clip", "magazine", "chamber" },
+        MuteCoin      = { "coin", "pickup", "collect", "ding", "cash", "gem", "bag" },
+        MuteKill      = { "death", "die", "dead", "stab", "slash", "knife", "hit", "hurt", "splat", "kill",
+                          "blood", "gib", "corpse", "thud", "squish", "scream", "grunt", "pain", "damage" },
+        MuteNotify    = { "gameover", "roundover", "results", "win", "victory", "lose", "defeat", "timer" },
+        MuteEffect    = { "ghost", "laser", "teddy", "slasher", "ice", "freeze", "vampire", "glitch",
+                          "radioactive", "ninja", "portal", "blackhole", "tornado", "gold", "crystal",
+                          "skull", "skeleton", "reaper", "effect", "shatter", "burn" },
+        MuteFootsteps = { "step", "foot", "walk", "run", "jump", "land" },
+        MuteAmbience  = { "ambience", "wind", "rain", "music", "bgm", "background", "loop" },
     }
     local muted = {}
 
@@ -3171,10 +3152,10 @@ do
         return false
     end
 
-    -- ищем по имени звука, id и трём родителям: имена в игре не единообразны
     local function catOf(s)
-        local hay, a = s.Name .. " " .. tostring(s.SoundId), s.Parent
-        for _ = 1, 3 do
+        local hay = (s.Name .. " " .. tostring(s.SoundId))
+        local a = s.Parent
+        for _ = 1, 4 do
             if not a then break end
             hay = hay .. " " .. a.Name
             a = a.Parent
@@ -3187,6 +3168,7 @@ do
                 end
             end
         end
+        return nil
     end
 
     local function apply(s)
@@ -3202,17 +3184,23 @@ do
 
     E.refreshMutes = function()
         for _, root in ipairs({ workspace, game:GetService("SoundService"),
-                                game:GetService("ReplicatedStorage") }) do
-            pcall(function()
-                for _, v in ipairs(root:GetDescendants()) do
-                    if v:IsA("Sound") then apply(v) end
-                end
-            end)
+                                game:GetService("ReplicatedStorage"),
+                                game:GetService("Lighting"),
+                                Players.LocalPlayer and Players.LocalPlayer:FindFirstChild("PlayerGui") }) do
+            if root then
+                pcall(function()
+                    for _, v in ipairs(root:GetDescendants()) do
+                        if v:IsA("Sound") then apply(v) end
+                    end
+                end)
+            end
         end
     end
 
     tc(game.DescendantAdded:Connect(function(v)
-        if v:IsA("Sound") and anyOn() then apply(v) end
+        if v:IsA("Sound") and anyOn() then
+            task.defer(apply, v)
+        end
     end))
 
     gui.Destroying:Connect(function()
@@ -3224,12 +3212,7 @@ do
 end
 
 -- customs ---------------------------------------------------------------
--- каталог ассетов с того же гитхаба, что и старый хаб: имя=путь, файлы
--- качаются один раз и кладутся в воркспейс, дальше getcustomasset
 local ASSETS = {
-    GunSounds = {
-        "Rust Headshot=rust_headshot_sound.mp3",
-    },
     Cursors = {
         "Custom 1=1028d1c250054253/main.png", "Custom 4=32cbd02f14954ef4/main.png",
         "Custom 7=4f4c9a87c01e490f/roblox.png", "Custom 9=6a87bfc524424853/main.png",
@@ -3280,7 +3263,6 @@ do
     local BASE = "https://raw.githubusercontent.com/Yanderov/lib/main/assets/"
     local CACHE = GAME_DIR .. "/cache"
 
-    -- "Имя=путь" -> список имён для дропдауна + обратная карта
     local function catalog(list, sep)
         local names, byName = {}, {}
         for _, entry in ipairs(list) do
@@ -3294,48 +3276,119 @@ do
     end
 
     E.assetNames, E.assetPaths = {}, {}
-    E.assetNames.GunSounds, E.assetPaths.GunSounds = catalog(ASSETS.GunSounds, "=")
 
-    -- Качественные и проверенные хитсаунды (Rust, читы CS2, Minecraft, COD, Apex, Valorant)
-    local SOUND_PRESETS = {
-        { "Rust Headshot", 5043539516 },
-        { "Custom 1 (135478009117226)", 135478009117226 },
-        { "Custom 2 (7398268682)", 7398268682 },
-        { "CS2 Neverlose Bell", 6534948092 },
-        { "Neverlose Headshot", 6607204501 },
-        { "Skeet / Gamesense", 4817809188 },
-        { "Primordial Tick", 6607204842 },
-        { "Fatality Ding", 7149595568 },
-        { "Minecraft Hit", 8669533309 },
-        { "Minecraft Crit", 6701831818 },
-        { "Minecraft Orb", 9114223171 },
-        { "Minecraft Pop", 4018616850 },
-        { "COD Hitmarker", 160432334 },
-        { "Apex Shield Crack", 3744371091 },
-        { "Bubble Pop", 7086884025 },
-        { "Valorant Kill", 6762391037 },
-        { "TF2 Hitsound", 296102734 },
+    local HITSOUNDS_DIR = GAME_DIR .. "/hitsounds"
+    local HITSOUND_EXTS = { mp3 = true, wav = true, ogg = true }
+
+    local PRESET_SOUNDS = {
+        ["Neverlose"]      = "rbxassetid://6534948092",
+        ["Skeet"]          = "rbxassetid://5442046069",
+        ["Rust Headshot"]  = "rbxassetid://5043539486",
+        ["Bell"]           = "rbxassetid://6534947240",
+        ["Bubble"]         = "rbxassetid://6534947588",
+        ["COD"]            = "rbxassetid://160432334",
+        ["Minecraft Bow"]  = "rbxassetid://1053297525",
+        ["Stapler"]        = "rbxassetid://6534947842",
+        ["Primordial"]     = "rbxassetid://7339504786",
+        ["Crowbar"]        = "rbxassetid://9114725049",
+        ["Agpa2"]          = "rbxassetid://7141383794",
+        ["Zingtrio"]       = "rbxassetid://6534947588",
+        ["Bonk"]           = "rbxassetid://3941421689",
+        ["Pop"]            = "rbxassetid://198598793",
+        ["Hitmarker"]      = "rbxassetid://160432334",
     }
-    E.soundNames, E.soundIds = { "Default" }, {}
-    for _, entry in ipairs(SOUND_PRESETS) do
-        E.soundNames[#E.soundNames + 1] = entry[1]
-        E.soundIds[entry[1]] = entry[2]
+
+    local HITSOUND_FILES = {
+        "agpa2.mp3", "bell.wav", "bubble.wav", "cod.wav", "connectpacanoff.mp3",
+        "crowbar.wav", "mcbow.wav", "neverlose.wav", "primordial.wav",
+        "rust_headshot.wav", "skeet.wav", "stapler.wav", "zingtrio.wav",
+    }
+
+    local function soundName(file)
+        local stem, ext = file:match("^(.+)%.(%w+)$")
+        if not stem or not ext then return nil end
+        return HITSOUND_EXTS[ext:lower()] and stem or nil
     end
 
-    -- имя пресета или свой id из поля ввода -> готовый SoundId
+    E.soundNames = {
+        "Default", "Neverlose", "Skeet", "Rust Headshot", "Bell", "Bubble",
+        "COD", "Minecraft Bow", "Stapler", "Primordial", "Crowbar", "Bonk", "Pop", "Hitmarker"
+    }
+    E.hitsoundPaths = {}
+
+    local function scanHitsounds()
+        local seen = {}
+        for _, n in ipairs(E.soundNames) do seen[n] = true end
+        E.hitsoundPaths = {}
+        if listfiles and isfolder and isfolder(HITSOUNDS_DIR) then
+            for _, full in ipairs(listfiles(HITSOUNDS_DIR)) do
+                local file = full:match("[\\/]([^\\/]+)$") or full
+                local okN, name = pcall(soundName, file)
+                if okN and name and not E.hitsoundPaths[name] then
+                    E.hitsoundPaths[name] = full
+                    if not seen[name] then
+                        seen[name] = true
+                        E.soundNames[#E.soundNames + 1] = name
+                    end
+                end
+            end
+        end
+    end
+
+    E.syncHitsounds = function(cb)
+        task.spawn(function()
+            if isfolder and makefolder and isfile and writefile then
+                if not isfolder(GAME_DIR) then pcall(makefolder, GAME_DIR) end
+                if not isfolder(HITSOUNDS_DIR) then pcall(makefolder, HITSOUNDS_DIR) end
+                if isfolder(HITSOUNDS_DIR) then
+                    for _, file in ipairs(HITSOUND_FILES) do
+                        local full = HITSOUNDS_DIR .. "/" .. file
+                        if not isfile(full) then
+                            local got, body = pcall(function() return game:HttpGet(BASE .. "hitsounds/" .. file) end)
+                            if got and type(body) == "string" and #body > 0 then
+                                pcall(writefile, full, body)
+                            end
+                        end
+                        task.wait()
+                    end
+                end
+            end
+            scanHitsounds()
+            if E.onHitsounds then E.onHitsounds(E.soundNames) end
+            if cb then cb() end
+        end)
+    end
+
+    E.refreshHitsounds = function()
+        scanHitsounds()
+        if E.onHitsounds then E.onHitsounds(E.soundNames) end
+    end
+    pcall(scanHitsounds)
+
+    -- Имя из списка или свой ID -> готовый SoundId
     local function resolveSound(name, customId)
         local manual = tostring(customId or ""):match("%d+")
         if manual and #manual >= 5 then return "rbxassetid://" .. manual end
-        if name then
-            local id = E.soundIds[name]
-            if id then return "rbxassetid://" .. tostring(id):match("%d+") end
-            local path = E.assetPaths.GunSounds and E.assetPaths.GunSounds[name]
-            if path and fetch then
-                local fetched = fetch(path, "gunsounds")
-                if fetched ~= "" then return fetched end
+        if name and name ~= "Default" then
+            local path = E.hitsoundPaths[name]
+            if path then
+                local asset = getcustomasset or getsynasset
+                if asset then
+                    local okId, id = pcall(asset, path)
+                    if okId and id ~= "" then return id end
+                end
+            end
+            if PRESET_SOUNDS[name] then
+                return PRESET_SOUNDS[name]
+            end
+            -- Поиск без учёта регистра
+            for k, v in pairs(PRESET_SOUNDS) do
+                if k:lower() == name:lower() or k:lower():gsub("%s+", "") == name:lower():gsub("%s+", "") then
+                    return v
+                end
             end
         end
-        return nil
+        return "rbxassetid://5387431201"
     end
     E.resolveSound = resolveSound
 
@@ -3576,12 +3629,16 @@ do
             local digits = soundId:match("%d+")
             if digits then soundId = "rbxassetid://" .. digits end
         end
-        local s = Instance.new("Sound")
-        s.SoundId = soundId
-        s.Volume = tonumber(volume) or 0.7
-        s.Parent = game:GetService("SoundService")
-        s:Play()
-        game:GetService("Debris"):AddItem(s, 5)
+        task.spawn(function()
+            local s = Instance.new("Sound")
+            s.SoundId = soundId
+            s.Volume = math.clamp(tonumber(volume) or 0.8, 0, 5)
+            s.Parent = game:GetService("SoundService")
+            s:Play()
+            task.delay(4, function()
+                pcall(function() s:Destroy() end)
+            end)
+        end)
     end
 
     E.previewSound = function(kind)
@@ -3603,10 +3660,29 @@ do
         playOnce(E.resolveSound(F.GunSoundAsset, F.GunSoundId), (F.KillSoundVolume or 70) / 100)
     end
 
-    -- Игра переписывает SoundId выстрела при каждом эквипе и после каждого
-    -- звука, поэтому разовая установка не держится — отсюда «не работает».
-    -- Ловим звук по дефолтному id или по имени внутри своего ствола и
-    -- переустанавливаем на изменение свойства.
+    -- Авто-детекция убийств для воспроизведения Kill Sound
+    task.spawn(function()
+        local deadPlayers = {}
+        while not dead do
+            if F.CustomKillSound then
+                for _, p in ipairs(Players:GetPlayers()) do
+                    if p ~= LP and p.Character then
+                        local hum = p.Character:FindFirstChildOfClass("Humanoid")
+                        if hum then
+                            if hum.Health <= 0 and not deadPlayers[p.Name] then
+                                deadPlayers[p.Name] = true
+                                E.playKillSound()
+                            elseif hum.Health > 0 and deadPlayers[p.Name] then
+                                deadPlayers[p.Name] = nil
+                            end
+                        end
+                    end
+                end
+            end
+            task.wait(0.2)
+        end
+    end)
+
     local DEFAULT_SHOT = "rbxassetid://5387431201"
     local SHOT_HINTS = { "fire", "shoot", "shot", "gunshot", "bang", "blast" }
     local originalIds = setmetatable({}, { __mode = "k" })
@@ -3618,7 +3694,7 @@ do
         local mine = (char and sound:IsDescendantOf(char)) or (bp and sound:IsDescendantOf(bp))
         if not mine then return false end
         local tool = sound:FindFirstAncestorWhichIsA("Tool")
-        return tool ~= nil and tool.Name:lower():find("gun", 1, true) ~= nil
+        return tool ~= nil and (tool.Name:lower():find("gun", 1, true) ~= nil or tool.Name:lower():find("revolver", 1, true) ~= nil)
     end
 
     local function looksLikeShot(sound)
@@ -3667,11 +3743,7 @@ do
             return
         end
         local id = E.resolveSound(F.GunSoundAsset, F.GunSoundId)
-        if not id then
-            Notify("Sound", "Pick a preset or enter an id", "warn")
-            return
-        end
-        wantedId = id
+        wantedId = id or DEFAULT_SHOT
         for _, root in ipairs({ workspace, LP.Character, LP:FindFirstChildOfClass("Backpack") }) do
             if root then
                 for _, d in ipairs(root:GetDescendants()) do
@@ -3691,7 +3763,7 @@ do
                     if sound.Parent then retarget(sound) end
                 end
             end
-            task.wait(2)
+            task.wait(1.5)
         end
     end)
 
@@ -5503,49 +5575,18 @@ do
                          "Green", "Yellow", "Orange", "Red", "Black" }
     E.itemChamModes = { "Highlight", "Outline", "Solid", "Crystal", "Neon", "ForceField" }
 
-    local MATERIAL = {
-        Neon = Enum.Material.Neon,
-        ForceField = Enum.Material.ForceField,
-        Crystal = Enum.Material.Glass,
-    }
-    local savedMat = setmetatable({}, { __mode = "k" })
-
     local function currentColor()
         if F.ItemChamsRainbow then return Color3.fromHSV(tick() * 0.25 % 1, 0.85, 1) end
         return COLORS[F.ItemChamsColor or "White"] or COLORS.White
-    end
-
-    local function partsOf(inst)
-        if inst:IsA("BasePart") then return { inst } end
-        local out = {}
-        for _, d in ipairs(inst:GetDescendants()) do
-            if d:IsA("BasePart") then out[#out + 1] = d end
-        end
-        return out
     end
 
     local function strip(inst)
         if not inst or not inst.Parent then return end
         local hl = inst:FindFirstChild(HL)
         if hl then pcall(function() hl:Destroy() end) end
-        for _, part in ipairs(partsOf(inst)) do
-            local saved = savedMat[part]
-            if saved then
-                part.Material, part.Color = saved[1], saved[2]
-                savedMat[part] = nil
-            end
-        end
     end
 
     local function dress(inst, color, mode)
-        local material = MATERIAL[mode]
-        if material then
-            for _, part in ipairs(partsOf(inst)) do
-                if not savedMat[part] then savedMat[part] = { part.Material, part.Color } end
-                part.Material, part.Color = material, color
-            end
-        end
-
         local hl = inst:FindFirstChild(HL)
         if not (hl and hl:IsA("Highlight")) then
             hl = Instance.new("Highlight")
@@ -5558,11 +5599,11 @@ do
         elseif mode == "Solid" then
             hl.FillTransparency, hl.OutlineTransparency = 0, 0
         elseif mode == "Neon" then
-            hl.FillTransparency, hl.OutlineTransparency = 0.05, 0
+            hl.FillTransparency, hl.OutlineTransparency = 0.75, 0.15
         elseif mode == "ForceField" then
-            hl.FillTransparency, hl.OutlineTransparency = 0.35, 0.2
+            hl.FillTransparency, hl.OutlineTransparency = 0.5, 0.25
         elseif mode == "Crystal" then
-            hl.FillTransparency, hl.OutlineTransparency = 0.5, 0
+            hl.FillTransparency, hl.OutlineTransparency = 0.6, 1
         else
             hl.FillTransparency, hl.OutlineTransparency = 0.4, 0
         end
@@ -5633,85 +5674,94 @@ do
 
     -- Каждый пресет это законченная картинка, а не одна крутилка.
     -- bloom{intensity, size, threshold} | dof{focus, inFocus, near, far}
-    -- cc{brightness, contrast, saturation, tint} | atm{density, haze, glare, color}
+    -- cc{brightness, contrast, saturation, tint} | atm{density, haze, glare, color, decay}
+    -- light{brightness, exposure, clock, fogEnd, shadowSoftness, ambient, colorShift}
     local PRESETS = {
         Cinematic = {
-            bloom = { 0.9, 24, 1.1 }, blur = 0,
-            dof = { 55, 40, 0.2, 0.6 },
-            cc = { 0.02, 0.12, 0.08, Color3.fromRGB(255, 246, 235) },
-            atm = { 0.28, 0.9, 0.15, Color3.fromRGB(210, 215, 225) },
-            rays = { 0.06, 0.05 },
-            light = { brightness = 2.2, exposure = 0.15, shadowSoftness = 0.35 },
+            bloom = { 1.2, 26, 0.95 }, blur = 0,
+            dof = { 70, 55, 0.15, 0.5 },
+            cc = { 0.03, 0.18, 0.12, Color3.fromRGB(255, 244, 230) },
+            atm = { 0.18, 0.6, 0.1, Color3.fromRGB(215, 222, 235), Color3.fromRGB(125, 135, 150) },
+            rays = { 0.1, 0.07 },
+            light = { brightness = 2.2, exposure = 0.12, shadowSoftness = 0.5 },
         },
         Vibrant = {
-            bloom = { 1.4, 20, 0.95 }, blur = 0,
-            cc = { 0.05, 0.22, 0.35, Color3.fromRGB(255, 250, 245) },
-            atm = { 0.15, 0.4, 0.25, Color3.fromRGB(220, 235, 255) },
-            rays = { 0.1, 0.06 },
+            bloom = { 1.8, 24, 0.85 }, blur = 0,
+            cc = { 0.06, 0.28, 0.5, Color3.fromRGB(255, 244, 235) },
+            atm = { 0.12, 0.3, 0.2, Color3.fromRGB(225, 235, 255), Color3.fromRGB(120, 135, 160) },
+            rays = { 0.15, 0.06 },
             light = { brightness = 3, exposure = 0.25, shadowSoftness = 0.2 },
         },
         Noir = {
-            bloom = { 0.6, 16, 1.2 }, blur = 0,
-            cc = { -0.02, 0.45, -1, Color3.fromRGB(235, 240, 255) },
-            atm = { 0.35, 1.2, 0, Color3.fromRGB(200, 200, 210) },
-            light = { brightness = 1.6, exposure = -0.1, shadowSoftness = 0.6 },
+            bloom = { 0.5, 14, 1.25 }, blur = 0,
+            cc = { -0.03, 0.55, -1, Color3.fromRGB(235, 240, 255) },
+            atm = { 0.3, 1.2, 0, Color3.fromRGB(150, 150, 160), Color3.fromRGB(65, 65, 75) },
+            light = { brightness = 1.7, exposure = -0.05, clock = 6, shadowSoftness = 0.7,
+                      ambient = Color3.fromRGB(90, 90, 95), colorShiftTop = Color3.fromRGB(120, 120, 125), colorShiftBottom = Color3.fromRGB(45, 45, 50) },
         },
         Midnight = {
-            bloom = { 1.6, 28, 0.8 }, blur = 2,
-            cc = { -0.08, 0.18, 0.1, Color3.fromRGB(150, 175, 255) },
-            atm = { 0.45, 1.6, 0.35, Color3.fromRGB(70, 90, 160) },
-            light = { brightness = 1, exposure = -0.25, clock = 0, shadowSoftness = 0.8 },
+            bloom = { 1.6, 30, 0.8 }, blur = 2,
+            cc = { -0.1, 0.25, 0.05, Color3.fromRGB(140, 165, 255) },
+            atm = { 0.6, 2, 0.4, Color3.fromRGB(60, 80, 160), Color3.fromRGB(25, 35, 80) },
+            light = { brightness = 0.9, exposure = -0.2, clock = 0, shadowSoftness = 0.9,
+                      ambient = Color3.fromRGB(35, 45, 80), colorShiftTop = Color3.fromRGB(70, 90, 180), colorShiftBottom = Color3.fromRGB(15, 20, 45) },
         },
         Sunset = {
-            bloom = { 1.2, 26, 0.9 }, blur = 0,
-            dof = { 90, 70, 0.1, 0.45 },
-            cc = { 0.04, 0.14, 0.2, Color3.fromRGB(255, 205, 165) },
-            atm = { 0.4, 2.2, 0.4, Color3.fromRGB(255, 190, 150) },
-            rays = { 0.25, 0.1 },
-            light = { brightness = 2.4, exposure = 0.2, clock = 17.4, shadowSoftness = 0.5 },
+            bloom = { 1.4, 30, 0.85 }, blur = 0,
+            dof = { 110, 85, 0.08, 0.4 },
+            cc = { 0.05, 0.18, 0.3, Color3.fromRGB(255, 190, 130) },
+            atm = { 0.5, 2.6, 0.5, Color3.fromRGB(255, 170, 110), Color3.fromRGB(190, 95, 45) },
+            rays = { 0.35, 0.12 },
+            light = { brightness = 2.6, exposure = 0.22, clock = 17.4, shadowSoftness = 0.7,
+                      colorShiftTop = Color3.fromRGB(255, 160, 90), colorShiftBottom = Color3.fromRGB(120, 60, 45) },
         },
         Clarity = {
-            bloom = { 0.4, 12, 1.4 }, blur = 0,
-            cc = { 0.06, 0.16, 0.12, Color3.fromRGB(255, 255, 255) },
+            bloom = { 0.5, 14, 1.35 }, blur = 0,
+            cc = { 0.08, 0.24, 0.2, Color3.fromRGB(240, 247, 255) },
             atm = { 0, 0, 0, Color3.fromRGB(255, 255, 255) },
-            light = { brightness = 3.2, exposure = 0.3, fogEnd = 1e5, shadowSoftness = 0 },
+            light = { brightness = 3.4, exposure = 0.35, fogEnd = 1e5, shadowSoftness = 0 },
         },
         Dreamy = {
-            bloom = { 2.2, 40, 0.7 }, blur = 6,
-            dof = { 35, 25, 0.3, 0.75 },
-            cc = { 0.08, -0.05, 0.25, Color3.fromRGB(255, 225, 245) },
-            atm = { 0.5, 2.6, 0.5, Color3.fromRGB(255, 220, 240) },
-            rays = { 0.2, 0.14 },
-            light = { brightness = 2.6, exposure = 0.22, shadowSoftness = 1 },
+            bloom = { 2.6, 45, 0.6 }, blur = 8,
+            dof = { 30, 20, 0.35, 0.8 },
+            cc = { 0.1, -0.02, 0.3, Color3.fromRGB(255, 220, 245) },
+            atm = { 0.6, 3, 0.6, Color3.fromRGB(255, 210, 245), Color3.fromRGB(170, 125, 175) },
+            rays = { 0.25, 0.15 },
+            light = { brightness = 2.8, exposure = 0.25, shadowSoftness = 1,
+                      ambient = Color3.fromRGB(200, 170, 200), colorShiftTop = Color3.fromRGB(255, 200, 235), colorShiftBottom = Color3.fromRGB(150, 110, 160) },
         },
         Horror = {
             bloom = { 0.3, 14, 1.5 }, blur = 3,
             dof = { 25, 18, 0.4, 0.85 },
-            cc = { -0.14, 0.3, -0.55, Color3.fromRGB(180, 200, 190) },
-            atm = { 0.7, 3, 0, Color3.fromRGB(40, 50, 50) },
-            light = { brightness = 0.7, exposure = -0.35, clock = 1, fogEnd = 220, shadowSoftness = 1 },
+            cc = { -0.08, 0.35, -0.5, Color3.fromRGB(180, 200, 190) },
+            atm = { 0.7, 3, 0, Color3.fromRGB(50, 60, 60), Color3.fromRGB(22, 28, 28) },
+            light = { brightness = 1.2, exposure = -0.15, clock = 1, fogEnd = 220, shadowSoftness = 1,
+                      ambient = Color3.fromRGB(45, 55, 50) },
         },
         Neon = {
-            bloom = { 2.6, 32, 0.6 }, blur = 0,
-            cc = { 0.02, 0.35, 0.5, Color3.fromRGB(210, 190, 255) },
-            atm = { 0.35, 1.4, 0.6, Color3.fromRGB(150, 120, 255) },
-            rays = { 0.18, 0.12 },
-            light = { brightness = 2.8, exposure = 0.2, clock = 2, shadowSoftness = 0.4 },
+            bloom = { 3, 42, 0.5 }, blur = 0,
+            dof = { 90, 70, 0, 0.3 },
+            cc = { 0.04, 0.4, 0.6, Color3.fromRGB(205, 185, 255) },
+            atm = { 0.5, 1.8, 0.9, Color3.fromRGB(130, 90, 255), Color3.fromRGB(55, 35, 120) },
+            rays = { 0.3, 0.2 },
+            light = { brightness = 2.4, exposure = 0.15, clock = 2, shadowSoftness = 0.3,
+                      ambient = Color3.fromRGB(90, 70, 140), colorShiftTop = Color3.fromRGB(190, 120, 255), colorShiftBottom = Color3.fromRGB(40, 25, 90) },
         },
         Realistic = {
-            bloom = { 0.7, 18, 1.15 }, blur = 0,
-            dof = { 120, 90, 0.05, 0.35 },
-            cc = { 0, 0.08, 0.05, Color3.fromRGB(255, 252, 248) },
-            atm = { 0.3, 1.1, 0.2, Color3.fromRGB(199, 210, 225) },
+            bloom = { 0.6, 20, 1.15 }, blur = 0,
+            dof = { 150, 120, 0.03, 0.25 },
+            cc = { 0.02, 0.12, 0.05, Color3.fromRGB(255, 255, 255) },
+            atm = { 0.22, 0.9, 0.12, Color3.fromRGB(199, 210, 225), Color3.fromRGB(105, 115, 130) },
             rays = { 0.08, 0.05 },
             light = { brightness = 2, exposure = 0.1, shadowSoftness = 0.45 },
         },
         Frost = {
-            bloom = { 1.1, 22, 0.9 }, blur = 1,
-            cc = { 0.05, 0.2, -0.15, Color3.fromRGB(205, 230, 255) },
-            atm = { 0.5, 2, 0.3, Color3.fromRGB(190, 220, 255) },
-            rays = { 0.12, 0.08 },
-            light = { brightness = 2.6, exposure = 0.18, shadowSoftness = 0.7 },
+            bloom = { 1.3, 25, 0.9 }, blur = 1,
+            cc = { 0.06, 0.22, -0.05, Color3.fromRGB(190, 225, 255) },
+            atm = { 0.55, 2.2, 0.35, Color3.fromRGB(185, 215, 255), Color3.fromRGB(105, 135, 185) },
+            rays = { 0.15, 0.1 },
+            light = { brightness = 2.8, exposure = 0.2, shadowSoftness = 0.8,
+                      ambient = Color3.fromRGB(150, 175, 205), colorShiftTop = Color3.fromRGB(200, 235, 255), colorShiftBottom = Color3.fromRGB(90, 115, 150) },
         },
     }
 
@@ -5744,6 +5794,10 @@ do
             GlobalShadows = Lighting.GlobalShadows,
             EnvironmentDiffuseScale = Lighting.EnvironmentDiffuseScale,
             EnvironmentSpecularScale = Lighting.EnvironmentSpecularScale,
+            Ambient = Lighting.Ambient,
+            OutdoorAmbient = Lighting.OutdoorAmbient,
+            ColorShift_Top = Lighting.ColorShift_Top,
+            ColorShift_Bottom = Lighting.ColorShift_Bottom,
         }
     end
 
@@ -5813,7 +5867,7 @@ do
             atm.Haze = (preset.atm[2] or 0) * k
             atm.Glare = (preset.atm[3] or 0) * k
             atm.Color = preset.atm[4] or Color3.fromRGB(199, 199, 199)
-            atm.Decay = preset.atm[4] or Color3.fromRGB(106, 112, 125)
+            atm.Decay = preset.atm[5] or Color3.fromRGB(106, 112, 125)
             atm.Offset = 0.25
         else
             atm.Density = 0
@@ -5830,6 +5884,11 @@ do
         Lighting.EnvironmentSpecularScale = 1
         if light.clock then Lighting.ClockTime = light.clock end
         if light.fogEnd then Lighting.FogEnd = light.fogEnd end
+        if light.fogStart then Lighting.FogStart = light.fogStart end
+        if light.ambient then Lighting.Ambient = light.ambient end
+        if light.outdoorAmbient then Lighting.OutdoorAmbient = light.outdoorAmbient end
+        if light.colorShiftTop then Lighting.ColorShift_Top = light.colorShiftTop end
+        if light.colorShiftBottom then Lighting.ColorShift_Bottom = light.colorShiftBottom end
     end
 
     gui.Destroying:Connect(E.clearShaders)
@@ -6086,7 +6145,18 @@ do
     }
 
     local saved = setmetatable({}, { __mode = "k" })
-    local hl, appliedKey = nil, nil
+    local appliedKey = nil
+    -- один Highlight на видимую часть, а не один на весь персонаж: Highlight
+    -- с Adornee = char подсвечивает и прозрачные детали, и у Korblox из-под
+    -- протеза снова вылезала нижняя часть ноги
+    local hls = setmetatable({}, { __mode = "k" })
+
+    local function clearHls()
+        for part, hl in pairs(hls) do
+            pcall(function() hl:Destroy() end)
+            hls[part] = nil
+        end
+    end
 
     local function restore()
         for part, was in pairs(saved) do
@@ -6098,10 +6168,11 @@ do
     end
 
     E.clearSelfChams = function()
+        clearHls()
         local char = LP.Character
         local found = char and char:FindFirstChild(HL)
         if found then pcall(function() found:Destroy() end) end
-        hl, appliedKey = nil, nil
+        appliedKey = nil
         restore()
     end
 
@@ -6116,9 +6187,11 @@ do
         local out = {}
         for _, part in ipairs(char:GetDescendants()) do
             if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
-                local was = saved[part]
-                local originally = was and was[3] or part.Transparency
-                if originally < 1 then out[#out + 1] = part end
+                -- Korblox прячет ногу и прозрачностью, и клиентским модификатором
+                -- (Transparency остаётся 0, а деталь не видна): учитываем оба.
+                -- Смотрим текущее значение, а не сохранённое — иначе спрятанная
+                -- уже ПОСЛЕ включения чамса деталь всё равно получала подсветку.
+                if part.Transparency + part.LocalTransparencyModifier < 1 then out[#out + 1] = part end
             end
         end
         return out
@@ -6137,52 +6210,67 @@ do
         local color = baseColor()
         -- Opacity 100% = стиль как задуман, ниже — прозрачнее
         local k = 1 - math.clamp((F.SelfChamsOpacity or 70) / 100, 0, 1)
-        local alpha = math.clamp((style.alpha or 0) + k * 0.7, 0, 0.95)
+        -- Blur доступен только у Crystal: глушит сам материал, чтобы внутри
+        -- стеклянного тела не мельтешили собственные части
+        local blur = (name == "Crystal") and math.clamp((F.SelfChamsBlur or 0) / 100, 0, 1) or 0
+        local alpha = math.clamp(((style.alpha or 0) + k * 0.7) * (1 - blur), 0, 0.95)
         local key = name .. tostring(color) .. tostring(math.floor(alpha * 100))
+
+        local parts = bodyParts(char)
 
         if appliedKey ~= key then
             if appliedKey and appliedKey:match("^[^|]+") ~= name then restore() end
             appliedKey = key
 
             if style.material then
-                for _, part in ipairs(bodyParts(char)) do
+                for _, part in ipairs(parts) do
                     if not saved[part] then
                         saved[part] = { part.Material, part.Color, part.Transparency }
                     end
-                    part.Material = style.material
-                    part.Color = color
-                    part.Transparency = alpha
+                    part.Material, part.Color, part.Transparency = style.material, color, alpha
                 end
             else
                 restore()
             end
-
-            if not (hl and hl.Parent) then
-                hl = char:FindFirstChild(HL)
-                if not (hl and hl:IsA("Highlight")) then
-                    hl = Instance.new("Highlight")
-                    hl.Name, hl.Adornee, hl.Parent = HL, char, char
-                end
-            end
-            hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-            hl.FillColor, hl.OutlineColor = color, color
-            hl.FillTransparency = style.fill
-            hl.OutlineTransparency = style.outline
-        end
-
-        -- новые аксессуары появляются на ходу: докрашиваем их
-        if style.material then
-            for _, part in ipairs(bodyParts(char)) do
+        elseif style.material then
+            -- новые аксессуары появляются на ходу: докрашиваем их
+            for _, part in ipairs(parts) do
                 if not saved[part] then
                     saved[part] = { part.Material, part.Color, part.Transparency }
                     part.Material, part.Color, part.Transparency = style.material, color, alpha
                 end
             end
         end
+
+        -- подсветка живёт по частям, а не на весь персонаж: так прозрачная
+        -- нога под Korblox не получает ни заливки, ни обводки
+        local fill = (style.fill ~= nil) and style.fill or 1
+        local outline = style.outline or 0
+        local seen = {}
+        for _, part in ipairs(parts) do
+            seen[part] = true
+            local hl = hls[part]
+            if not (hl and hl.Parent) then
+                hl = Instance.new("Highlight")
+                hl.Name, hl.Adornee, hl.Parent = HL, part, part
+                hls[part] = hl
+            end
+            hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+            hl.FillColor, hl.OutlineColor = color, color
+            hl.FillTransparency = fill
+            hl.OutlineTransparency = outline
+        end
+        for part, hl in pairs(hls) do
+            if not seen[part] then
+                pcall(function() hl:Destroy() end)
+                hls[part] = nil
+            end
+        end
     end))
 
     tc(LP.CharacterAdded:Connect(function()
-        hl, appliedKey = nil, nil
+        appliedKey = nil
+        clearHls()
         table.clear(saved)
     end))
     gui.Destroying:Connect(E.clearSelfChams)
@@ -6383,9 +6471,10 @@ do
         for _, part in ipairs(char:GetDescendants()) do
             if part:IsA("BasePart") then
                 local was = saved[part]
-                local originally = was and was[3] or part.Transparency
-                -- спрятанное другими фичами не воскрешаем
-                if originally < 1 then
+                -- спрятанное другими фичами (Korblox-нога и т.п.) не воскрешаем:
+                -- смотрим текущую видимость, включая клиентский модификатор
+                local hidden = part.Transparency + part.LocalTransparencyModifier >= 1
+                if not hidden then
                     if not was then saved[part] = { part.Material, part.Color, part.Transparency } end
                     part.Material, part.Color = material, color
                     if alpha then part.Transparency = alpha end
@@ -6984,9 +7073,17 @@ do
     Slider(chams[1], "Wire Density", 1, 10, 3, "", "WireDensity", function() E.rebuildWire() end)
 
     Toggle(chams[2], "Self Chams", { flag = "SelfChams" })
-    Dropdown(chams[2], "Style", E.selfStyles, "Crystal", "SelfChamsStyle")
+    local blurSlider
+    local function refreshBlurSlider(v)
+        if blurSlider and blurSlider.frame then
+            blurSlider.frame.Visible = (v or F.SelfChamsStyle or "Crystal") == "Crystal"
+        end
+    end
+    Dropdown(chams[2], "Style", E.selfStyles, "Crystal", "SelfChamsStyle", function(v) refreshBlurSlider(v) end)
     Dropdown(chams[2], "Color", E.selfColors, "Cyan", "SelfChamsColor")
     Slider(chams[2], "Opacity", 0, 100, 70, "%", "SelfChamsOpacity")
+    blurSlider = Slider(chams[2], "Blur", 0, 100, 0, "%", "SelfChamsBlur")
+    refreshBlurSlider(F.SelfChamsStyle)
 
     Toggle(chams[3], "Item Chams", { flag = "ItemChams" })
     Toggle(chams[3], "Include Mine", { flag = "ItemChamsSelf", default = true })
@@ -7354,7 +7451,7 @@ do
 
     local cs = Group(t.right, "Custom Sounds")
     Toggle(cs, "Custom Gun Sound", { flag = "CustomGunSound", callback = function() E.applyGunSound() end })
-    Dropdown(cs, "Gun Sound", E.soundNames, "Rust Headshot", "GunSoundAsset", function() E.applyGunSound() end)
+    local gunSoundBox = Dropdown(cs, "Gun Sound", E.soundNames, "Default", "GunSoundAsset", function() E.applyGunSound() end)
     local gunIdBox = Input(cs, "Or paste sound id...")
     gunIdBox.FocusLost:Connect(function()
         F.GunSoundId = gunIdBox.Text
@@ -7368,7 +7465,7 @@ do
     Button(cs, "Preview Gun Sound", function() E.previewSound("gun") end)
 
     Toggle(cs, "Custom Murder Sound", { flag = "CustomKillSound" })
-    Dropdown(cs, "Murder Sound", E.soundNames, "Rust Headshot", "KillSoundAsset")
+    local killSoundBox = Dropdown(cs, "Murder Sound", E.soundNames, "Default", "KillSoundAsset")
     local killIdBox = Input(cs, "Or paste sound id...")
     killIdBox.FocusLost:Connect(function()
         F.KillSoundId = killIdBox.Text
@@ -7380,6 +7477,14 @@ do
     end
     Button(cs, "Preview Murder Sound", function() E.previewSound("kill") end)
     Slider(cs, "Sound Volume", 0, 100, 70, "%", "KillSoundVolume")
+    Button(cs, "Sync Sounds", function() E.syncHitsounds() end)
+    label(cs, "Custom: drop a .mp3/.wav in hitsounds/", { dim = true })
+    E.onHitsounds = function(list)
+        gunSoundBox.setOptions(list)
+        killSoundBox.setOptions(list)
+        if F.CustomGunSound then E.applyGunSound() end
+    end
+    E.syncHitsounds()
 
     local snd = Group(t.right, "Sound Mutes")
     local function mute(text, flag)
@@ -7391,6 +7496,12 @@ do
     mute("Mute Kill", "MuteKill")
     mute("Mute Kill Effect", "MuteEffect")
     mute("Mute Round Notify", "MuteNotify")
+    mute("Mute Footsteps", "MuteFootsteps")
+    mute("Mute Ambience / Music", "MuteAmbience")
+    Button(snd, "Refresh Mutes", function()
+        E.refreshMutes()
+        Notify("Mute", "Audio state re-applied")
+    end)
 end
 
 -- settings -------------------------------------------------------------

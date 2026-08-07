@@ -3,25 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
+  --background: #09090b;
+  --foreground: #f4f4f5;
   --foreground-muted: #a1a1aa;
   --foreground-subtle: #71717a;
-  --surface-base: #000000;
-  --surface-subtle: #080808;
-  --surface-card: #0e0e0e;
-  --surface-elevated: #141414;
-  --border: #27272a;
+  --surface-base: #09090b;
+  --surface-subtle: #0e0e11;
+  --surface-card: #131316;
+  --surface-elevated: #18181d;
+  --border: #222227;
 }
 
 html {
   scroll-behavior: smooth !important;
+  color-scheme: dark;
 }
 
 body {
-  background-color: #000000;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #09090b;
+  color: #f4f4f5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', Helvetica, Arial, sans-serif;
   overflow-x: hidden;
 }
 
@@ -30,13 +31,13 @@ body {
   scroll-margin-top: 80px;
 }
 
-/* Subtle checkered grid background */
-.bg-checkered-grid {
-  background-color: #000000;
+/* Subtle architectural grid pattern matching script aesthetic */
+.bg-script-grid {
+  background-color: #09090b;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 20px 20px;
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
 /* Hide scrollbars utility */
@@ -48,63 +49,26 @@ body {
   scrollbar-width: none !important;
 }
 
-/* Custom scrollbar for main window */
+/* Custom sleek scrollbar */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #09090b;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #27272a;
-  border-radius: 9999px;
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: #3f3f46;
 }
 
-/* ── Admin shell: calm, borderless minimal styling ── */
-.admin-shell :focus-visible {
-  outline: 1px solid rgba(255, 255, 255, 0.25);
-  outline-offset: 1px;
-}
-
-/* Flatten every hard outline to a faint hairline */
-.admin-shell * {
-  border-color: rgba(255, 255, 255, 0.06) !important;
-  box-shadow: none !important;
-}
-
-/* Downsize the giant card radii */
-.admin-shell [class*="rounded-3xl"],
-.admin-shell [class*="rounded-2xl"] {
-  border-radius: 0.5rem;
-}
-
-/* Neutralize status-pill backgrounds */
-.admin-shell [class*="bg-emerald-500/10"],
-.admin-shell [class*="bg-rose-500/10"],
-.admin-shell [class*="bg-amber-500/10"],
-.admin-shell [class*="bg-brand-500/1"] {
-  background-color: rgba(255, 255, 255, 0.04) !important;
-}
-
-/* Neutralize status-pill text colors */
-.admin-shell [class*="text-emerald-400"],
-.admin-shell [class*="text-rose-400"],
-.admin-shell [class*="text-amber-400"],
-.admin-shell [class*="text-brand-300"],
-.admin-shell [class*="text-brand-400"] {
-  color: rgba(255, 255, 255, 0.72) !important;
-}
-
-/* Calm the primary button down to a plain dark chip */
-.admin-shell .btn-primary,
-.admin-shell [class*="bg-brand-600"] {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  color: #fafafa !important;
+/* Monospace font class */
+.font-mono-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }

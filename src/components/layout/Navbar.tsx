@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Copy, Check, Menu, X } from "lucide-react";
+import { Copy, Check, Menu, X, Download, Code } from "lucide-react";
 import TelegramIcon from "@/components/icons/TelegramIcon";
 
 export default function Navbar() {
@@ -29,12 +29,12 @@ export default function Navbar() {
   };
 
   const navItems = [
-    { id: "script", label: "Script", targetId: "script" },
-    { id: "games", label: "Games (3)", targetId: "games" },
-    { id: "stats", label: "Stats", targetId: "stats" },
-    { id: "features", label: "Modules", targetId: "features" },
-    { id: "gallery", label: "Gallery", targetId: "gallery" },
+    { id: "script", label: "Script Loader", targetId: "script" },
+    { id: "features", label: "Modules & Desync", targetId: "features" },
+    { id: "code", label: "Source Code", targetId: "code" },
+    { id: "gallery", label: "Live Captures", targetId: "gallery" },
     { id: "executors", label: "Executors", targetId: "executors" },
+    { id: "changelog", label: "Changelog", targetId: "changelog" },
   ];
 
   const handleNavClick = (e: React.MouseEvent, targetId: string) => {
@@ -52,15 +52,15 @@ export default function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full transition-all duration-300 ${
+      className={`sticky top-0 z-50 w-full transition-all duration-200 ${
         scrolled
-          ? "bg-black/90 backdrop-blur-md border-b border-zinc-800/90 shadow-lg"
-          : "bg-black/60 backdrop-blur-sm border-b border-zinc-900/80"
+          ? "bg-[#09090b]/95 backdrop-blur-md border-b border-[#222227] shadow-xl"
+          : "bg-[#09090b]/80 backdrop-blur-sm border-b border-[#18181d]"
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo with Avatar */}
+        <div className="flex items-center justify-between h-14">
+          {/* Logo / Script Title */}
           <Link
             href="/"
             onClick={(e) => {
@@ -69,102 +69,91 @@ export default function Navbar() {
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }
             }}
-            className="flex items-center gap-3 group"
+            className="flex items-center gap-2.5 group"
           >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="w-9 h-9 rounded-xl overflow-hidden border border-zinc-700/80 bg-zinc-900 flex items-center justify-center shadow-md group-hover:border-zinc-500 transition-colors"
-            >
-              <img
-                src="/inertia_avatar.png"
-                alt="InertiaHub"
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
+            <div className="w-7 h-7 rounded-lg bg-[#141418] border border-[#27272f] flex items-center justify-center text-xs font-mono font-bold text-white group-hover:border-zinc-500 transition-colors">
+              IN
+            </div>
             <div className="flex items-center gap-2">
-              <span className="font-bold text-base tracking-tight text-white group-hover:text-zinc-200 transition-colors">
-                InertiaHub
+              <span className="font-semibold text-sm tracking-tight text-white group-hover:text-zinc-200 transition-colors">
+                Inertia Hub
               </span>
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-zinc-900 text-zinc-400 border border-zinc-800">
-                Universal
+              <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-mono bg-[#141418] text-zinc-400 border border-[#27272f]">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                v2.4
               </span>
             </div>
           </Link>
 
-          {/* Navigation Links with Smooth Animations and Smooth Scrolling */}
-          <nav className="hidden md:flex items-center gap-1 text-sm bg-zinc-950/60 p-1 rounded-xl border border-zinc-900">
+          {/* Navigation Links */}
+          <nav className="hidden md:flex items-center gap-1 bg-[#101014] p-1 rounded-lg border border-[#202026]">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
               return (
-                <motion.a
+                <a
                   key={item.id}
                   href={`#${item.targetId}`}
                   onClick={(e) => handleNavClick(e, item.targetId)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.96 }}
-                  className={`relative px-3.5 py-1.5 rounded-lg font-medium text-xs transition-colors duration-200 cursor-pointer ${
+                  className={`px-3 py-1 rounded-md font-medium text-xs transition-colors cursor-pointer ${
                     isActive
-                      ? "text-white"
+                      ? "bg-[#1f1f26] text-white shadow-sm"
                       : "text-zinc-400 hover:text-zinc-200"
                   }`}
                 >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeNavPill"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                      className="absolute inset-0 bg-zinc-800/80 border border-zinc-700/60 rounded-lg -z-10 shadow-sm"
-                    />
-                  )}
                   {item.label}
-                </motion.a>
+                </a>
               );
             })}
           </nav>
 
-          {/* Actions: Copy & Telegram */}
-          <div className="hidden md:flex items-center gap-3">
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
+          {/* Actions: Copy & Raw Download & Telegram */}
+          <div className="hidden md:flex items-center gap-2">
+            <button
               onClick={handleCopyScript}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-200 text-xs font-semibold transition-all shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141418] hover:bg-[#1a1a22] border border-[#27272f] text-zinc-200 text-xs font-mono transition-all"
             >
               {copied ? (
                 <>
-                  <Check className="w-3.5 h-3.5 text-white" />
-                  <span className="text-white">Copied</span>
+                  <Check className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-emerald-400">Copied</span>
                 </>
               ) : (
                 <>
                   <Copy className="w-3.5 h-3.5 text-zinc-400" />
-                  <span>Copy Script</span>
+                  <span>Copy Loader</span>
                 </>
               )}
-            </motion.button>
+            </button>
 
-            <motion.a
+            <a
+              href="/scripts/murdermistery2.lua"
+              download="murdermistery2.lua"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141418] hover:bg-[#1a1a22] border border-[#27272f] text-zinc-300 text-xs font-mono transition-all"
+              title="Download raw MM2 Lua script"
+            >
+              <Download className="w-3.5 h-3.5 text-zinc-400" />
+              <span>.lua</span>
+            </a>
+
+            <a
               href="https://t.me/+QXgW7cwKsPc3MjA1"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-black text-xs font-bold hover:bg-zinc-200 transition-all shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-all"
             >
               <TelegramIcon className="w-3.5 h-3.5 text-black" />
               <span>Telegram</span>
-            </motion.a>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
-            <motion.button
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white"
+              className="p-1.5 rounded-lg bg-[#141418] border border-[#27272f] text-zinc-400 hover:text-white"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </motion.button>
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+            </button>
           </div>
         </div>
       </div>
@@ -176,7 +165,7 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b border-zinc-800 bg-black/95 px-4 py-4 space-y-3"
+            className="md:hidden border-b border-[#222227] bg-[#0c0c0e] px-4 py-3 space-y-2"
           >
             {navItems.map((item) => (
               <a
@@ -186,27 +175,35 @@ export default function Navbar() {
                   setMobileMenuOpen(false);
                   handleNavClick(e, item.targetId);
                 }}
-                className="block text-sm font-medium text-zinc-400 hover:text-white py-1"
+                className="block text-xs font-medium text-zinc-400 hover:text-white py-1.5"
               >
                 {item.label}
               </a>
             ))}
 
-            <div className="pt-3 border-t border-zinc-800 flex flex-col gap-2">
+            <div className="pt-2 border-t border-[#202026] flex flex-col gap-2">
               <button
                 onClick={handleCopyScript}
-                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-zinc-900 text-xs font-semibold text-white border border-zinc-800"
+                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-[#141418] text-xs font-mono text-white border border-[#27272f]"
               >
-                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                {copied ? "Copied" : "Copy Script"}
+                {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                {copied ? "Copied" : "Copy Loader"}
               </button>
+              <a
+                href="/scripts/murdermistery2.lua"
+                download="murdermistery2.lua"
+                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-[#141418] text-xs font-mono text-zinc-300 border border-[#27272f]"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Download MM2 .lua
+              </a>
               <a
                 href="https://t.me/+QXgW7cwKsPc3MjA1"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-white text-xs font-bold text-black"
               >
-                <TelegramIcon className="w-4 h-4" />
+                <TelegramIcon className="w-3.5 h-3.5" />
                 Join Telegram
               </a>
             </div>

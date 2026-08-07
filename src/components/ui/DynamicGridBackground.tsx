@@ -43,7 +43,7 @@ export default function DynamicGridBackground() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-black"
+      className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#09090b]"
       style={
         {
           "--mouse-x": "50vw",

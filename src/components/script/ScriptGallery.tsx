@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Maximize2, X, Crosshair, Compass, Ghost, ShieldAlert } from "lucide-react";
+import { Maximize2, X, Crosshair, Compass, Ghost } from "lucide-react";
 
 interface GalleryItem {
   id: string;
@@ -20,15 +20,14 @@ export default function ScriptGallery() {
   const [filter, setFilter] = useState<string>("all");
 
   const galleryItems: GalleryItem[] = [
-    // 1 & 2: Murder Mystery 2
     {
       id: "mm2-gameplay",
-      title: "MM2 In-Game Gameplay & Role HUD",
+      title: "MM2 Role HUD & Gun Status",
       game: "Murder Mystery 2",
       category: "mm2",
       badge: "In-Game Live HUD",
       image: "/gallery/mm2_1.jpg",
-      desc: "Live role recognition showing Murderer, Sheriff, Gun Status, keybinds, and real-time active player counts in MM2.",
+      desc: "Real-time role identification showing Murderer, Sheriff, Hero, and Gun status with minimal screen footprint.",
       icon: Crosshair,
     },
     {
@@ -36,13 +35,11 @@ export default function ScriptGallery() {
       title: "MM2 Inertia Menu & Sheriff Combat",
       game: "Murder Mystery 2",
       category: "mm2",
-      badge: "Combat & Sheriff Aim",
+      badge: "Combat & Desync",
       image: "/gallery/mm2_2.png",
-      desc: "Tactical Sheriff aim control with Silent Aim, Piercing Bullet, Wall Check, Anti-Desync, and Instant Gun Fire.",
+      desc: "Tactical Sheriff aim control with Silent Aim, Quantum Gun Grab, Anti-Desync, and Instant Revolver Fire.",
       icon: Crosshair,
     },
-
-    // 3 & 4: Pressure
     {
       id: "pressure-station",
       title: "Pressure Hadal Blacksite Sector",
@@ -63,8 +60,6 @@ export default function ScriptGallery() {
       desc: "Inertia script menu loaded inside Pressure with full Potassium compatibility, oxygen monitor, and entity radar.",
       icon: Compass,
     },
-
-    // 5 & 6: Demonology
     {
       id: "demonology-night",
       title: "Demonology Paranormal Investigation",
@@ -72,7 +67,7 @@ export default function ScriptGallery() {
       category: "demonology",
       badge: "Ghost Hunting Live",
       image: "/gallery/demonology_1.png",
-      desc: "Night-time paranormal investigation showing Ghost Radar, room locator (Blue Bedroom), and active ghost distance tracking.",
+      desc: "Night-time paranormal investigation showing Ghost Radar, room locator, and active ghost distance tracking.",
       icon: Ghost,
     },
     {
@@ -96,107 +91,84 @@ export default function ScriptGallery() {
     <section id="gallery" className="py-16 bg-transparent relative z-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="mb-10 text-center sm:text-left">
-          <div className="flex items-center justify-center sm:justify-start gap-2 mb-2">
-            <span className="w-2 h-2 rounded-full bg-white" />
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-white" />
             <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
               Live In-Game Captures
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">
-            Real In-Game Screenshots
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+            Actual In-Game UI
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400">
-            Actual captures of InertiaHub running across Murder Mystery 2, Pressure, and Demonology.
+            Real captures of Inertia running live across Murder Mystery 2, Pressure, and Demonology.
           </p>
         </div>
 
-        {/* Gallery Filter Tabs */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        {/* Filter Tabs */}
+        <div className="flex flex-wrap gap-1.5 mb-6">
           {[
-            { id: "all", label: "All Screenshots (6)" },
-            { id: "mm2", label: "Murder Mystery 2 (2)" },
-            { id: "pressure", label: "Pressure (2)" },
-            { id: "demonology", label: "Demonology (2)" },
+            { id: "all", label: "All Screenshots" },
+            { id: "mm2", label: "MM2" },
+            { id: "pressure", label: "Pressure" },
+            { id: "demonology", label: "Demonology" },
           ].map((tab) => {
             const isActive = filter === tab.id;
             return (
-              <motion.button
+              <button
                 key={tab.id}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                onClick={() => {
-                  setFilter(tab.id);
-                }}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-medium transition-all ${
+                onClick={() => setFilter(tab.id)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all ${
                   isActive
-                    ? "bg-white text-black font-semibold shadow-md"
-                    : "bg-[#0d0d0d]/80 text-zinc-400 border border-zinc-800 hover:border-zinc-700 hover:text-white"
+                    ? "bg-[#1c1c24] text-white border border-[#2f2f3c] font-semibold shadow-sm"
+                    : "bg-[#0e0e12] text-zinc-400 border border-[#1e1e24] hover:text-zinc-200 hover:border-[#282832]"
                 }`}
               >
                 {tab.label}
-              </motion.button>
+              </button>
             );
           })}
         </div>
 
-        {/* Gallery Grid: 2 per game */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {/* Gallery Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {filteredItems.map((item, idx) => {
             const Icon = item.icon;
             return (
               <motion.div
                 key={item.id}
                 layout
-                initial={{ opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.97 }}
-                transition={{ duration: 0.3, delay: idx * 0.04 }}
-                whileHover={{ y: -3 }}
-                onClick={() => {
-                  setSelectedImage(item);
-                }}
-                className="group relative rounded-2xl bg-[#0e0e0e]/95 border border-zinc-800 hover:border-zinc-500 overflow-hidden shadow-xl cursor-pointer transition-all flex flex-col justify-between"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => setSelectedImage(item)}
+                className="group rounded-xl bg-[#0e0e12] border border-[#1e1e24] hover:border-[#2f2f3c] overflow-hidden cursor-pointer transition-all shadow-lg flex flex-col"
               >
-                {/* Image Aspect Box */}
-                <div className="aspect-video relative overflow-hidden bg-black/90">
+                <div className="aspect-video relative overflow-hidden bg-black">
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                  
-                  {/* Subtle Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-70" />
-
-                  {/* Top Bar Badges */}
-                  <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/80 border border-zinc-700/80 backdrop-blur-md">
-                      <Icon className="w-3 h-3 text-zinc-300" />
-                      <span className="text-[10px] font-semibold text-white tracking-wide">
-                        {item.game}
-                      </span>
-                    </div>
-
-                    <div className="w-7 h-7 rounded-lg bg-black/80 border border-zinc-700/80 backdrop-blur-md flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <Maximize2 className="w-3.5 h-3.5 text-white" />
-                    </div>
+                  <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/80 border border-zinc-700/80 backdrop-blur-md">
+                    <Icon className="w-3 h-3 text-zinc-300" />
+                    <span className="text-[10px] font-mono font-medium text-white">
+                      {item.game}
+                    </span>
                   </div>
-
-                  {/* Bottom Sub-Badge */}
-                  <div className="absolute bottom-3 left-3">
-                    <span className="text-[10px] font-mono text-zinc-300 bg-zinc-900/90 border border-zinc-700/70 px-2 py-0.5 rounded backdrop-blur-sm">
+                  <div className="absolute bottom-2.5 left-2.5">
+                    <span className="text-[10px] font-mono text-zinc-300 bg-zinc-900/90 border border-zinc-700/70 px-2 py-0.5 rounded">
                       {item.badge}
                     </span>
                   </div>
                 </div>
 
-                {/* Caption Footer */}
-                <div className="p-4 bg-[#0a0a0a]">
-                  <h3 className="text-sm font-bold text-white mb-1 group-hover:text-zinc-200 transition-colors">
+                <div className="p-3.5 bg-[#0e0e12]">
+                  <h3 className="text-xs font-bold text-white mb-1 group-hover:text-zinc-200">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                  <p className="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
                     {item.desc}
                   </p>
                 </div>
@@ -205,7 +177,7 @@ export default function ScriptGallery() {
           })}
         </div>
 
-        {/* Fullscreen Lightbox Modal */}
+        {/* Lightbox Modal */}
         <AnimatePresence>
           {selectedImage && (
             <motion.div
@@ -213,27 +185,23 @@ export default function ScriptGallery() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedImage(null)}
-              className="fixed inset-0 z-50 bg-black/95 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
             >
               <motion.div
-                initial={{ scale: 0.95, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.95, opacity: 0 }}
+                initial={{ scale: 0.95 }}
+                animate={{ scale: 1 }}
+                exit={{ scale: 0.95 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative max-w-4xl w-full bg-[#0c0c0c] border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl"
+                className="relative max-w-3xl w-full bg-[#0e0e12] border border-[#24242c] rounded-2xl overflow-hidden shadow-2xl"
               >
-                {/* Close Button */}
                 <button
-                  onClick={() => {
-                    setSelectedImage(null);
-                  }}
-                  className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-black/80 border border-zinc-700 text-white flex items-center justify-center hover:bg-zinc-800 transition-colors"
+                  onClick={() => setSelectedImage(null)}
+                  className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/80 border border-zinc-700 text-white flex items-center justify-center hover:bg-zinc-800 transition-colors"
                 >
                   <X className="w-4 h-4" />
                 </button>
 
-                {/* Lightbox Image */}
-                <div className="aspect-video w-full relative bg-black flex items-center justify-center">
+                <div className="aspect-video w-full bg-black flex items-center justify-center">
                   <img
                     src={selectedImage.image}
                     alt={selectedImage.title}
@@ -241,37 +209,24 @@ export default function ScriptGallery() {
                   />
                 </div>
 
-                {/* Lightbox Info */}
-                <div className="p-5 sm:p-6 bg-[#0a0a0a] border-t border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="p-4 bg-[#0a0a0d] border-t border-[#1c1c24] flex items-center justify-between gap-4">
                   <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400">
-                        {selectedImage.game}
-                      </span>
-                      <span className="text-zinc-600">•</span>
-                      <span className="text-[11px] font-mono text-zinc-500">
-                        {selectedImage.badge}
-                      </span>
-                    </div>
-                    <h3 className="text-base sm:text-lg font-bold text-white mb-1">
+                    <h3 className="text-sm font-bold text-white mb-0.5">
                       {selectedImage.title}
                     </h3>
                     <p className="text-xs text-zinc-400">
                       {selectedImage.desc}
                     </p>
                   </div>
-
-                  <a
-                    href="#script"
-                    onClick={(e) => {
-                      e.preventDefault();
+                  <button
+                    onClick={() => {
                       setSelectedImage(null);
                       document.getElementById("script")?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="shrink-0 px-4 py-2 rounded-xl bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-colors shadow-md"
+                    className="shrink-0 px-3.5 py-1.5 rounded-lg bg-white text-black font-semibold text-xs hover:bg-zinc-200"
                   >
                     Copy Script
-                  </a>
+                  </button>
                 </div>
               </motion.div>
             </motion.div>

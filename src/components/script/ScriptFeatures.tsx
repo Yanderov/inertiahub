@@ -1,79 +1,80 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Eye, Crosshair, Compass, Ghost, Cpu, ShieldCheck } from "lucide-react";
+import { Crosshair, Zap, ShieldCheck, Compass, Ghost, Cpu, Radio, Sparkles } from "lucide-react";
 
 export default function ScriptFeatures() {
   const features = [
     {
+      icon: Zap,
+      title: "Ultra Desync & Ghost Engine",
+      desc: "High-frequency position and angle desync running on physics Heartbeat with priority -1 RenderStepped camera lock. 6 modes including Ultra Jitter and Hyper Orbit.",
+    },
+    {
       icon: Crosshair,
-      title: "Murder Mystery 2 Suite",
-      desc: "Role ESP (Murderer, Sheriff, Hero), knife silent aim with ping prediction, pixel surf mechanics, coin aura, and local cosmetics.",
-    },
-    {
-      icon: Compass,
-      title: "Pressure (Hadal Blacksite)",
-      desc: "Deep-sea entity alerts (Angler, Pandemonium, Blitz), monster chams, keycard/door pathfinder, fast swim, and infinite oxygen.",
-    },
-    {
-      icon: Ghost,
-      title: "Demonology Ghost Hunting",
-      desc: "Paranormal entity tracker, favorite room locator, automated evidence logger (EMF, Spirit Box, UV), and cursed items ESP.",
-    },
-    {
-      icon: Cpu,
-      title: "Universal Game Detection",
-      desc: "One single loadstring automatically detects the running game environment and injects the corresponding optimized module.",
+      title: "Quantum Blink Gun Recovery",
+      desc: "Instantaneous fallen gun pickup. Replicates character CFrame for a single frame, triggers multi-limb touch events, and returns before the server can reject.",
     },
     {
       icon: ShieldCheck,
-      title: "Internal Hook Stability",
-      desc: "Zero-latency function hijacking designed specifically for Potassium, Volt, and Velocity internal execution engines.",
+      title: "Sheriff & Knife Silent Aim",
+      desc: "Predictive trajectory vector calculation with ping compensation, wall check bypass, and customizable hit parts (HumanoidRootPart / Head).",
     },
     {
-      icon: Eye,
-      title: "Atmospheric Visual Engine",
-      desc: "Custom Bloom, Sun Rays, Atmospheric Haze, and Depth of Field post-processing shaders built natively into all modules.",
+      icon: Compass,
+      title: "Pressure Blacksite Suite",
+      desc: "Deep-sea monster alerts (Angler, Froger, Pandemonium, Blitz), keycard pathfinder, high-speed swimming physics, and infinite oxygen.",
+    },
+    {
+      icon: Ghost,
+      title: "Demonology Ghost Hunter",
+      desc: "Real-time ghost distance tracking, favorite room locator, automated evidence identification (EMF 5, Freezing, Spirit Box), and cursed items ESP.",
+    },
+    {
+      icon: Cpu,
+      title: "Native Drawing & Memory Hooks",
+      desc: "Built with zero-lag Drawing library shim and direct environment hooks optimized for Potassium, Volt, Velocity, Wave, Delta, and Solara.",
     },
   ];
 
   return (
     <section className="py-16 bg-transparent relative z-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="mb-10">
+        <div className="mb-8">
           <div className="flex items-center gap-2 mb-2">
-            <span className="w-2 h-2 rounded-full bg-white" />
+            <span className="w-1.5 h-1.5 rounded-full bg-white" />
             <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
-              Overview
+              Core Capabilities
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-2">
-            Engine Highlights
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+            Engine Architecture
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400">
-            Engineered with high performance Luau across 3 distinct titles.
+            Engineered purely in Luau with zero execution overhead and maximum priority logic.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
           {features.map((item, idx) => {
             const Icon = item.icon;
             return (
               <motion.div
                 key={idx}
-                whileHover={{ y: -3, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="p-5 rounded-2xl bg-[#0c0c0c]/85 border border-zinc-800 hover:border-zinc-600 transition-all shadow-lg backdrop-blur-sm group"
+                whileHover={{ y: -2 }}
+                className="p-4 rounded-xl bg-[#0e0e12] border border-[#1e1e26] hover:border-[#2f2f3c] transition-all shadow-md flex flex-col justify-between"
               >
-                <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-700/80 flex items-center justify-center mb-3.5 group-hover:border-zinc-500 transition-colors">
-                  <Icon className="w-4 h-4 text-white" />
+                <div>
+                  <div className="w-8 h-8 rounded-lg bg-[#16161d] border border-[#272733] flex items-center justify-center mb-3">
+                    <Icon className="w-4 h-4 text-zinc-200" />
+                  </div>
+                  <h3 className="text-sm font-bold text-white mb-1.5 tracking-tight">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    {item.desc}
+                  </p>
                 </div>
-                <h3 className="text-sm font-semibold text-white mb-1.5 group-hover:text-zinc-100">
-                  {item.title}
-                </h3>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  {item.desc}
-                </p>
               </motion.div>
             );
           })}
