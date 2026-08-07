@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Copy, Check, Download, Terminal, ShieldCheck, Zap, Sparkles, ChevronRight, CheckCircle2 } from "lucide-react";
-import TelegramIcon from "@/components/icons/TelegramIcon";
+import { motion } from "framer-motion";
+import { Copy, Check, Download, Terminal, CheckCircle2 } from "lucide-react";
 
 export default function ScriptHero() {
   const [copied, setCopied] = useState(false);
@@ -43,8 +42,8 @@ export default function ScriptHero() {
 
   return (
     <section className="relative pt-12 pb-14 md:pt-20 md:pb-20 bg-transparent z-10 overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-gradient-to-tr from-white/[0.03] via-zinc-400/[0.02] to-transparent rounded-full blur-3xl pointer-events-none -z-10" />
+      {/* Ambient neutral background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-white/[0.02] rounded-full blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Minimal Pill Badge */}
@@ -54,10 +53,10 @@ export default function ScriptHero() {
           transition={{ duration: 0.3 }}
           className="flex justify-center mb-6"
         >
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#121218]/90 border border-white/[0.08] text-xs font-mono text-zinc-300 shadow-lg shadow-black/40 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#111113] border border-zinc-800 text-xs font-mono text-zinc-300 shadow-xl backdrop-blur-md">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
             <span className="font-semibold text-white">MM2 v2.4 Live</span>
             <span className="text-zinc-600">|</span>
@@ -108,15 +107,15 @@ export default function ScriptHero() {
                 {isSelected && (
                   <motion.div
                     layoutId="activeScriptHeroTab"
-                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    className="absolute inset-0 bg-[#1c1c24] border border-white/[0.14] rounded-lg shadow-md shadow-black/50"
+                    transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                    className="absolute inset-0 bg-[#222226] border border-zinc-700/80 rounded-lg shadow-sm"
                   />
                 )}
                 <span className="relative z-10">{tab.label}</span>
                 <span className={`relative z-10 text-[10px] px-1.5 py-0.2 rounded border ${
                   isSelected 
-                    ? "bg-[#0f0f14] text-zinc-300 border-white/[0.1]" 
-                    : "bg-[#0e0e12] text-zinc-500 border-white/[0.04]"
+                    ? "bg-[#111113] text-zinc-300 border-zinc-700" 
+                    : "bg-[#111113] text-zinc-500 border-zinc-800"
                 }`}>
                   {tab.badge}
                 </span>
@@ -128,22 +127,22 @@ export default function ScriptHero() {
         {/* Loadstring Code Box */}
         <motion.div 
           layout
-          className="rounded-2xl border border-white/[0.1] bg-[#0c0c10]/95 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/80 mb-8"
+          className="rounded-2xl border border-zinc-800 bg-[#0d0d0f]/95 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/80 mb-8"
         >
           {/* Header Bar */}
-          <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06] bg-[#111116]/80">
+          <div className="flex items-center justify-between px-4 py-2.5 border-b border-zinc-800 bg-[#121214]">
             <div className="flex items-center gap-2.5">
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#272732] border border-white/[0.05]" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#272732] border border-white/[0.05]" />
-                <span className="w-2.5 h-2.5 rounded-full bg-[#272732] border border-white/[0.05]" />
+                <span className="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-700" />
+                <span className="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-700" />
+                <span className="w-2.5 h-2.5 rounded-full bg-zinc-800 border border-zinc-700" />
               </div>
               <span className="text-xs font-mono text-zinc-300 pl-1">
                 {currentSnippet.title}
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-400 bg-white/[0.03] px-2 py-0.5 rounded border border-white/[0.05]">
+              <span className="inline-flex items-center gap-1 text-[11px] font-mono text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">
                 <Terminal className="w-3 h-3 text-zinc-400" />
                 UNC Standard
               </span>
@@ -152,23 +151,23 @@ export default function ScriptHero() {
 
           {/* Code Content */}
           <div className="p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="w-full sm:flex-1 bg-[#070709] p-3 rounded-xl border border-white/[0.06] shadow-inner overflow-hidden">
+            <div className="w-full sm:flex-1 bg-[#070709] p-3 rounded-xl border border-zinc-800 shadow-inner overflow-hidden">
               <code className="text-xs sm:text-sm font-mono text-zinc-200 break-all select-all block leading-relaxed">
-                <span className="text-purple-400">loadstring</span>
-                <span className="text-zinc-400">(</span>
-                <span className="text-amber-300">game</span>
-                <span className="text-zinc-400">:</span>
-                <span className="text-blue-400">HttpGet</span>
-                <span className="text-zinc-400">(</span>
-                <span className="text-emerald-300">"{currentSnippet.code.split('"')[1]}"</span>
-                <span className="text-zinc-400">))()</span>
+                <span className="text-zinc-300 font-semibold">loadstring</span>
+                <span className="text-zinc-500">(</span>
+                <span className="text-zinc-200">game</span>
+                <span className="text-zinc-500">:</span>
+                <span className="text-zinc-200">HttpGet</span>
+                <span className="text-zinc-500">(</span>
+                <span className="text-emerald-400">"{currentSnippet.code.split('"')[1]}"</span>
+                <span className="text-zinc-500">))()</span>
               </code>
             </div>
 
             <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
               <button
                 onClick={handleCopy}
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all active:scale-95 shadow-lg shadow-white/10"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all active:scale-95 shadow-md shadow-white/5"
               >
                 {copied ? (
                   <>
@@ -187,7 +186,7 @@ export default function ScriptHero() {
                 <a
                   href={currentSnippet.downloadPath}
                   download="murdermistery2.lua"
-                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-[#171720] hover:bg-[#20202c] text-zinc-200 border border-white/[0.1] font-mono text-xs transition-all active:scale-95 shadow-md"
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-xl bg-[#18181b] hover:bg-[#222226] text-zinc-200 border border-zinc-800 font-mono text-xs transition-all active:scale-95 shadow-sm"
                   title="Download raw .lua source code"
                 >
                   <Download className="w-4 h-4 text-zinc-400" />
@@ -200,19 +199,19 @@ export default function ScriptHero() {
 
         {/* Script Highlights Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <div className="p-3.5 rounded-xl bg-[#0e0e13]/80 border border-white/[0.06] shadow-md backdrop-blur-sm">
+          <div className="p-3.5 rounded-xl bg-[#0f0f12] border border-zinc-800 shadow-md">
             <div className="text-[11px] font-mono text-zinc-500 mb-1">MM2 Script Size</div>
             <div className="text-sm font-bold text-white font-mono">8,055 Lines</div>
           </div>
-          <div className="p-3.5 rounded-xl bg-[#0e0e13]/80 border border-white/[0.06] shadow-md backdrop-blur-sm">
+          <div className="p-3.5 rounded-xl bg-[#0f0f12] border border-zinc-800 shadow-md">
             <div className="text-[11px] font-mono text-zinc-500 mb-1">Gun Pickup</div>
             <div className="text-sm font-bold text-emerald-400 font-mono">Quantum Blink 0ms</div>
           </div>
-          <div className="p-3.5 rounded-xl bg-[#0e0e13]/80 border border-white/[0.06] shadow-md backdrop-blur-sm">
+          <div className="p-3.5 rounded-xl bg-[#0f0f12] border border-zinc-800 shadow-md">
             <div className="text-[11px] font-mono text-zinc-500 mb-1">Desync System</div>
             <div className="text-sm font-bold text-white font-mono">6 Modes + Spin</div>
           </div>
-          <div className="p-3.5 rounded-xl bg-[#0e0e13]/80 border border-white/[0.06] shadow-md backdrop-blur-sm">
+          <div className="p-3.5 rounded-xl bg-[#0f0f12] border border-zinc-800 shadow-md">
             <div className="text-[11px] font-mono text-zinc-500 mb-1">Drawing Hook</div>
             <div className="text-sm font-bold text-white font-mono">100% Native UNC</div>
           </div>

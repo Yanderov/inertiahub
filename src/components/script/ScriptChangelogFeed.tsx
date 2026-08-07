@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, GitCommit, Sparkles } from "lucide-react";
+import { GitCommit } from "lucide-react";
 
 export default function ScriptChangelogFeed() {
   const updates = [
@@ -55,16 +55,16 @@ export default function ScriptChangelogFeed() {
               key={idx}
               whileHover={{ y: -2 }}
               transition={{ duration: 0.2 }}
-              className={`p-5 rounded-2xl bg-[#0e0e13]/90 border ${
-                update.isLatest ? "border-white/[0.14] shadow-xl shadow-black/50" : "border-white/[0.08]"
+              className={`p-5 rounded-2xl bg-[#111113] border ${
+                update.isLatest ? "border-zinc-700 shadow-xl shadow-black/60" : "border-zinc-800"
               }`}
             >
               <div className="flex items-center justify-between mb-3.5 flex-wrap gap-2">
                 <div className="flex items-center gap-2.5">
                   <div className={`w-7 h-7 rounded-lg flex items-center justify-center border ${
                     update.isLatest 
-                      ? "bg-white/[0.08] border-white/[0.16] text-white" 
-                      : "bg-[#14141a] border-white/[0.06] text-zinc-400"
+                      ? "bg-[#18181b] border-zinc-700 text-white" 
+                      : "bg-[#141417] border-zinc-800 text-zinc-400"
                   }`}>
                     <GitCommit className="w-4 h-4" />
                   </div>
@@ -75,7 +75,7 @@ export default function ScriptChangelogFeed() {
                 <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono border ${
                   update.isLatest 
                     ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
-                    : "bg-[#14141a] text-zinc-400 border-white/[0.06]"
+                    : "bg-[#141417] text-zinc-400 border-zinc-800"
                 }`}>
                   {update.badge}
                 </span>
@@ -84,7 +84,7 @@ export default function ScriptChangelogFeed() {
               <ul className="space-y-2 text-xs text-zinc-400 font-sans">
                 {update.items.map((item, iIdx) => (
                   <li key={iIdx} className="flex items-start gap-2.5 leading-relaxed">
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-1.5 shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 mt-1.5 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}

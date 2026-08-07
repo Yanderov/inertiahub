@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Copy, Check, Menu, X, Download, ShieldCheck, Terminal, ArrowUpRight } from "lucide-react";
+import { Copy, Check, Menu, X, Download, ShieldCheck } from "lucide-react";
 import TelegramIcon from "@/components/icons/TelegramIcon";
 
 export default function Navbar() {
@@ -54,8 +54,8 @@ export default function Navbar() {
     <header
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "bg-[#09090b]/90 backdrop-blur-xl border-b border-white/[0.08] shadow-2xl shadow-black/60"
-          : "bg-[#09090b]/60 backdrop-blur-md border-b border-white/[0.04]"
+          ? "bg-[#09090b]/95 backdrop-blur-xl border-b border-zinc-800/80 shadow-2xl shadow-black/80"
+          : "bg-[#09090b]/70 backdrop-blur-md border-b border-zinc-800/40"
       }`}
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -71,7 +71,7 @@ export default function Navbar() {
             }}
             className="flex items-center gap-2.5 group cursor-pointer"
           >
-            <div className="relative flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-b from-[#1c1c24] to-[#121216] border border-white/[0.12] text-xs font-mono font-bold text-white shadow-inner group-hover:border-white/30 transition-all duration-200">
+            <div className="relative flex items-center justify-center w-7 h-7 rounded-lg bg-[#141417] border border-zinc-800 text-xs font-mono font-bold text-white shadow-inner group-hover:border-zinc-700 transition-all duration-200">
               <span className="tracking-tighter">IN</span>
               <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 border-2 border-[#09090b]" />
             </div>
@@ -79,7 +79,7 @@ export default function Navbar() {
               <span className="font-semibold text-sm tracking-tight text-white group-hover:text-zinc-200 transition-colors">
                 Inertia Hub
               </span>
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono bg-white/[0.04] text-zinc-300 border border-white/[0.08]">
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-mono bg-[#141417] text-zinc-300 border border-zinc-800">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 v2.4
               </span>
@@ -87,7 +87,7 @@ export default function Navbar() {
           </Link>
 
           {/* Navigation Links with animated sliding indicator */}
-          <nav className="hidden md:flex items-center gap-0.5 bg-[#111116]/80 p-1 rounded-xl border border-white/[0.06] backdrop-blur-md shadow-inner">
+          <nav className="hidden md:flex items-center gap-0.5 bg-[#121214] p-1 rounded-xl border border-zinc-800/80 backdrop-blur-md">
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
               return (
@@ -96,14 +96,14 @@ export default function Navbar() {
                   href={`#${item.targetId}`}
                   onClick={(e) => handleNavClick(e, item.targetId)}
                   className={`relative px-3 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer select-none ${
-                    isActive ? "text-white" : "text-zinc-400 hover:text-zinc-200"
+                    isActive ? "text-white font-semibold" : "text-zinc-400 hover:text-zinc-200"
                   }`}
                 >
                   {isActive && (
                     <motion.div
                       layoutId="activeNavTab"
                       transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                      className="absolute inset-0 bg-[#22222c] border border-white/[0.12] rounded-lg shadow-sm"
+                      className="absolute inset-0 bg-[#222226] border border-zinc-700/80 rounded-lg shadow-sm"
                     />
                   )}
                   <span className="relative z-10">{item.label}</span>
@@ -116,7 +116,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-2">
             <button
               onClick={handleCopyScript}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#14141a] hover:bg-[#1c1c24] border border-white/[0.08] hover:border-white/20 text-zinc-200 text-xs font-mono transition-all active:scale-95 shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141417] hover:bg-[#1f1f23] border border-zinc-800 hover:border-zinc-700 text-zinc-200 text-xs font-mono transition-all active:scale-95 shadow-sm"
             >
               {copied ? (
                 <>
@@ -134,7 +134,7 @@ export default function Navbar() {
             <a
               href="/scripts/murdermistery2.lua"
               download="murdermistery2.lua"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#14141a] hover:bg-[#1c1c24] border border-white/[0.08] hover:border-white/20 text-zinc-300 text-xs font-mono transition-all active:scale-95 shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#141417] hover:bg-[#1f1f23] border border-zinc-800 hover:border-zinc-700 text-zinc-300 text-xs font-mono transition-all active:scale-95 shadow-sm"
               title="Download raw MM2 Lua script"
             >
               <Download className="w-3.5 h-3.5 text-zinc-400" />
@@ -145,7 +145,7 @@ export default function Navbar() {
               href="https://t.me/+QXgW7cwKsPc3MjA1"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-all active:scale-95 shadow-md shadow-white/10"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-all active:scale-95 shadow-md shadow-white/5"
             >
               <TelegramIcon className="w-3.5 h-3.5 text-black" />
               <span>Telegram</span>
@@ -153,7 +153,7 @@ export default function Navbar() {
 
             <Link
               href="/admin"
-              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-white/[0.04] transition-colors"
+              className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-[#18181c] transition-colors"
               title="Admin Panel"
             >
               <ShieldCheck className="w-4 h-4" />
@@ -164,7 +164,7 @@ export default function Navbar() {
           <div className="flex md:hidden items-center gap-2">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-1.5 rounded-lg bg-[#14141a] border border-white/[0.08] text-zinc-400 hover:text-white transition-colors"
+              className="p-1.5 rounded-lg bg-[#141417] border border-zinc-800 text-zinc-400 hover:text-white transition-colors"
               aria-label="Toggle Menu"
             >
               {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -181,7 +181,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="md:hidden border-b border-white/[0.08] bg-[#0c0c10]/95 backdrop-blur-xl px-4 py-3 space-y-2 overflow-hidden shadow-2xl"
+            className="md:hidden border-b border-zinc-800 bg-[#0c0c0e]/95 backdrop-blur-xl px-4 py-3 space-y-2 overflow-hidden shadow-2xl"
           >
             {navItems.map((item) => (
               <a
@@ -197,10 +197,10 @@ export default function Navbar() {
               </a>
             ))}
 
-            <div className="pt-2 border-t border-white/[0.06] flex flex-col gap-2">
+            <div className="pt-2 border-t border-zinc-800/60 flex flex-col gap-2">
               <button
                 onClick={handleCopyScript}
-                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-[#14141a] text-xs font-mono text-white border border-white/[0.08] active:scale-98"
+                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-[#141417] text-xs font-mono text-white border border-zinc-800 active:scale-98"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 {copied ? "Copied" : "Copy Loader"}
@@ -208,7 +208,7 @@ export default function Navbar() {
               <a
                 href="/scripts/murdermistery2.lua"
                 download="murdermistery2.lua"
-                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-[#14141a] text-xs font-mono text-zinc-300 border border-white/[0.08]"
+                className="w-full flex items-center justify-center gap-2 py-2 rounded-lg bg-[#141417] text-xs font-mono text-zinc-300 border border-zinc-800"
               >
                 <Download className="w-3.5 h-3.5" />
                 Download MM2 .lua

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Users, Zap, RefreshCw, Activity, CheckCircle2 } from "lucide-react";
+import { Users, Zap, RefreshCw } from "lucide-react";
 
 export default function ScriptStats() {
   const [statsData, setStatsData] = useState({
@@ -58,7 +58,7 @@ export default function ScriptStats() {
   ];
 
   return (
-    <section id="stats" className="py-10 border-y border-white/[0.06] bg-[#0c0c10]/70 backdrop-blur-md relative z-10">
+    <section id="stats" className="py-10 border-y border-zinc-800/80 bg-[#0d0d0f]/80 backdrop-blur-md relative z-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -85,7 +85,7 @@ export default function ScriptStats() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: idx * 0.08 }}
                 whileHover={{ y: -2 }}
-                className="p-4 rounded-xl bg-[#0e0e13]/90 border border-white/[0.08] hover:border-white/20 transition-all shadow-lg flex items-center justify-between"
+                className="p-4 rounded-xl bg-[#111113] border border-zinc-800 hover:border-zinc-700 transition-all shadow-lg flex items-center justify-between"
               >
                 <div>
                   <div className="text-xs font-mono text-zinc-400 mb-1">
@@ -99,7 +99,7 @@ export default function ScriptStats() {
                   </div>
                 </div>
 
-                <div className="w-10 h-10 rounded-xl bg-[#161620] border border-white/[0.08] flex items-center justify-center shrink-0 shadow-inner">
+                <div className="w-10 h-10 rounded-xl bg-[#18181b] border border-zinc-800 flex items-center justify-center shrink-0 shadow-inner">
                   <Icon className="w-4 h-4 text-zinc-200" />
                 </div>
               </motion.div>

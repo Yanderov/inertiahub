@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Maximize2, X, Crosshair, Compass, Ghost, ZoomIn } from "lucide-react";
-import Image from "next/image";
+import { X, Crosshair, Compass, Ghost, ZoomIn } from "lucide-react";
 
 interface GalleryItem {
   id: string;
@@ -109,7 +108,7 @@ export default function ScriptGallery() {
           </div>
 
           {/* Filter Tabs */}
-          <div className="flex items-center gap-1 bg-[#0e0e13]/80 p-1 rounded-xl border border-white/[0.06] backdrop-blur-md">
+          <div className="flex items-center gap-1 bg-[#111113] p-1 rounded-xl border border-zinc-800 backdrop-blur-md">
             {[
               { id: "all", label: "All Games" },
               { id: "mm2", label: "MM2" },
@@ -129,7 +128,7 @@ export default function ScriptGallery() {
                     <motion.div
                       layoutId="activeGalleryFilterTab"
                       transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                      className="absolute inset-0 bg-[#1e1e28] border border-white/[0.12] rounded-lg shadow-sm"
+                      className="absolute inset-0 bg-[#222226] border border-zinc-700/80 rounded-lg shadow-sm"
                     />
                   )}
                   <span className="relative z-10">{tab.label}</span>
@@ -149,7 +148,7 @@ export default function ScriptGallery() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.25, delay: idx * 0.05 }}
-                className="group relative rounded-2xl overflow-hidden bg-[#0e0e13] border border-white/[0.08] hover:border-white/20 transition-all shadow-lg flex flex-col justify-between"
+                className="group relative rounded-2xl overflow-hidden bg-[#111113] border border-zinc-800 hover:border-zinc-700 transition-all shadow-lg flex flex-col justify-between"
               >
                 {/* Image Container */}
                 <div
@@ -162,19 +161,19 @@ export default function ScriptGallery() {
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e13] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-transparent to-transparent opacity-80" />
                   
                   {/* Overlay button */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-xs">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/90 text-black text-xs font-semibold shadow-lg">
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/50">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-black text-xs font-semibold shadow-lg">
                       <ZoomIn className="w-3.5 h-3.5" />
-                      Expand Image
+                      Expand
                     </span>
                   </div>
 
                   {/* Badge */}
                   <div className="absolute top-2.5 left-2.5">
-                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-black/80 backdrop-blur-md text-white border border-white/[0.1]">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-black/80 backdrop-blur-md text-white border border-zinc-700">
                       <Icon className="w-3 h-3 text-zinc-300" />
                       {item.badge}
                     </span>
@@ -211,21 +210,21 @@ export default function ScriptGallery() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full bg-[#0e0e14] rounded-2xl border border-white/[0.1] shadow-2xl overflow-hidden"
+              className="relative max-w-4xl w-full bg-[#111113] rounded-2xl border border-zinc-800 shadow-2xl overflow-hidden"
             >
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b border-white/[0.08] bg-[#121218]">
+              <div className="flex items-center justify-between p-4 border-b border-zinc-800 bg-[#141417]">
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-sm text-white">
                     {selectedImage.title}
                   </span>
-                  <span className="text-xs font-mono text-zinc-400 bg-white/[0.05] px-2 py-0.5 rounded border border-white/[0.08]">
+                  <span className="text-xs font-mono text-zinc-400 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">
                     {selectedImage.game}
                   </span>
                 </div>
                 <button
                   onClick={() => setSelectedImage(null)}
-                  className="p-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-zinc-400 hover:text-white transition-colors"
+                  className="p-1 rounded-lg bg-zinc-850 hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -241,7 +240,7 @@ export default function ScriptGallery() {
               </div>
 
               {/* Footer info */}
-              <div className="p-4 border-t border-white/[0.08] bg-[#121218] flex items-center justify-between">
+              <div className="p-4 border-t border-zinc-800 bg-[#141417] flex items-center justify-between">
                 <p className="text-xs text-zinc-300">
                   {selectedImage.desc}
                 </p>

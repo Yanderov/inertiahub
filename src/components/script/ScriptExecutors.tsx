@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Check, ShieldCheck, Zap, Cpu, Terminal, ExternalLink } from "lucide-react";
+import { ShieldCheck, Zap, Cpu, Terminal, ExternalLink } from "lucide-react";
 
 export default function ScriptExecutors() {
   const executors = [
@@ -69,11 +69,11 @@ export default function ScriptExecutors() {
                 key={idx}
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.2 }}
-                className="p-4 rounded-2xl bg-[#0e0e13]/90 border border-white/[0.08] hover:border-white/20 transition-all shadow-lg flex flex-col justify-between"
+                className="p-4 rounded-2xl bg-[#111113] border border-zinc-800 hover:border-zinc-700 transition-all shadow-lg flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-3">
-                    <div className="w-9 h-9 rounded-xl bg-[#161620] border border-white/[0.08] flex items-center justify-center shadow-inner">
+                    <div className="w-9 h-9 rounded-xl bg-[#18181b] border border-zinc-800 flex items-center justify-center shadow-inner">
                       <Icon className="w-4 h-4 text-zinc-200" />
                     </div>
                     <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
@@ -93,12 +93,12 @@ export default function ScriptExecutors() {
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-white/[0.06]">
+                <div className="pt-3 border-t border-zinc-800/80">
                   <a
                     href={exec.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#161620] hover:bg-[#20202c] text-zinc-300 hover:text-white border border-white/[0.08] font-mono text-xs transition-all active:scale-95 shadow-sm"
+                    className="w-full flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-[#18181b] hover:bg-[#222226] text-zinc-300 hover:text-white border border-zinc-800 font-mono text-xs transition-all active:scale-95 shadow-sm"
                   >
                     <span>Website</span>
                     <ExternalLink className="w-3 h-3 text-zinc-500" />

@@ -143,7 +143,7 @@ local evidenceDatabase = {
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#14141c] hover:bg-[#1e1e28] border border-white/[0.08] hover:border-white/20 text-zinc-200 text-xs font-mono transition-all active:scale-95 shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#141417] hover:bg-[#1f1f23] border border-zinc-800 hover:border-zinc-700 text-zinc-200 text-xs font-mono transition-all active:scale-95 shadow-sm"
             >
               {copied ? (
                 <>
@@ -170,9 +170,9 @@ local evidenceDatabase = {
         </div>
 
         {/* Code Viewer Window */}
-        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0c10]/90 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/70">
+        <div className="rounded-2xl border border-zinc-800 bg-[#0d0d0f]/95 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/80">
           {/* File Tab Bar */}
-          <div className="flex items-center justify-between px-3 py-2 bg-[#101016]/80 border-b border-white/[0.06] overflow-x-auto no-scrollbar">
+          <div className="flex items-center justify-between px-3 py-2 bg-[#121214] border-b border-zinc-800 overflow-x-auto no-scrollbar">
             <div className="flex items-center gap-1">
               {(["mm2", "loader", "pressure", "demonology"] as const).map((key) => {
                 const f = files[key];
@@ -191,7 +191,7 @@ local evidenceDatabase = {
                       <motion.div
                         layoutId="activeCodeTab"
                         transition={{ type: "spring", stiffness: 450, damping: 35 }}
-                        className="absolute inset-0 bg-[#1c1c26] border border-white/[0.1] rounded-lg shadow-sm"
+                        className="absolute inset-0 bg-[#222226] border border-zinc-700/80 rounded-lg shadow-sm"
                       />
                     )}
                     <FileText className="w-3.5 h-3.5 relative z-10 text-zinc-400" />
@@ -216,7 +216,7 @@ local evidenceDatabase = {
           </div>
 
           {/* Footer Bar */}
-          <div className="px-4 py-2.5 bg-[#101016]/80 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
+          <div className="px-4 py-2.5 bg-[#121214] border-t border-zinc-800 flex items-center justify-between text-xs font-mono text-zinc-400">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400" />
               <span className="text-zinc-300">{active.title}</span>

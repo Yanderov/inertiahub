@@ -21,7 +21,6 @@ export default function AdminQuickBanForm() {
     setErrorMessage("");
 
     try {
-      // Determine if identifier is numeric Roblox ID or HWID string
       const isRobloxId = /^\d+$/.test(identifier.trim());
 
       const res = await fetch("/api/v1/hub", {
@@ -66,7 +65,7 @@ export default function AdminQuickBanForm() {
             onChange={(e) => setIdentifier(e.target.value)}
             placeholder="e.g. 182749182 or 5d8a9f..."
             required
-            className="w-full px-3 py-2 rounded-xl bg-[#08080a] border border-white/[0.08] text-xs font-mono text-white placeholder-zinc-600 focus:outline-none focus:border-white/30"
+            className="w-full px-3 py-2 rounded-xl bg-[#09090b] border border-zinc-800 text-xs font-mono text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600"
           />
         </div>
 
@@ -79,7 +78,7 @@ export default function AdminQuickBanForm() {
             value={reason}
             onChange={(e) => setReason(e.target.value)}
             placeholder="e.g. Leaking, unauthorized debug"
-            className="w-full px-3 py-2 rounded-xl bg-[#08080a] border border-white/[0.08] text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-white/30"
+            className="w-full px-3 py-2 rounded-xl bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-600"
           />
         </div>
       </div>

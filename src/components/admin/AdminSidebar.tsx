@@ -5,11 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Users,
-  ShieldAlert,
   ArrowLeft,
   LogOut,
-  Radio,
-  CheckCircle2,
 } from "lucide-react";
 
 export default function AdminSidebar({ user }: { user?: { email: string; name?: string; role: string } }) {
@@ -42,12 +39,12 @@ export default function AdminSidebar({ user }: { user?: { email: string; name?: 
   };
 
   return (
-    <aside className="w-64 shrink-0 bg-[#0c0c10] border-r border-white/[0.08] flex flex-col justify-between h-screen sticky top-0 z-40">
+    <aside className="w-64 shrink-0 bg-[#0d0d0f] border-r border-zinc-800 flex flex-col justify-between h-screen sticky top-0 z-40">
       <div>
         {/* Logo & Brand Header */}
-        <div className="p-5 border-b border-white/[0.06] flex items-center justify-between">
+        <div className="p-5 border-b border-zinc-800 flex items-center justify-between">
           <Link href="/admin" className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-[#181822] border border-white/[0.12] flex items-center justify-center text-xs font-mono font-bold text-white shadow-inner">
+            <div className="w-7 h-7 rounded-lg bg-[#141417] border border-zinc-700 flex items-center justify-center text-xs font-mono font-bold text-white shadow-inner">
               IN
             </div>
             <div>
@@ -75,8 +72,8 @@ export default function AdminSidebar({ user }: { user?: { email: string; name?: 
                 href={item.href}
                 className={`flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium transition-all ${
                   item.active
-                    ? "bg-[#181824] text-white border border-white/[0.12] shadow-sm font-semibold"
-                    : "text-zinc-400 hover:text-white hover:bg-white/[0.04]"
+                    ? "bg-[#18181b] text-white border border-zinc-700 font-semibold shadow-sm"
+                    : "text-zinc-400 hover:text-white hover:bg-zinc-900"
                 }`}
               >
                 <Icon className={`w-4 h-4 ${item.active ? "text-white" : "text-zinc-500"}`} />
@@ -88,16 +85,16 @@ export default function AdminSidebar({ user }: { user?: { email: string; name?: 
       </div>
 
       {/* Footer Controls */}
-      <div className="p-3 border-t border-white/[0.06] space-y-2">
+      <div className="p-3 border-t border-zinc-800 space-y-2">
         <Link
           href="/"
-          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-zinc-400 hover:text-white hover:bg-white/[0.04] transition-all font-mono"
+          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-zinc-400 hover:text-white hover:bg-zinc-900 transition-all font-mono"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Website</span>
         </Link>
 
-        <div className="p-3 rounded-xl bg-[#111116] border border-white/[0.06] flex items-center justify-between">
+        <div className="p-3 rounded-xl bg-[#111113] border border-zinc-800 flex items-center justify-between">
           <div className="overflow-hidden">
             <div className="text-xs font-semibold text-white truncate">
               {user?.name || user?.email || "Admin User"}

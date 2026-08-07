@@ -1,6 +1,6 @@
 import prisma from "@/lib/prisma";
 import AdminHeader from "@/components/admin/AdminHeader";
-import { Users, Zap, ShieldAlert, Activity, CheckCircle2, Shield, AlertTriangle, ArrowUpRight } from "lucide-react";
+import { Users, Zap, ShieldAlert, Activity, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import AdminQuickBanForm from "./AdminQuickBanForm";
 
@@ -38,28 +38,24 @@ export default async function AdminDashboardPage() {
       value: onlineUsers.toString(),
       subtitle: "Active in the last 2 minutes",
       icon: Activity,
-      highlight: "emerald",
     },
     {
       title: "Total Script Injections",
       value: totalLogs.toLocaleString(),
       subtitle: "Lifetime successful loader hooks",
       icon: Zap,
-      highlight: "blue",
     },
     {
       title: "Tracked Roblox Users",
       value: totalUsers.toLocaleString(),
       subtitle: "Unique accounts logged",
       icon: Users,
-      highlight: "purple",
     },
     {
       title: "Blacklisted HWIDs / Accounts",
       value: bannedUsers.toString(),
       subtitle: "Restricted from loader access",
       icon: ShieldAlert,
-      highlight: "rose",
     },
   ];
 
@@ -78,13 +74,13 @@ export default async function AdminDashboardPage() {
             return (
               <div
                 key={idx}
-                className="p-5 rounded-2xl bg-[#0e0e13] border border-white/[0.08] shadow-lg flex flex-col justify-between"
+                className="p-5 rounded-2xl bg-[#111113] border border-zinc-800 shadow-lg flex flex-col justify-between"
               >
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-xs font-mono text-zinc-400">
                     {kpi.title}
                   </span>
-                  <div className="w-8 h-8 rounded-lg bg-[#15151e] border border-white/[0.08] flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-[#18181b] border border-zinc-800 flex items-center justify-center">
                     <Icon className="w-4 h-4 text-zinc-200" />
                   </div>
                 </div>
@@ -105,7 +101,7 @@ export default async function AdminDashboardPage() {
         {/* Middle Section: Game Distribution & Quick Ban */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Game Distribution */}
-          <div className="p-6 rounded-2xl bg-[#0e0e13] border border-white/[0.08] shadow-lg lg:col-span-1 flex flex-col justify-between">
+          <div className="p-6 rounded-2xl bg-[#111113] border border-zinc-800 shadow-lg lg:col-span-1 flex flex-col justify-between">
             <div>
               <div className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-1">
                 Distribution
@@ -115,7 +111,7 @@ export default async function AdminDashboardPage() {
               </h2>
 
               <div className="space-y-3">
-                <div className="p-3 rounded-xl bg-[#14141c] border border-white/[0.06] flex items-center justify-between">
+                <div className="p-3 rounded-xl bg-[#141417] border border-zinc-800 flex items-center justify-between">
                   <div>
                     <div className="text-xs font-bold text-white">Murder Mystery 2</div>
                     <div className="text-[10px] font-mono text-zinc-400">Primary Module</div>
@@ -125,22 +121,22 @@ export default async function AdminDashboardPage() {
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#14141c] border border-white/[0.06] flex items-center justify-between">
+                <div className="p-3 rounded-xl bg-[#141417] border border-zinc-800 flex items-center justify-between">
                   <div>
                     <div className="text-xs font-bold text-white">Pressure</div>
                     <div className="text-[10px] font-mono text-zinc-400">Hadal Blacksite</div>
                   </div>
-                  <span className="text-sm font-mono font-bold text-blue-400">
+                  <span className="text-sm font-mono font-bold text-zinc-200">
                     {pressureCount} users
                   </span>
                 </div>
 
-                <div className="p-3 rounded-xl bg-[#14141c] border border-white/[0.06] flex items-center justify-between">
+                <div className="p-3 rounded-xl bg-[#141417] border border-zinc-800 flex items-center justify-between">
                   <div>
                     <div className="text-xs font-bold text-white">Demonology</div>
                     <div className="text-[10px] font-mono text-zinc-400">Paranormal Hunt</div>
                   </div>
-                  <span className="text-sm font-mono font-bold text-purple-400">
+                  <span className="text-sm font-mono font-bold text-zinc-300">
                     {demonologyCount} users
                   </span>
                 </div>
@@ -149,7 +145,7 @@ export default async function AdminDashboardPage() {
 
             <Link
               href="/admin/users"
-              className="mt-4 flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-[#161622] hover:bg-[#20202e] text-xs font-mono text-zinc-300 hover:text-white border border-white/[0.08] transition-all"
+              className="mt-4 flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-[#18181b] hover:bg-[#222226] text-xs font-mono text-zinc-300 hover:text-white border border-zinc-800 transition-all"
             >
               <span>Manage All Script Users</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -157,7 +153,7 @@ export default async function AdminDashboardPage() {
           </div>
 
           {/* Quick Ban Action */}
-          <div className="p-6 rounded-2xl bg-[#0e0e13] border border-white/[0.08] shadow-lg lg:col-span-2">
+          <div className="p-6 rounded-2xl bg-[#111113] border border-zinc-800 shadow-lg lg:col-span-2">
             <div className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-1">
               Security Action
             </div>
@@ -173,7 +169,7 @@ export default async function AdminDashboardPage() {
         </div>
 
         {/* Bottom Section: Recent Injections Stream */}
-        <div className="p-6 rounded-2xl bg-[#0e0e13] border border-white/[0.08] shadow-lg">
+        <div className="p-6 rounded-2xl bg-[#111113] border border-zinc-800 shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-1">
@@ -194,7 +190,7 @@ export default async function AdminDashboardPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead>
-                <tr className="border-b border-white/[0.06] text-zinc-500 font-mono text-[11px]">
+                <tr className="border-b border-zinc-800 text-zinc-500 font-mono text-[11px]">
                   <th className="pb-3 font-medium">User</th>
                   <th className="pb-3 font-medium">Roblox ID</th>
                   <th className="pb-3 font-medium">Game</th>
@@ -203,7 +199,7 @@ export default async function AdminDashboardPage() {
                   <th className="pb-3 font-medium">Timestamp</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.04]">
+              <tbody className="divide-y divide-zinc-800/60">
                 {recentLogs.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-8 text-center text-zinc-500 font-mono">
@@ -212,7 +208,7 @@ export default async function AdminDashboardPage() {
                   </tr>
                 ) : (
                   recentLogs.map((log) => (
-                    <tr key={log.id} className="hover:bg-white/[0.02] transition-colors font-mono">
+                    <tr key={log.id} className="hover:bg-zinc-900/50 transition-colors font-mono">
                       <td className="py-3 text-white font-sans font-medium">
                         {log.username || "Anonymous"}
                       </td>
@@ -220,7 +216,7 @@ export default async function AdminDashboardPage() {
                         {log.robloxId}
                       </td>
                       <td className="py-3">
-                        <span className="px-2 py-0.5 rounded text-[10px] bg-white/[0.04] text-zinc-300 border border-white/[0.06]">
+                        <span className="px-2 py-0.5 rounded text-[10px] bg-zinc-900 text-zinc-300 border border-zinc-800">
                           {log.game || "universal"}
                         </span>
                       </td>

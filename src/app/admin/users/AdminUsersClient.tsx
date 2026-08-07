@@ -7,9 +7,7 @@ import {
   Check,
   ShieldAlert,
   ShieldCheck,
-  Activity,
   Loader2,
-  RefreshCw,
   UserX,
   UserCheck,
 } from "lucide-react";
@@ -60,7 +58,6 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
         throw new Error("Failed to update ban status");
       }
 
-      // Optimistic update
       setUsers((prev) =>
         prev.map((u) => (u.id === user.id ? { ...u, banned: nextBanned } : u))
       );
@@ -77,7 +74,6 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
     return Date.now() - time < 120 * 1000;
   };
 
-  // Filter users based on search term and tab
   const filteredUsers = users.filter((u) => {
     const matchesSearch =
       (u.username?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
@@ -99,7 +95,7 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
   return (
     <div className="space-y-4">
       {/* Controls Bar: Search & Filter Tabs */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[#0e0e13] p-3 rounded-2xl border border-white/[0.08]">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-[#111113] p-3 rounded-2xl border border-zinc-800">
         {/* Search */}
         <div className="relative flex-1">
           <Search className="w-4 h-4 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -108,17 +104,17 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Search by username, Roblox ID, HWID, game..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl bg-[#08080a] border border-white/[0.06] text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 font-mono"
+            className="w-full pl-9 pr-4 py-2 rounded-xl bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-600 font-mono"
           />
         </div>
 
         {/* Filters */}
-        <div className="flex items-center gap-1 bg-[#14141c] p-1 rounded-xl border border-white/[0.06] shrink-0">
+        <div className="flex items-center gap-1 bg-[#141417] p-1 rounded-xl border border-zinc-800 shrink-0">
           <button
             onClick={() => setFilter("all")}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all ${
               filter === "all"
-                ? "bg-[#20202c] text-white font-semibold shadow-sm"
+                ? "bg-[#222226] text-white font-semibold shadow-sm"
                 : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
@@ -128,7 +124,7 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
             onClick={() => setFilter("online")}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
               filter === "online"
-                ? "bg-[#20202c] text-emerald-400 font-semibold shadow-sm"
+                ? "bg-[#222226] text-emerald-400 font-semibold shadow-sm"
                 : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
@@ -139,7 +135,7 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
             onClick={() => setFilter("banned")}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
               filter === "banned"
-                ? "bg-[#20202c] text-rose-400 font-semibold shadow-sm"
+                ? "bg-[#222226] text-rose-400 font-semibold shadow-sm"
                 : "text-zinc-400 hover:text-zinc-200"
             }`}
           >
@@ -150,11 +146,11 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
       </div>
 
       {/* Users Table */}
-      <div className="rounded-2xl border border-white/[0.08] bg-[#0e0e13] overflow-hidden shadow-xl">
+      <div className="rounded-2xl border border-zinc-800 bg-[#111113] overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-white/[0.06] text-zinc-500 font-mono text-[11px] bg-[#111116]/80">
+              <tr className="border-b border-zinc-800 text-zinc-500 font-mono text-[11px] bg-[#141417]">
                 <th className="py-3.5 px-4 font-medium">Roblox Account</th>
                 <th className="py-3.5 px-4 font-medium">Roblox ID</th>
                 <th className="py-3.5 px-4 font-medium">HWID</th>
@@ -165,7 +161,7 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
                 <th className="py-3.5 px-4 font-medium text-right">Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.04] font-mono">
+            <tbody className="divide-y divide-zinc-800/60 font-mono">
               {filteredUsers.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-12 text-center text-zinc-500">
@@ -180,7 +176,7 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
                   return (
                     <tr
                       key={user.id}
-                      className={`hover:bg-white/[0.02] transition-colors ${
+                      className={`hover:bg-zinc-900/40 transition-colors ${
                         user.banned ? "bg-rose-950/10" : ""
                       }`}
                     >
@@ -188,11 +184,11 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
                       <td className="py-3.5 px-4 font-sans font-medium text-white">
                         <div className="flex items-center gap-2">
                           <div className="relative">
-                            <div className="w-7 h-7 rounded-full bg-[#181824] border border-white/[0.1] flex items-center justify-center font-bold text-[11px] text-zinc-300">
+                            <div className="w-7 h-7 rounded-full bg-[#18181b] border border-zinc-700 flex items-center justify-center font-bold text-[11px] text-zinc-300">
                               {(user.username || "R")[0].toUpperCase()}
                             </div>
                             {online && (
-                              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 border border-[#0e0e13]" />
+                              <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 border border-[#0d0d0f]" />
                             )}
                           </div>
                           <div>
@@ -208,7 +204,7 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
                       <td className="py-3.5 px-4">
                         <button
                           onClick={() => handleCopy(user.robloxId, `roblox-${user.id}`)}
-                          className="inline-flex items-center gap-1.5 text-zinc-300 hover:text-white bg-white/[0.03] px-2 py-1 rounded border border-white/[0.06] transition-colors"
+                          className="inline-flex items-center gap-1.5 text-zinc-300 hover:text-white bg-zinc-900 px-2 py-1 rounded border border-zinc-800 transition-colors"
                           title="Click to copy Roblox ID"
                         >
                           <span>{user.robloxId}</span>
@@ -225,7 +221,7 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
                         {user.hwid ? (
                           <button
                             onClick={() => handleCopy(user.hwid!, `hwid-${user.id}`)}
-                            className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-white bg-white/[0.03] px-2 py-1 rounded border border-white/[0.06] transition-colors truncate max-w-[130px]"
+                            className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-white bg-zinc-900 px-2 py-1 rounded border border-zinc-800 transition-colors truncate max-w-[130px]"
                             title={user.hwid}
                           >
                             <span className="truncate">{user.hwid.slice(0, 10)}...</span>
@@ -243,7 +239,7 @@ export default function AdminUsersClient({ initialUsers }: { initialUsers: HubUs
                       {/* Game & Place */}
                       <td className="py-3.5 px-4">
                         <div>
-                          <span className="px-2 py-0.5 rounded text-[10px] bg-white/[0.04] text-zinc-300 border border-white/[0.06]">
+                          <span className="px-2 py-0.5 rounded text-[10px] bg-zinc-900 text-zinc-300 border border-zinc-800">
                             {user.game || "universal"}
                           </span>
                           {user.placeId && (

@@ -6,12 +6,12 @@ import TelegramIcon from "@/components/icons/TelegramIcon";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/[0.06] bg-[#070709] py-10 text-xs text-zinc-500 relative z-10">
+    <footer className="border-t border-zinc-800/80 bg-[#09090b] py-10 text-xs text-zinc-500 relative z-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Logo & Game badges */}
           <div className="flex items-center gap-2.5">
-            <div className="w-6 h-6 rounded-lg bg-[#14141a] border border-white/[0.1] flex items-center justify-center text-[10px] font-mono font-bold text-white shadow-inner">
+            <div className="w-6 h-6 rounded-lg bg-[#141417] border border-zinc-800 flex items-center justify-center text-[10px] font-mono font-bold text-white shadow-inner">
               IN
             </div>
             <span className="font-semibold text-zinc-200 text-xs">
@@ -45,7 +45,7 @@ export default function Footer() {
               href="https://t.me/+QXgW7cwKsPc3MjA1"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-white hover:text-zinc-200 transition-all flex items-center gap-1.5 font-medium px-2.5 py-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08]"
+              className="text-white hover:text-zinc-200 transition-all flex items-center gap-1.5 font-medium px-2.5 py-1 rounded-lg bg-[#141417] hover:bg-[#1f1f23] border border-zinc-800"
             >
               <TelegramIcon className="w-3 h-3 text-white" />
               Telegram
@@ -53,7 +53,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-4 border-t border-white/[0.04] flex flex-col sm:flex-row items-center justify-between text-zinc-600 text-[11px] font-mono gap-2">
+        <div className="mt-8 pt-4 border-t border-zinc-800/40 flex flex-col sm:flex-row items-center justify-between text-zinc-600 text-[11px] font-mono gap-2">
           <span>© {new Date().getFullYear()} Inertia Hub. Zero execution lag & native UNC support.</span>
           <span className="text-emerald-500/80 flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Crosshair, Zap, ShieldCheck, Compass, Ghost, Cpu, Radio, Sparkles } from "lucide-react";
+import { Crosshair, Zap, ShieldCheck, Compass, Ghost, Cpu } from "lucide-react";
 
 export default function ScriptFeatures() {
   const features = [
@@ -63,10 +63,10 @@ export default function ScriptFeatures() {
                 key={idx}
                 whileHover={{ y: -3 }}
                 transition={{ duration: 0.2 }}
-                className="p-5 rounded-2xl bg-[#0e0e13]/90 border border-white/[0.08] hover:border-white/20 transition-all shadow-lg flex flex-col justify-between"
+                className="p-5 rounded-2xl bg-[#111113] border border-zinc-800 hover:border-zinc-700 transition-all shadow-lg flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-9 h-9 rounded-xl bg-[#161620] border border-white/[0.08] flex items-center justify-center mb-3.5 shadow-inner">
+                  <div className="w-9 h-9 rounded-xl bg-[#18181b] border border-zinc-800 flex items-center justify-center mb-3.5 shadow-inner">
                     <Icon className="w-4 h-4 text-zinc-200" />
                   </div>
                   <h3 className="text-sm font-bold text-white mb-2 tracking-tight">
