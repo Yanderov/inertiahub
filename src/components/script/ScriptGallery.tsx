@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Maximize2, X, Crosshair, Compass, Ghost } from "lucide-react";
+import { Maximize2, X, Crosshair, Compass, Ghost, ZoomIn } from "lucide-react";
+import Image from "next/image";
 
 interface GalleryItem {
   id: string;
@@ -91,84 +92,101 @@ export default function ScriptGallery() {
     <section id="gallery" className="py-16 bg-transparent relative z-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-white" />
-            <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
-              Live In-Game Captures
-            </span>
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-white" />
+              <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
+                Live In-Game Captures
+              </span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
+              Visual Demonstration
+            </h2>
+            <p className="text-xs sm:text-sm text-zinc-400">
+              Captured directly on live Roblox production instances.
+            </p>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-2">
-            Actual In-Game UI
-          </h2>
-          <p className="text-xs sm:text-sm text-zinc-400">
-            Real captures of Inertia running live across Murder Mystery 2, Pressure, and Demonology.
-          </p>
-        </div>
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap gap-1.5 mb-6">
-          {[
-            { id: "all", label: "All Screenshots" },
-            { id: "mm2", label: "MM2" },
-            { id: "pressure", label: "Pressure" },
-            { id: "demonology", label: "Demonology" },
-          ].map((tab) => {
-            const isActive = filter === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setFilter(tab.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all ${
-                  isActive
-                    ? "bg-[#1c1c24] text-white border border-[#2f2f3c] font-semibold shadow-sm"
-                    : "bg-[#0e0e12] text-zinc-400 border border-[#1e1e24] hover:text-zinc-200 hover:border-[#282832]"
-                }`}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
+          {/* Filter Tabs */}
+          <div className="flex items-center gap-1 bg-[#0e0e13]/80 p-1 rounded-xl border border-white/[0.06] backdrop-blur-md">
+            {[
+              { id: "all", label: "All Games" },
+              { id: "mm2", label: "MM2" },
+              { id: "pressure", label: "Pressure" },
+              { id: "demonology", label: "Demonology" },
+            ].map((tab) => {
+              const isSelected = filter === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setFilter(tab.id)}
+                  className={`relative px-3 py-1 rounded-lg text-xs font-medium transition-all select-none cursor-pointer ${
+                    isSelected ? "text-white font-semibold" : "text-zinc-400 hover:text-zinc-200"
+                  }`}
+                >
+                  {isSelected && (
+                    <motion.div
+                      layoutId="activeGalleryFilterTab"
+                      transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                      className="absolute inset-0 bg-[#1e1e28] border border-white/[0.12] rounded-lg shadow-sm"
+                    />
+                  )}
+                  <span className="relative z-10">{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {filteredItems.map((item, idx) => {
             const Icon = item.icon;
             return (
               <motion.div
                 key={item.id}
-                layout
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
-                onClick={() => setSelectedImage(item)}
-                className="group rounded-xl bg-[#0e0e12] border border-[#1e1e24] hover:border-[#2f2f3c] overflow-hidden cursor-pointer transition-all shadow-lg flex flex-col"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, delay: idx * 0.05 }}
+                className="group relative rounded-2xl overflow-hidden bg-[#0e0e13] border border-white/[0.08] hover:border-white/20 transition-all shadow-lg flex flex-col justify-between"
               >
-                <div className="aspect-video relative overflow-hidden bg-black">
+                {/* Image Container */}
+                <div
+                  onClick={() => setSelectedImage(item)}
+                  className="relative aspect-video w-full overflow-hidden cursor-pointer bg-[#070709]"
+                >
                   <img
                     src={item.image}
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
                   />
-                  <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/80 border border-zinc-700/80 backdrop-blur-md">
-                    <Icon className="w-3 h-3 text-zinc-300" />
-                    <span className="text-[10px] font-mono font-medium text-white">
-                      {item.game}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e13] via-transparent to-transparent opacity-80" />
+                  
+                  {/* Overlay button */}
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-xs">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/90 text-black text-xs font-semibold shadow-lg">
+                      <ZoomIn className="w-3.5 h-3.5" />
+                      Expand Image
                     </span>
                   </div>
-                  <div className="absolute bottom-2.5 left-2.5">
-                    <span className="text-[10px] font-mono text-zinc-300 bg-zinc-900/90 border border-zinc-700/70 px-2 py-0.5 rounded">
+
+                  {/* Badge */}
+                  <div className="absolute top-2.5 left-2.5">
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-black/80 backdrop-blur-md text-white border border-white/[0.1]">
+                      <Icon className="w-3 h-3 text-zinc-300" />
                       {item.badge}
                     </span>
                   </div>
                 </div>
 
-                <div className="p-3.5 bg-[#0e0e12]">
-                  <h3 className="text-xs font-bold text-white mb-1 group-hover:text-zinc-200">
+                {/* Details */}
+                <div className="p-4">
+                  <h3 className="text-sm font-bold text-white mb-1 tracking-tight">
                     {item.title}
                   </h3>
-                  <p className="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
                     {item.desc}
                   </p>
                 </div>
@@ -176,63 +194,68 @@ export default function ScriptGallery() {
             );
           })}
         </div>
+      </div>
 
-        {/* Lightbox Modal */}
-        <AnimatePresence>
-          {selectedImage && (
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedImage(null)}
+            className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+          >
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setSelectedImage(null)}
-              className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-4xl w-full bg-[#0e0e14] rounded-2xl border border-white/[0.1] shadow-2xl overflow-hidden"
             >
-              <motion.div
-                initial={{ scale: 0.95 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0.95 }}
-                onClick={(e) => e.stopPropagation()}
-                className="relative max-w-3xl w-full bg-[#0e0e12] border border-[#24242c] rounded-2xl overflow-hidden shadow-2xl"
-              >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b border-white/[0.08] bg-[#121218]">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-sm text-white">
+                    {selectedImage.title}
+                  </span>
+                  <span className="text-xs font-mono text-zinc-400 bg-white/[0.05] px-2 py-0.5 rounded border border-white/[0.08]">
+                    {selectedImage.game}
+                  </span>
+                </div>
                 <button
                   onClick={() => setSelectedImage(null)}
-                  className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-black/80 border border-zinc-700 text-white flex items-center justify-center hover:bg-zinc-800 transition-colors"
+                  className="p-1 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-zinc-400 hover:text-white transition-colors"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
+              </div>
 
-                <div className="aspect-video w-full bg-black flex items-center justify-center">
-                  <img
-                    src={selectedImage.image}
-                    alt={selectedImage.title}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
+              {/* Large Image */}
+              <div className="p-3 bg-[#070709] flex items-center justify-center">
+                <img
+                  src={selectedImage.image}
+                  alt={selectedImage.title}
+                  className="max-h-[70vh] w-auto object-contain rounded-lg shadow-inner"
+                />
+              </div>
 
-                <div className="p-4 bg-[#0a0a0d] border-t border-[#1c1c24] flex items-center justify-between gap-4">
-                  <div>
-                    <h3 className="text-sm font-bold text-white mb-0.5">
-                      {selectedImage.title}
-                    </h3>
-                    <p className="text-xs text-zinc-400">
-                      {selectedImage.desc}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => {
-                      setSelectedImage(null);
-                      document.getElementById("script")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="shrink-0 px-3.5 py-1.5 rounded-lg bg-white text-black font-semibold text-xs hover:bg-zinc-200"
-                  >
-                    Copy Script
-                  </button>
-                </div>
-              </motion.div>
+              {/* Footer info */}
+              <div className="p-4 border-t border-white/[0.08] bg-[#121218] flex items-center justify-between">
+                <p className="text-xs text-zinc-300">
+                  {selectedImage.desc}
+                </p>
+                <button
+                  onClick={() => setSelectedImage(null)}
+                  className="px-4 py-1.5 rounded-lg bg-white text-black font-semibold text-xs hover:bg-zinc-200 transition-colors shrink-0 ml-4"
+                >
+                  Close
+                </button>
+              </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

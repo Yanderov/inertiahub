@@ -55,23 +55,24 @@ export default function ScriptFeatures() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {features.map((item, idx) => {
             const Icon = item.icon;
             return (
               <motion.div
                 key={idx}
-                whileHover={{ y: -2 }}
-                className="p-4 rounded-xl bg-[#0e0e12] border border-[#1e1e26] hover:border-[#2f2f3c] transition-all shadow-md flex flex-col justify-between"
+                whileHover={{ y: -3 }}
+                transition={{ duration: 0.2 }}
+                className="p-5 rounded-2xl bg-[#0e0e13]/90 border border-white/[0.08] hover:border-white/20 transition-all shadow-lg flex flex-col justify-between"
               >
                 <div>
-                  <div className="w-8 h-8 rounded-lg bg-[#16161d] border border-[#272733] flex items-center justify-center mb-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#161620] border border-white/[0.08] flex items-center justify-center mb-3.5 shadow-inner">
                     <Icon className="w-4 h-4 text-zinc-200" />
                   </div>
-                  <h3 className="text-sm font-bold text-white mb-1.5 tracking-tight">
+                  <h3 className="text-sm font-bold text-white mb-2 tracking-tight">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-zinc-400 leading-relaxed">
+                  <p className="text-xs text-zinc-400 leading-relaxed font-sans">
                     {item.desc}
                   </p>
                 </div>

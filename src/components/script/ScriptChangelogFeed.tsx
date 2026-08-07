@@ -1,13 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, GitCommit } from "lucide-react";
+import { ArrowRight, GitCommit, Sparkles } from "lucide-react";
 
 export default function ScriptChangelogFeed() {
   const updates = [
     {
       version: "v2.4.0 — Ultra Desync & Quantum Gun Grab",
-      date: "Latest Release",
+      badge: "Production Release",
+      isLatest: true,
       items: [
         "Rebuilt Desync Engine from scratch with 6 modes: Ultra Jitter, Hyper Orbit, Teleport Blink, Sky/Void, and Chaos",
         "Implemented Quantum Blink Gun Grab: 0ms dropped gun pickup with multi-limb touch interest spam and single-tick CFrame restoration",
@@ -18,7 +19,8 @@ export default function ScriptChangelogFeed() {
     },
     {
       version: "v2.3.0 — Multi-Game Expansion",
-      date: "Previous",
+      badge: "Previous Patch",
+      isLatest: false,
       items: [
         "Added dedicated Pressure (Hadal Blacksite) suite with monster alerts & fast swim",
         "Added Demonology ghost investigation module with automated evidence logging",
@@ -42,34 +44,47 @@ export default function ScriptChangelogFeed() {
               Engine Changelog
             </h2>
             <p className="text-xs sm:text-sm text-zinc-400">
-              Recent updates and performance improvements.
+              Recent updates, optimizations, and performance improvements.
             </p>
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4">
           {updates.map((update, idx) => (
             <motion.div
               key={idx}
-              whileHover={{ y: -1 }}
-              className="p-4 rounded-xl bg-[#0e0e12] border border-[#1e1e24] shadow-md"
+              whileHover={{ y: -2 }}
+              transition={{ duration: 0.2 }}
+              className={`p-5 rounded-2xl bg-[#0e0e13]/90 border ${
+                update.isLatest ? "border-white/[0.14] shadow-xl shadow-black/50" : "border-white/[0.08]"
+              }`}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <GitCommit className="w-4 h-4 text-zinc-400" />
+              <div className="flex items-center justify-between mb-3.5 flex-wrap gap-2">
+                <div className="flex items-center gap-2.5">
+                  <div className={`w-7 h-7 rounded-lg flex items-center justify-center border ${
+                    update.isLatest 
+                      ? "bg-white/[0.08] border-white/[0.16] text-white" 
+                      : "bg-[#14141a] border-white/[0.06] text-zinc-400"
+                  }`}>
+                    <GitCommit className="w-4 h-4" />
+                  </div>
                   <span className="text-xs sm:text-sm font-bold font-mono text-white">
                     {update.version}
                   </span>
                 </div>
-                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-[#14141a] text-zinc-400 border border-[#22222c]">
-                  {update.date}
+                <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono border ${
+                  update.isLatest 
+                    ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" 
+                    : "bg-[#14141a] text-zinc-400 border-white/[0.06]"
+                }`}>
+                  {update.badge}
                 </span>
               </div>
 
-              <ul className="space-y-1.5 text-xs text-zinc-400 font-sans">
+              <ul className="space-y-2 text-xs text-zinc-400 font-sans">
                 {update.items.map((item, iIdx) => (
-                  <li key={iIdx} className="flex items-start gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 mt-1.5 shrink-0" />
+                  <li key={iIdx} className="flex items-start gap-2.5 leading-relaxed">
+                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-1.5 shrink-0" />
                     <span>{item}</span>
                   </li>
                 ))}

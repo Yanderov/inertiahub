@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Check, Download, Code, FileText, ExternalLink } from "lucide-react";
+import { motion } from "framer-motion";
+import { Copy, Check, Download, FileText, ExternalLink } from "lucide-react";
 
 export default function ScriptCodeViewer() {
   const [copied, setCopied] = useState(false);
@@ -125,8 +126,8 @@ local evidenceDatabase = {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
-              <span className="text-xs font-mono uppercase tracking-wider text-zinc-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-white" />
+              <span className="text-xs font-mono uppercase tracking-widest text-zinc-400">
                 Script Source & Raw Access
               </span>
             </div>
@@ -142,12 +143,12 @@ local evidenceDatabase = {
           <div className="flex items-center gap-2">
             <button
               onClick={handleCopy}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-[#141418] hover:bg-[#1c1c22] border border-[#27272f] text-zinc-200 text-xs font-mono transition-all"
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-[#14141c] hover:bg-[#1e1e28] border border-white/[0.08] hover:border-white/20 text-zinc-200 text-xs font-mono transition-all active:scale-95 shadow-sm"
             >
               {copied ? (
                 <>
                   <Check className="w-3.5 h-3.5 text-emerald-400" />
-                  <span className="text-emerald-400">Copied URL</span>
+                  <span className="text-emerald-400 font-semibold">Copied URL</span>
                 </>
               ) : (
                 <>
@@ -160,7 +161,7 @@ local evidenceDatabase = {
             <a
               href={active.rawUrl}
               download={active.name}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-white text-black font-semibold text-xs hover:bg-zinc-200 transition-all shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-zinc-200 text-black font-semibold text-xs transition-all active:scale-95 shadow-sm"
             >
               <Download className="w-3.5 h-3.5 text-black" />
               <span>Download .lua</span>
@@ -169,10 +170,10 @@ local evidenceDatabase = {
         </div>
 
         {/* Code Viewer Window */}
-        <div className="rounded-xl border border-[#24242c] bg-[#0c0c0f] overflow-hidden shadow-2xl">
+        <div className="rounded-2xl border border-white/[0.08] bg-[#0c0c10]/90 backdrop-blur-xl overflow-hidden shadow-2xl shadow-black/70">
           {/* File Tab Bar */}
-          <div className="flex items-center justify-between px-3 py-2 bg-[#121216] border-b border-[#1f1f26] overflow-x-auto no-scrollbar">
-            <div className="flex items-center gap-1.5">
+          <div className="flex items-center justify-between px-3 py-2 bg-[#101016]/80 border-b border-white/[0.06] overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-1">
               {(["mm2", "loader", "pressure", "demonology"] as const).map((key) => {
                 const f = files[key];
                 const isSelected = selectedFile === key;
@@ -180,20 +181,27 @@ local evidenceDatabase = {
                   <button
                     key={key}
                     onClick={() => setSelectedFile(key)}
-                    className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-mono transition-all ${
+                    className={`relative flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono transition-all select-none cursor-pointer ${
                       isSelected
-                        ? "bg-[#1d1d24] text-white border border-[#2f2f3b] font-semibold"
-                        : "text-zinc-400 hover:text-zinc-200 hover:bg-[#15151a]"
+                        ? "text-white font-semibold"
+                        : "text-zinc-400 hover:text-zinc-200"
                     }`}
                   >
-                    <FileText className="w-3.5 h-3.5 text-zinc-400" />
-                    <span>{f.name}</span>
+                    {isSelected && (
+                      <motion.div
+                        layoutId="activeCodeTab"
+                        transition={{ type: "spring", stiffness: 450, damping: 35 }}
+                        className="absolute inset-0 bg-[#1c1c26] border border-white/[0.1] rounded-lg shadow-sm"
+                      />
+                    )}
+                    <FileText className="w-3.5 h-3.5 relative z-10 text-zinc-400" />
+                    <span className="relative z-10">{f.name}</span>
                   </button>
                 );
               })}
             </div>
 
-            <div className="hidden sm:flex items-center gap-3 text-[11px] font-mono text-zinc-500 pr-2">
+            <div className="hidden sm:flex items-center gap-3 text-[11px] font-mono text-zinc-400 pr-2">
               <span>{active.lines}</span>
               <span>•</span>
               <span>{active.size}</span>
@@ -201,17 +209,17 @@ local evidenceDatabase = {
           </div>
 
           {/* Code Body */}
-          <div className="p-4 sm:p-5 bg-[#08080a] overflow-x-auto">
+          <div className="p-4 sm:p-5 bg-[#070709] overflow-x-auto">
             <pre className="font-mono text-xs text-zinc-300 leading-relaxed">
               <code>{active.codePreview}</code>
             </pre>
           </div>
 
           {/* Footer Bar */}
-          <div className="px-4 py-2.5 bg-[#101014] border-t border-[#1c1c24] flex items-center justify-between text-xs font-mono text-zinc-500">
+          <div className="px-4 py-2.5 bg-[#101016]/80 border-t border-white/[0.06] flex items-center justify-between text-xs font-mono text-zinc-400">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-              <span className="text-zinc-400">{active.title}</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-400" />
+              <span className="text-zinc-300">{active.title}</span>
             </div>
             <a
               href={active.rawUrl}
